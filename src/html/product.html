@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Products</title>
+</head>
+
+<body>
+	<section>
+		<div id="ProductContainer"></div>
+	</section>
+	
+	<script id="ProductTemplate" type="text/x-jQuery-tmpl">
+		<div>
+			<h4>${name}</h4> price: ${formatPrice(price)} sku: ${sku}
+		</div>
+	</script>
+
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="./js/jquery.tmpl.js"></script>
+	<script>
+		$.ajax({
+				url: "/api/products",
+				data: "",
+				success: function(res){
+					console.log(res);
+        			// Render the products using the template
+        			$("#ProductTemplate").tmpl(res).appendTo("#ProductContainer");
+				},
+				type: "get",
+				error: function(){
+					alert('An error has occured!');
+				}
+			});
+			
+        function formatPrice(price) {
+            return "$" + price.toFixed(2);
+        }
+	</script>
+</body>
+
+</html>
