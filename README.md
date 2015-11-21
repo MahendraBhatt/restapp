@@ -83,6 +83,10 @@ git commit -m "comment goes here"
 To check which commits are ready for push:
 git log --oneline
 
+git push --set-upstream origin master
+
+git config --global url."https://".insteadOf git://
+
 ----------------------------
 BOWER 
 -------------------------------
@@ -113,4 +117,4 @@ npm install node-sass --save-dev
 
 create gulpfile.js in root directory of project
 
-git push --set-upstream origin master
+
