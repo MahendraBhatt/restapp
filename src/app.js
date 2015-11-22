@@ -11,7 +11,10 @@ var app = express();
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+	res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header("Access-Control-Allow-Credentials", false);
+    res.header("Access-Control-Max-Age", "86400"); // 24 hours
 	next();
 });
  
@@ -26,10 +29,3 @@ app.use('/', express.static('html'));
 app.use('/js', express.static('js'));
 
 module.exports = app;
-
-/*
-Usage 
-http://localhost:3001/api/products/
-http://localhost:3001/api/products/?limit=5
-http://localhost:3001/api/products/?name__regex=/^mah/i
-*/

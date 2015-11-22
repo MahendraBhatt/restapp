@@ -26,3 +26,11 @@ function generateGUID() {
     return function () { return guid(8) + '-' + guid(4) + '-' + guid(4) + '-' + guid(4) + '-' + guid(12) };
 }
 
+ function getRandomString(len) {
+	var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	var str = '';
+	for (var i = 0; i < len; i++) {
+		str += chars.charAt(Math.floor(Math.random() * 36));
+	}
+	return str;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Products</title>
+	<link rel="stylesheet" href="../css/style.css" type="text/css" />
+</head>
+
+<body>
+	<h2>Bulk Add Products</h2>
+
+	<div class="add">
+		Number of Products to be added:
+		<input id="noOfProducts" type="number" />
+		<button onclick="addProducts();">Add</button>
+	</div>
+
+	<script src="../js/jquery/dist/jquery.min.js"></script>
+	<script src="../js/core.min.js"></script>
+	<script>
+		function addProducts(){
+			var noOfProducts = $("#noOfProducts").val();
+			if(noOfProducts > 0){
+				var data = {};
+				var add = function(noOfProducts){
+					data = {name:getRandomString(10),price:10,sku:getRandomString(12)};
+					$.ajax({
+						url: "http://localhost:3001/api/products/",
+						data: JSON.stringify(data),
+						type: 'POST',
+						crossDomain: true,
+						dataType: 'json',
+						contentType: 'application/json',
+						success: function(res){
+							console.log('record inserted');
+							if(noOfProducts > 1){
+								add(noOfProducts-1);
+							}
+						},
+						error: function(err){
+							console.log(err);
+							alert(err.message);
+						}
+					});
+				};
+				add(noOfProducts);
+			}
+		}
+	</script>
+</body>
+
+</html>

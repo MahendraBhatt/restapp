@@ -3,44 +3,145 @@
 
 <head>
 	<title>Products</title>
-	<link rel="stylesheet" href="../css/style.css" type="text/css"/>
+	<link rel="stylesheet" href="../css/style.css" type="text/css" />
 </head>
 
 <body>
-		
-	Gekkia asdads
+	<h2>Products</h2><span id="noOfProducts"></span> records found
 	<section>
-		<div id="ProductContainer"></div>
+		<div id="ProductContainer">Loading...</div>
 	</section>
-	
+
+	<div class="add">
+		name:
+		<input type="text" id="name" /> price:
+		<input type="text" id="price" /> sku:
+		<input type="text" id="sku" />
+		<button onclick="addProduct();">Add</button>
+	</div>
+
 	<script id="ProductTemplate" type="text/x-jQuery-tmpl">
-		<div>
-			<h4>${name}</h4> price: ${formatPrice(price)} sku: ${sku}
+		<div class="row">
+			Index: ${$item.dataArrayIndex($item.data)} 
+			name: <input type="text" value="${name}" id="${_id}_name" /> 
+			price: <input type="text" id="${_id}_price" value="${formatPrice(price)}" /> 
+			sku: <input type="text" id="${_id}_sku" value="${sku}" />
+			<button onclick="updateProduct('${_id}');">Update</button>
+			<button onclick="deleteProduct('${_id}');">Delete</button>
 		</div>
 	</script>
-
 
 	<script src="../js/jquery/dist/jquery.min.js"></script>
 	<script src="../js/jquery.tmpl.min.js"></script>
 	<script>
-		$.ajax({
-				url: "http://localhost:3001/api/products",
-				data: "",
-				type: 'GET',
-				crossDomain: true,
-    			dataType: 'json',
-				success: function(res){
-        			// Render the products using the template
-        			$("#ProductTemplate").tmpl(res).appendTo("#ProductContainer");
-				},
-				error: function(res){
-					alert('An error has occured!');
-				}
-			});
+			function loadProductsCount(){
+				$.ajax({
+					url: "http://localhost:3001/api/products/count",
+					data: "",
+					type: 'GET',
+					crossDomain: true,
+					dataType: 'json',
+					contentType: 'application/json',
+					success: function(res){
+						$("#noOfProducts").html(res);
+					},
+					error: function(res){
+						alert('An error has occured while fetching count!');
+					}
+				});
+			}
+			
+			function loadProducts(){
+				loadProductsCount();
+				$.ajax({
+					url: "http://localhost:3001/api/products/?limit=5",
+					data: "",
+					type: 'GET',
+					crossDomain: true,
+					dataType: 'json',
+					contentType: 'application/json',
+					success: function(res){
+						// Render the products using the template
+						console.log(new Date());
+						$("#ProductContainer").html('');
+						$("#ProductTemplate").tmpl(res, {
+							dataArrayIndex: function (item) {
+								return $.inArray(item, res) + 1;
+							}
+						}).appendTo("#ProductContainer");
+						console.log(new Date());
+					},
+					error: function(res){
+						alert('An error has occured!');
+					}
+				});
+			}
+			
+			
+			function updateProduct(id){
+				var data ={name:$("#"+id+"name").val(),price:$("#"+id+"price").val(),sku:$("#"+id+"sku").val()};
+				$.ajax({
+					url: "http://localhost:3001/api/products/"+id,
+					data: JSON.stringify(data),
+					type: 'PUT',
+					crossDomain: true,
+					dataType: 'json',
+					contentType: 'application/json',
+					success: function(res){
+						console.log('record updated');
+					},
+					error: function(res){
+						alert('An error has occured!');
+					}
+				});
+			}
+			function deleteProduct(id){
+				var data = {name:$("#"+id+"_name").val()};
+				$.ajax({
+					url: "http://localhost:3001/api/products/"+id,
+					data: JSON.stringify(data),
+					type: 'DELETE',
+					crossDomain: true,
+					dataType: 'json',
+					contentType: 'application/json',
+					success: function(res){
+						console.log('record deleted');
+						loadProducts();
+					},
+					error: function(res){
+						alert('An error has occured!');
+					}
+				});
+			}
+			
+			function addProduct(){
+				var data = {name:$("#name").val(),price:$("#price").val(),sku:$("#sku").val()};
+				console.log(data);
+				$.ajax({
+					url: "http://localhost:3001/api/products/",
+					data: JSON.stringify(data),
+					type: 'POST',
+					crossDomain: true,
+					dataType: 'json',
+					contentType: 'application/json',
+					success: function(res){
+						$("#name").val("");$("#price").val("");$("#sku").val("");
+						console.log('record inserted');
+						loadProducts();
+					},
+					error: function(err){
+						console.log(err);
+						alert(err.message);
+					}
+				});
+			}
 			
         function formatPrice(price) {
-            return "$" + price.toFixed(2);
+			if(price===null){return '';}
+           	return "$" + price.toFixed(2);
         }
+		
+		loadProducts();
 	</script>
 </body>
 
