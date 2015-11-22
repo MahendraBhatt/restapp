@@ -60,10 +60,9 @@ config_file
 default: false
 description: Use this config option to point to a valid compass config.rb file, if you would prefer to use that for your config instead.
 
----------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-------------------------------------------
 GIT
-
+-------------------------------------------
 In source folder run:
 git init
 
@@ -87,6 +86,8 @@ git push --set-upstream origin master
 
 git config --global url."https://".insteadOf git://
 
+git config --global credential.helper wincred
+
 ----------------------------
 BOWER 
 -------------------------------
@@ -109,12 +110,37 @@ ruby -v
 
 gem update --system
 
+The 'ffi' native gem requires installed build tools.
+gem install watir-webdriver
+
+gem install ffi -v1.0.9
+
 gem install compass
-
-npm install -g gulp --save-dev
-
-npm install node-sass --save-dev
 
 create gulpfile.js in root directory of project
 
+npm install gulp --save-dev
 
+npm install node-sass --save-dev
+
+npm install gulp-plumber --save-dev
+
+npm install gulp-uglify --save-dev
+
+npm install gulp-rename --save-dev
+
+npm install gulp-compass --save-dev
+
+npm install gulp-autoprefixer --save-dev
+
+npm install gulp-minify-css --save-dev
+
+npm install del --save-dev
+
+npm install browser-sync --save-dev
+
+npm install copy --save-dev
+
+---------------------
+DOWNLOAD PYTHON
+---------------------

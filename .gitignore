@@ -29,3 +29,9 @@ $RECYCLE.BIN/
 
 ##node modules
 node_modules
+
+##build folder
+build
+
+##sass cache
+.sass-cache

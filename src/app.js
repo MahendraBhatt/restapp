@@ -9,6 +9,12 @@ mongoose.connect('mongodb://localhost/rest_test');
 //Express
 var app = express();
 
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
+ 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -19,14 +25,11 @@ app.use('/api', require('./routes/api'));
 app.use('/', express.static('html'));
 app.use('/js', express.static('js'));
 
-
-//Start server
-app.listen(3000);
-console.log('API is running on port 3000!');
+module.exports = app;
 
 /*
 Usage 
-http://localhost:3000/api/products/
-http://localhost:3000/api/products/?limit=5
-http://localhost:3000/api/products/?name__regex=/^mah/i
+http://localhost:3001/api/products/
+http://localhost:3001/api/products/?limit=5
+http://localhost:3001/api/products/?name__regex=/^mah/i
 */

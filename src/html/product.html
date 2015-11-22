@@ -6,6 +6,8 @@
 </head>
 
 <body>
+		
+	Gekkia asdads
 	<section>
 		<div id="ProductContainer"></div>
 	</section>
@@ -16,19 +18,21 @@
 		</div>
 	</script>
 
-	<script src="bower_components/jquery/dist/jquery.js"></script>
-	<script src="./js/jquery.tmpl.js"></script>
+
+	<script src="../js/jquery/dist/jquery.min.js"></script>
+	<script src="../js/jquery.tmpl.min.js"></script>
 	<script>
 		$.ajax({
-				url: "/api/products",
+				url: "http://localhost:3001/api/products",
 				data: "",
+				type: 'GET',
+				crossDomain: true,
+    			dataType: 'json',
 				success: function(res){
-					console.log(res);
         			// Render the products using the template
         			$("#ProductTemplate").tmpl(res).appendTo("#ProductContainer");
 				},
-				type: "get",
-				error: function(){
+				error: function(res){
 					alert('An error has occured!');
 				}
 			});
