@@ -15,7 +15,7 @@
 	<div class="add">
 		name:
 		<input type="text" id="name" /> price:
-		<input type="text" id="price" /> sku:
+		<input type="number" id="price" /> sku:
 		<input type="text" id="sku" />
 		<button onclick="addProduct();">Add</button>
 	</div>
@@ -24,7 +24,7 @@
 		<div class="row">
 			Index: ${$item.dataArrayIndex($item.data)} 
 			name: <input type="text" value="${name}" id="${_id}_name" /> 
-			price: <input type="text" id="${_id}_price" value="${formatPrice(price)}" /> 
+			price: ${globals.currency} <input type="number" id="${_id}_price" value="${formatPrice(price)}" /> 
 			sku: <input type="text" id="${_id}_sku" value="${sku}" />
 			<button onclick="updateProduct('${_id}');">Update</button>
 			<button onclick="deleteProduct('${_id}');">Delete</button>
@@ -34,6 +34,9 @@
 	<script src="../js/jquery/dist/jquery.min.js"></script>
 	<script src="../js/jquery.tmpl.min.js"></script>
 	<script>
+			var globals = {};
+			globals.currency = "$";
+			
 			function loadProductsCount(){
 				$.ajax({
 					url: "http://localhost:3001/api/products/count",
@@ -79,7 +82,7 @@
 			
 			
 			function updateProduct(id){
-				var data ={name:$("#"+id+"name").val(),price:$("#"+id+"price").val(),sku:$("#"+id+"sku").val()};
+				var data ={name:$("#"+id+"_name").val(),price:$("#"+id+"_price").val(),sku:$("#"+id+"_sku").val()};
 				$.ajax({
 					url: "http://localhost:3001/api/products/"+id,
 					data: JSON.stringify(data),
@@ -138,7 +141,7 @@
 			
         function formatPrice(price) {
 			if(price===null){return '';}
-           	return "$" + price.toFixed(2);
+           	return price.toFixed(2);
         }
 		
 		loadProducts();

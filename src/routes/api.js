@@ -11,7 +11,6 @@ Product.methods(['get', 'put', 'post', 'delete']);
 //Before example
 Product.before('post', function(req, res, next) {
   console.log("before product is added");
-  console.log(req.data);
   next();
 });
 
