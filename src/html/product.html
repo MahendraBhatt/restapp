@@ -20,28 +20,40 @@
 		name:
 		<input type="text" id="name" /> price:
 		<input type="number" id="price" /> sku:
-		<input type="text" id="sku" />
+		<input type="text" id="sku" /> region:
+		<div id="region"></div> manufacturer: 
+		<div id="manufacturer"></div>
 		<button onclick="addProduct();">Add</button>
 	</div>
+	
+	<script id="RegionDropDownTemplate" type="text/x-jQuery-tmpl">
+		<select id="region">{{tmpl($data) "#RegionTemplate"}}</select>
+	</script>
+	
+	<script id="ManufacturerDropDownTemplate" type="text/x-jQuery-tmpl">
+		<select id="manufacturer">{{tmpl(manufacturer) "#ManufacturerTemplate"}}</select>
+	</script>
 
 	<script id="RegionTemplate" type="text/x-jQuery-tmpl">
-		
+		<option value="${name}">${name}</option>
 	</script>
-	
+
 	<script id="ManufacturerTemplate" type="text/x-jQuery-tmpl">
-		
+		<option value="${name}">${name}</option>
 	</script>
-	
+
 	<script id="ProductTemplate" type="text/x-jQuery-tmpl">
 		<div class="row">
-			Index: ${$item.dataArrayIndex($item.data)} 
-			name: <input type="text" value="${name}" id="${_id}_name" /> 
-			price: ${globals.currency} <input type="number" id="${_id}_price" value="${formatPrice(price)}" /> 
-			sku: <input type="text" id="${_id}_sku" value="${sku}" />
-			region: ${regions}
-			manufacturer: ${manufacturers}
-			<button onclick="updateProduct('${_id}');">Update</button>
-			<button onclick="deleteProduct('${_id}');">Delete</button>
+			${( $data.index = $item.dataArrayIndex($item.data) ),''} Index: ${$data.index} name:
+			<input type="text" value="${name}"
+			id="${$data.index}_name" /> price: ${globals.currency}
+			<input type="number" id="${$data.index}_price" value="${formatPrice(price)}" /> sku:
+			<input type="text" id="${$data.index}_sku" value="${sku}" /> region:
+			<select id="${$data.index}_region">{{tmpl(regions) "#RegionTemplate"}}</select>
+			manufacturer:
+			<select id="${$data.index}_manufacturer">{{tmpl(manufacturers) "#ManufacturerTemplate"}}</select>
+			<button onclick="updateProduct('${$data.index}','${_id}');">Update</button>
+			<button onclick="deleteProduct('${$data.index}','${_id}');">Delete</button>
 		</div>
 	</script>
 
@@ -95,8 +107,15 @@
 			}
 			
 			
-			function updateProduct(id){
-				var data ={name:$("#"+id+"_name").val(),price:$("#"+id+"_price").val(),sku:$("#"+id+"_sku").val()};
+			function updateProduct(index,id){
+				debugger;
+				var data = {
+							name: $("#"+index+"_name").val(),
+							price: $("#"+index+"_price").val(),
+							sku: $("#"+index+"_sku").val(),
+							manufacturer: $("#"+index+"_manufacturer").val(),
+							region: $("#"+index+"_region").val()
+						};
 				$.ajax({
 					url: "http://localhost:3001/api/products/"+id,
 					data: JSON.stringify(data),
@@ -112,8 +131,8 @@
 					}
 				});
 			}
-			function deleteProduct(id){
-				var data = {name:$("#"+id+"_name").val()};
+			function deleteProduct(index,id){
+				var data = {name:$("#"+index+"_name").val()};
 				$.ajax({
 					url: "http://localhost:3001/api/products/"+id,
 					data: JSON.stringify(data),
@@ -195,6 +214,8 @@
 		}
 		loadManufacturers();
 		loadRegions();
+		$("#RegionDropDownTemplate").tmpl(regions).appendTo("#region");
+		//$("#region").append("#RegionDropDownTemplate");
 		loadProducts();
 	</script>
 </body>
