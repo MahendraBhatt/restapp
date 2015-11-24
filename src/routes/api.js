@@ -4,6 +4,12 @@ var router = express.Router();
 
 //Models
 var Product = require('../models/product');
+var Manufacturer = require('../models/manufacturer');
+var Region = require('../models/region');
+
+//---------------------------------------------------
+//  Products api
+//---------------------------------------------------
 
 //Routes
 Product.methods(['get', 'put', 'post', 'delete']);
@@ -37,7 +43,55 @@ Product.route('count', function(req, res, next) {
     });
 });
 
+//Register products api for routing
 Product.register(router, '/products');
+
+//---------------------------------------------------
+//  End of Products api
+//---------------------------------------------------
+
+//---------------------------------------------------
+//  Manufacturers api
+//---------------------------------------------------
+
+//Routes
+Manufacturer.methods(['get', 'put', 'post', 'delete']);
+
+//Custom route example with only get
+Manufacturer.route('count', function(req, res, next) {
+    Manufacturer.count(function (err, count) {
+        res.send(count.toString());
+    });
+});
+
+//Register manufacturer api for routing
+Manufacturer.register(router, '/manufacturers');
+
+//---------------------------------------------------
+//  End of Manufacturers api
+//---------------------------------------------------
+
+//---------------------------------------------------
+//  Regions api
+//---------------------------------------------------
+
+//Routes
+Region.methods(['get', 'put', 'post', 'delete']);
+
+//Custom route example with only get
+Region.route('count', function(req, res, next) {
+    Region.count(function (err, count) {
+        res.send(count.toString());
+    });
+});
+
+//Register manufacturer api for routing
+Region.register(router, '/regions');
+
+//---------------------------------------------------
+//  End of Manufacturers api
+//---------------------------------------------------
+
 
 //Return router
 module.exports = router;

@@ -8,6 +8,10 @@
 
 <body>
 	<h2>Products</h2><span id="noOfProducts"></span> records found
+	<div>Find Products
+		<input type="text" id="search" />
+		<button onclick="loadProducts();">Find</button>
+	</div>
 	<section>
 		<div id="ProductContainer">Loading...</div>
 	</section>
@@ -20,12 +24,22 @@
 		<button onclick="addProduct();">Add</button>
 	</div>
 
+	<script id="RegionTemplate" type="text/x-jQuery-tmpl">
+		
+	</script>
+	
+	<script id="ManufacturerTemplate" type="text/x-jQuery-tmpl">
+		
+	</script>
+	
 	<script id="ProductTemplate" type="text/x-jQuery-tmpl">
 		<div class="row">
 			Index: ${$item.dataArrayIndex($item.data)} 
 			name: <input type="text" value="${name}" id="${_id}_name" /> 
 			price: ${globals.currency} <input type="number" id="${_id}_price" value="${formatPrice(price)}" /> 
 			sku: <input type="text" id="${_id}_sku" value="${sku}" />
+			region: ${regions}
+			manufacturer: ${manufacturers}
 			<button onclick="updateProduct('${_id}');">Update</button>
 			<button onclick="deleteProduct('${_id}');">Delete</button>
 		</div>
@@ -34,12 +48,12 @@
 	<script src="../js/jquery/dist/jquery.min.js"></script>
 	<script src="../js/jquery.tmpl.min.js"></script>
 	<script>
-			var globals = {};
+		var globals = {};
 			globals.currency = "$";
 			
 			function loadProductsCount(){
 				$.ajax({
-					url: "http://localhost:3001/api/products/count",
+					url: "http://localhost:3001/api/products/count/?name__regex=/^"+$("#search").val()+"/i",
 					data: "",
 					type: 'GET',
 					crossDomain: true,
@@ -57,7 +71,7 @@
 			function loadProducts(){
 				loadProductsCount();
 				$.ajax({
-					url: "http://localhost:3001/api/products/?limit=5",
+					url: "http://localhost:3001/api/products/?limit=10&name__regex=/^"+$("#search").val()+"/i",
 					data: "",
 					type: 'GET',
 					crossDomain: true,
@@ -144,6 +158,43 @@
            	return price.toFixed(2);
         }
 		
+		var regions = {}, manufacturers = {};
+		
+		function loadManufacturers(){
+			$.ajax({
+				url: "http://localhost:3001/api/manufacturers",
+				data: "",
+				type: 'GET',
+				crossDomain: true,
+				dataType: 'json',
+				contentType: 'application/json',
+				success: function(res){
+					manufacturers = res;
+				},
+				error: function(res){
+					alert('An error has occured while fetching count!');
+				}
+			});
+		}
+		
+		function loadRegions(){
+			$.ajax({
+				url: "http://localhost:3001/api/regions",
+				data: "",
+				type: 'GET',
+				crossDomain: true,
+				dataType: 'json',
+				contentType: 'application/json',
+				success: function(res){
+					regions = res;
+				},
+				error: function(res){
+					alert('An error has occured while fetching count!');
+				}
+			});
+		}
+		loadManufacturers();
+		loadRegions();
 		loadProducts();
 	</script>
 </body>
