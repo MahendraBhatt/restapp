@@ -144,3 +144,11 @@ npm install copy --save-dev
 ---------------------
 DOWNLOAD PYTHON
 ---------------------
+
+-------------------------
+PDF GENERATION 
+-------------------------
+
+install wkhtmltopdf
+
+npm install pdfkit --save-dev
