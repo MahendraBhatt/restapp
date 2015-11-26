@@ -36,8 +36,8 @@ var exec = require('child_process').execFile;
 
 var fun =function(){
    console.log("fun() start");
-   exec('wkhtmltopdf', 'new.html output1.pdf', function(err, data) {  
-        console.log(err)
+   exec('wkhtmltopdf', ['../html/pdfoutput.html','../pdf/output1.pdf'], function(err, data) { 
+        console.log(err);
         console.log(data.toString());                       
     });  
 }
