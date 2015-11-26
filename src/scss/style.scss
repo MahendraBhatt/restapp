@@ -22,3 +22,15 @@ h2{
   display: inline;
   padding: 20px;
 }
+
+$columns: 12;
+$gutter: 20;
+
+@while $columns > 0 {
+  .col-#{$columns} {
+    width: (($columns - 1) * 100) / $columns + '%';
+    padding: $gutter/2+'px';
+    border:solid 1px #000;
+  }
+  $columns: $columns - 1;
+}
