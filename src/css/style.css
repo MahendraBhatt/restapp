@@ -22,6 +22,74 @@ h2 {
   padding: 20px;
 }
 
-.errormsg {
-  color: red;
+.col-12 {
+  width: "91.66667%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-11 {
+  width: "90.90909%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-10 {
+  width: "90%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-9 {
+  width: "88.88889%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-8 {
+  width: "87.5%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-7 {
+  width: "85.71429%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-6 {
+  width: "83.33333%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-5 {
+  width: "80%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-4 {
+  width: "75%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-3 {
+  width: "66.66667%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-2 {
+  width: "50%";
+  padding: "10px";
+  border: solid 1px #000;
+}
+
+.col-1 {
+  width: "0%";
+  padding: "10px";
+  border: solid 1px #000;
 }

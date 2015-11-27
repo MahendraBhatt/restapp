@@ -25,6 +25,7 @@
     "gulp-nodemon": "^1.0.4",
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.1"
+    "gulp-uglify": "^1.5.1",
+    "pdfkit": "^0.7.1"
   }
 }
