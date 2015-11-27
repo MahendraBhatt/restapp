@@ -7,14 +7,25 @@ var manufacturerSchema = new mongoose.Schema({
 	name: String,
 	city: String
 })
-//Schema
+
+//Region Schema
+var regionSchema = new mongoose.Schema({
+	name: String
+})
+
+//Product Schema
 var productSchema = new mongoose.Schema({
 	name: String,
 	sku: String,
 	price: Number,
-	manufacturer: manufacturerSchema,
-	region : { type: Schema.Types.ObjectId, ref: 'Regions' }
+	region : { type: Schema.Types.ObjectId, ref: 'Region' }
 })
 
+var regionModel = mongoose.model('Region', regionSchema); 
+var productModel = mongoose.model('Product', productSchema);
+
 //Return model
-module.exports = restful.model('Products', productSchema);
+module.exports = {
+		ProductRESTModel : restful.model('Products', productSchema),
+		Product: productModel
+};

@@ -4,7 +4,7 @@ var router = express.Router();
 
 //Models
 var Product = require('../models/product');
-var Manufacturer = require('../models/manufacturer');
+//var Manufacturer = require('../models/manufacturer');
 var Region = require('../models/region');
 
 //---------------------------------------------------
@@ -12,64 +12,80 @@ var Region = require('../models/region');
 //---------------------------------------------------
 
 //Routes
-Product.methods(['get', 'put', 'post', 'delete']);
+Product.ProductRESTModel.methods(['get', 'put', 'delete']);
 
 //Before example
-Product.before('post', function(req, res, next) {
-  console.log("before product is added");
-  next();
+// Product.before('post', function(req, res, next) {
+//   console.log("before product is added");
+//   next();
+// });
+
+Product.ProductRESTModel.route('post', function(req, res, next) {
+  
+  var p = new Product.Product({ name: req.body.name,
+                                sku: req.body.sku,
+                                price: req.body.price,
+                                region: req.body.region 
+                              });
+    var message = {'message':'success'};   
+     p.save(function(err){
+       if (err) { message = err };
+     })
+
+  res.send(message);
+  //next();
 });
 
 //after example
-Product.after('post', function(req, res, next) {
-  console.log("after product is added");
-  next();
-});
+// Product.after('post', function(req, res, next) {
+//   console.log("after product is added");
+//   //next();
+// });
 
 //Custom route example 
-Product.route('isDuplicate', function(req, res, next) {
+Product.ProductRESTModel.route('isDuplicate', function(req, res, next) {
   res.send('Not a duplicate!');
 });
 
 //Custom route example with only get
-Product.route('isAvailable.get', function(req, res, next) {
+Product.ProductRESTModel.route('isAvailable.get', function(req, res, next) {
   res.send('Yes I am available!');
 });
 
 //Custom route example with only get
-Product.route('count', function(req, res, next) {
-    Product.count(function (err, count) {
+Product.ProductRESTModel.route('count', function(req, res, next) {
+    Product.ProductRESTModel.count(function (err, count) {
         res.send(count.toString());
     });
 });
 
 //Register products api for routing
-Product.register(router, '/products');
+Product.ProductRESTModel.register(router, '/products');
 
 //---------------------------------------------------
 //  End of Products api
 //---------------------------------------------------
-
-//---------------------------------------------------
-//  Manufacturers api
-//---------------------------------------------------
-
-//Routes
-Manufacturer.methods(['get', 'put', 'post', 'delete']);
-
-//Custom route example with only get
-Manufacturer.route('count', function(req, res, next) {
-    Manufacturer.count(function (err, count) {
-        res.send(count.toString());
-    });
-});
-
-//Register manufacturer api for routing
-Manufacturer.register(router, '/manufacturers');
-
-//---------------------------------------------------
-//  End of Manufacturers api
-//---------------------------------------------------
+// 
+// //---------------------------------------------------
+// //  Manufacturers api
+// //---------------------------------------------------
+// 
+// //Routes
+// Manufacturer.methods(['get', 'put', 'post', 'delete']);
+// 
+// //Custom route example with only get
+// Manufacturer.route('count', function(req, res, next) {
+//     Manufacturer.count(function (err, count) {
+//         res.send(count.toString());
+//     });
+// });
+// 
+// //Register manufacturer api for routing
+// Manufacturer.register(router, '/manufacturers');
+// 
+// //---------------------------------------------------
+// //  End of Manufacturers api
+// //---------------------------------------------------
 
 //---------------------------------------------------
 //  Regions api
@@ -89,13 +105,13 @@ Region.route('count', function(req, res, next) {
 Region.register(router, '/regions');
 
 //---------------------------------------------------
-//  End of Manufacturers api
+//  End of Region api
 //---------------------------------------------------
-
-
+ 
+ 
 //Return router
 module.exports = router;
-
+ 
 /*
 Usage 
 http://localhost:3001/api/products/

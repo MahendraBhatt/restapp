@@ -21,27 +21,19 @@
 		<input type="text" id="name" /> price:
 		<input type="number" id="price" /> sku:
 		<input type="text" id="sku" /> region:
-		<div id="region"></div> manufacturer: 
-		<div id="manufacturer"></div>
+		<select id="region"></select> manufacturer: 
+		<select id="manufacturer"></select>
 		<button onclick="addProduct();">Add</button>
 	</div>
-	
-	<script id="RegionDropDownTemplate" type="text/x-jQuery-tmpl">
-		<select id="region">{{tmpl($data) "#RegionTemplate"}}</select>
-	</script>
-	
-	<script id="ManufacturerDropDownTemplate" type="text/x-jQuery-tmpl">
-		<select id="manufacturer">{{tmpl(manufacturer) "#ManufacturerTemplate"}}</select>
-	</script>
 
 	<script id="RegionTemplate" type="text/x-jQuery-tmpl">
-		<option value="${name}">${name}</option>
+		<option value="${_id}">${name}</option>
 	</script>
 
 	<script id="ManufacturerTemplate" type="text/x-jQuery-tmpl">
-		<option value="${name}">${name}</option>
+	
 	</script>
-
+	<!--<option value="${_id}">${name}</option>-->
 	<script id="ProductTemplate" type="text/x-jQuery-tmpl">
 		<div class="row">
 			${( $data.index = $item.dataArrayIndex($item.data) ),''} Index: ${$data.index} name:
@@ -108,13 +100,13 @@
 			
 			
 			function updateProduct(index,id){
-				debugger;
+				///debugger;
 				var data = {
 							name: $("#"+index+"_name").val(),
 							price: $("#"+index+"_price").val(),
-							sku: $("#"+index+"_sku").val(),
-							manufacturer: $("#"+index+"_manufacturer").val(),
-							region: $("#"+index+"_region").val()
+							sku: $("#"+index+"_sku").val()//,
+							// manufacturer: $("#"+index+"_manufacturer").val(),
+							// region: $("#"+index+"_region").val()
 						};
 				$.ajax({
 					url: "http://localhost:3001/api/products/"+id,
@@ -151,7 +143,7 @@
 			}
 			
 			function addProduct(){
-				var data = {name:$("#name").val(),price:$("#price").val(),sku:$("#sku").val()};
+				var data = {name:$("#name").val(),price:$("#price").val(),sku:$("#sku").val(),region:$("#region").val()};
 				console.log(data);
 				$.ajax({
 					url: "http://localhost:3001/api/products/",
@@ -166,6 +158,7 @@
 						loadProducts();
 					},
 					error: function(err){
+						debugger;
 						console.log(err);
 						alert(err.message);
 					}
@@ -180,6 +173,7 @@
 		var regions = {}, manufacturers = {};
 		
 		function loadManufacturers(){
+			return false;
 			$.ajax({
 				url: "http://localhost:3001/api/manufacturers",
 				data: "",
@@ -189,6 +183,7 @@
 				contentType: 'application/json',
 				success: function(res){
 					manufacturers = res;
+					fillDropDown('manufacturer',manufacturers);
 				},
 				error: function(res){
 					alert('An error has occured while fetching count!');
@@ -206,16 +201,22 @@
 				contentType: 'application/json',
 				success: function(res){
 					regions = res;
+					fillDropDown('region',regions);
 				},
 				error: function(res){
 					alert('An error has occured while fetching count!');
 				}
 			});
 		}
+		
+		function fillDropDown(id, source){
+			for(var x in source){
+				$('<option/>').val(source[x]._id).html(source[x].name).appendTo('#'+id);
+			}	
+		}
+		
 		loadManufacturers();
 		loadRegions();
-		$("#RegionDropDownTemplate").tmpl(regions).appendTo("#region");
-		//$("#region").append("#RegionDropDownTemplate");
 		loadProducts();
 	</script>
 </body>

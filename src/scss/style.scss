@@ -1,6 +1,9 @@
 $font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
 $success-color: #00ff00;
+$error-color: red;
+
+@import 'grid';
 
 body {
   font: 100% $font-stack;
@@ -10,7 +13,8 @@ body {
 .row{
   background-color: #efefef;
   padding: 20px;
-  border-bottom: solid 1px $primary-color; 
+  border-bottom: solid 1px $primary-color;
+  @include rounded7px; 
 }
 
 .add{
@@ -22,3 +26,8 @@ h2{
   display: inline;
   padding: 20px;
 }
+
+.errormsg{
+  color:$error-color;
+}
+

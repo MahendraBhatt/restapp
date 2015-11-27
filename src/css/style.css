@@ -7,6 +7,9 @@ body {
   background-color: #efefef;
   padding: 20px;
   border-bottom: solid 1px #333;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
 }
 
 .add {
@@ -17,4 +20,8 @@ body {
 h2 {
   display: inline;
   padding: 20px;
+}
+
+.errormsg {
+  color: red;
 }
