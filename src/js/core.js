@@ -32,8 +32,5 @@ function generateGUID() {
 	for (var i = 0; i < len; i++) {
 		str += chars.charAt(Math.floor(Math.random() * 36));
 	}
-	for(var j=0;j<10;j++){
-		console.log('vishram');
-	}
 	return str;
 }

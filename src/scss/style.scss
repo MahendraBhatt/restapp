@@ -31,9 +31,11 @@ $gutter: 20;
 
 @while $columns > 0 {
   .col-#{$columns} {
-    width: (($columns - 1) * 100) / $columns + '%';
-    padding: $gutter/2+'px';
-    border:solid 1px #000;
+    width: (($columns - 1) * 100) / $columns;
+    padding: $gutter/2;
+    border:solid 1px #ff0000;
+    line-height: 20px;
+    float: left;
   }
   $columns: $columns - 1;
 }

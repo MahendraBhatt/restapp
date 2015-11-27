@@ -21,19 +21,14 @@
 		<input type="text" id="name" /> price:
 		<input type="number" id="price" /> sku:
 		<input type="text" id="sku" /> region:
-		<select id="region"></select> manufacturer: 
-		<select id="manufacturer"></select>
+		<select id="region"></select> 
 		<button onclick="addProduct();">Add</button>
 	</div>
 
 	<script id="RegionTemplate" type="text/x-jQuery-tmpl">
-		<option value="${_id}">${name}</option>
+		<option value="${_id}" {{if _id === $item.selectedId}}selected="selected"{{/if}} }}>${name}</option>
 	</script>
 
-	<script id="ManufacturerTemplate" type="text/x-jQuery-tmpl">
-	
-	</script>
-	<!--<option value="${_id}">${name}</option>-->
 	<script id="ProductTemplate" type="text/x-jQuery-tmpl">
 		<div class="row">
 			${( $data.index = $item.dataArrayIndex($item.data) ),''} Index: ${$data.index} name:
@@ -41,9 +36,7 @@
 			id="${$data.index}_name" /> price: ${globals.currency}
 			<input type="number" id="${$data.index}_price" value="${formatPrice(price)}" /> sku:
 			<input type="text" id="${$data.index}_sku" value="${sku}" /> region:
-			<select id="${$data.index}_region">{{tmpl(regions) "#RegionTemplate"}}</select>
-			manufacturer:
-			<select id="${$data.index}_manufacturer">{{tmpl(manufacturers) "#ManufacturerTemplate"}}</select>
+			<select id="${$data.index}_region">{{tmpl(regions, {selectedId: region}) "#RegionTemplate"}}</select>
 			<button onclick="updateProduct('${$data.index}','${_id}');">Update</button>
 			<button onclick="deleteProduct('${$data.index}','${_id}');">Delete</button>
 		</div>
@@ -51,18 +44,14 @@
 
 	<script src="../js/jquery/dist/jquery.min.js"></script>
 	<script src="../js/jquery.tmpl.min.js"></script>
+	<script src="../js/xhrlib.min.js"></script>
 	<script>
 		var globals = {};
 			globals.currency = "$";
 			
 			function loadProductsCount(){
-				$.ajax({
-					url: "http://localhost:3001/api/products/count/?name__regex=/^"+$("#search").val()+"/i",
-					data: "",
-					type: 'GET',
-					crossDomain: true,
-					dataType: 'json',
-					contentType: 'application/json',
+				XHR.call({
+					url: "products/count/?name__regex=/^"+$("#search").val()+"/i",
 					success: function(res){
 						$("#noOfProducts").html(res);
 					},
@@ -83,14 +72,12 @@
 					contentType: 'application/json',
 					success: function(res){
 						// Render the products using the template
-						console.log(new Date());
 						$("#ProductContainer").html('');
 						$("#ProductTemplate").tmpl(res, {
 							dataArrayIndex: function (item) {
 								return $.inArray(item, res) + 1;
 							}
 						}).appendTo("#ProductContainer");
-						console.log(new Date());
 					},
 					error: function(res){
 						alert('An error has occured!');
@@ -103,9 +90,9 @@
 				var data = {
 							name: $("#"+index+"_name").val(),
 							price: $("#"+index+"_price").val(),
-							sku: $("#"+index+"_sku").val()//,
+							sku: $("#"+index+"_sku").val(),
 							// manufacturer: $("#"+index+"_manufacturer").val(),
-							// region: $("#"+index+"_region").val()
+							region: $("#"+index+"_region").val()
 						};
 				$.ajax({
 					url: "http://localhost:3001/api/products/"+id,

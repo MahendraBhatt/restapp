@@ -4,7 +4,6 @@ var router = express.Router();
 
 //Models
 var Product = require('../models/product');
-//var Manufacturer = require('../models/manufacturer');
 var Region = require('../models/region');
 
 //---------------------------------------------------
@@ -12,29 +11,29 @@ var Region = require('../models/region');
 //---------------------------------------------------
 
 //Routes
-Product.ProductRESTModel.methods(['get', 'put', 'delete']);
+Product.ProductRESTModel.methods(['get', 'post', 'put', 'delete']);
 
 //Before example
 // Product.before('post', function(req, res, next) {
 //   console.log("before product is added");
 //   next();
 // });
-
-Product.ProductRESTModel.route('post', function(req, res, next) {
-  
-  var p = new Product.Product({ name: req.body.name,
-                                sku: req.body.sku,
-                                price: req.body.price,
-                                region: req.body.region 
-                              });
-    var message = {'message':'success'};   
-     p.save(function(err){
-       if (err) { message = err };
-     })
-
-  res.send(message);
-  //next();
-});
+// 
+// Product.ProductRESTModel.route('post', function(req, res, next) {
+//   
+//   var p = new Product.Product({ name: req.body.name,
+//                                 sku: req.body.sku,
+//                                 price: req.body.price,
+//                                 region: req.body.region 
+//                               });
+//     var message = {'message':'success'};   
+//      p.save(function(err){
+//        if (err) { message = err };
+//      })
+// 
+//   res.send(message);
+//   //next();
+// });
 
 //after example
 // Product.after('post', function(req, res, next) {
@@ -65,27 +64,6 @@ Product.ProductRESTModel.register(router, '/products');
 //---------------------------------------------------
 //  End of Products api
 //---------------------------------------------------
-// 
-// //---------------------------------------------------
-// //  Manufacturers api
-// //---------------------------------------------------
-// 
-// //Routes
-// Manufacturer.methods(['get', 'put', 'post', 'delete']);
-// 
-// //Custom route example with only get
-// Manufacturer.route('count', function(req, res, next) {
-//     Manufacturer.count(function (err, count) {
-//         res.send(count.toString());
-//     });
-// });
-// 
-// //Register manufacturer api for routing
-// Manufacturer.register(router, '/manufacturers');
-// 
-// //---------------------------------------------------
-// //  End of Manufacturers api
-// //---------------------------------------------------
 
 //---------------------------------------------------
 //  Regions api
