@@ -141,6 +141,8 @@ npm install browser-sync --save-dev
 
 npm install copy --save-dev
 
+npm install mongodb --save-dev
+
 ---------------------
 DOWNLOAD PYTHON
 ---------------------
@@ -156,3 +158,33 @@ add to path
 npm install pdfkit --save-dev
 
 static html files only no script tags
+
+------------------------------------
+FOR LOAD TESTING NODE
+------------------------------------
+
+Name:
+
+node-http-perf
+
+Installation:
+
+npm install -g http-perf
+
+Usage:
+
+nperf [-c concurrency] [-n requests] URL 
+
+nperf -c 100 -n 1000 http://localhost:3001/api/products/5651e76f1546cfcc1951f010
+
+Name: 
+
+loadtest
+
+Installation:
+
+npm install -g loadtest
+
+Usage:
+
+loadtest [-n requests] [-c concurrency] [-k] URL

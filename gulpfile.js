@@ -68,6 +68,15 @@ gulp.task('html', function(){
 })
 
 ///////////////////////////////////////
+// Copy Images Tasks
+///////////////////////////////////////
+gulp.task('copyimages', function(){
+	gulp.src('src/**/*.png')
+		.pipe(gulp.dest('build'))
+		.pipe(reload({stream: true}));
+})
+
+///////////////////////////////////////
 // Watch Task
 ///////////////////////////////////////
 
@@ -105,4 +114,4 @@ gulp.task('clean', function() {
 // Default Task
 ///////////////////////////////////////
 
-gulp.task('default', ['scripts', 'copyBowerFiles', 'compass', 'html', 'browser-sync' ,'watch']);
+gulp.task('default', ['scripts', 'copyBowerFiles', 'compass', 'copyimages', 'html', 'browser-sync' ,'watch']);

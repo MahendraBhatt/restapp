@@ -11,51 +11,38 @@ var Region = require('../models/region');
 //---------------------------------------------------
 
 //Routes
-Product.ProductRESTModel.methods(['get', 'post', 'put', 'delete']);
+Product.ProductRESTModel.methods(['post', 'put', 'delete']);
 
-//Before example
-// Product.before('post', function(req, res, next) {
-//   console.log("before product is added");
-//   next();
-// });
-// 
-// Product.ProductRESTModel.route('post', function(req, res, next) {
-//   
-//   var p = new Product.Product({ name: req.body.name,
-//                                 sku: req.body.sku,
-//                                 price: req.body.price,
-//                                 region: req.body.region 
-//                               });
-//     var message = {'message':'success'};   
-//      p.save(function(err){
-//        if (err) { message = err };
-//      })
-// 
-//   res.send(message);
-//   //next();
-// });
-
-//after example
-// Product.after('post', function(req, res, next) {
-//   console.log("after product is added");
-//   //next();
-// });
+Product.ProductRESTModel.route('get', function (req, res, next) {
+  var query = { name: new RegExp(req.query.name, "i") };
+  if (req.query.region !== '0') {
+    query.region = req.query.region;
+  }
+  Product.Product.find(query).populate('region').limit(10).exec(function (err, product) {
+    res.send(product);
+  })
+});
 
 //Custom route example 
-Product.ProductRESTModel.route('isDuplicate', function(req, res, next) {
+Product.ProductRESTModel.route('isDuplicate', function (req, res, next) {
   res.send('Not a duplicate!');
 });
 
 //Custom route example with only get
-Product.ProductRESTModel.route('isAvailable.get', function(req, res, next) {
+Product.ProductRESTModel.route('isAvailable.get', function (req, res, next) {
   res.send('Yes I am available!');
 });
 
 //Custom route example with only get
-Product.ProductRESTModel.route('count', function(req, res, next) {
-    Product.ProductRESTModel.count(function (err, count) {
-        res.send(count.toString());
-    });
+Product.ProductRESTModel.route('count', function (req, res, next) {
+  var query = { name: new RegExp(req.query.name, "i") };
+  if (req.query.region !== '0') {
+    query.region = req.query.region;
+  }
+  console.log(query);
+  Product.ProductRESTModel.count(query, function (err, count) {
+    res.send(count.toString());
+  });
 });
 
 //Register products api for routing
@@ -73,10 +60,10 @@ Product.ProductRESTModel.register(router, '/products');
 Region.methods(['get', 'put', 'post', 'delete']);
 
 //Custom route example with only get
-Region.route('count', function(req, res, next) {
-    Region.count(function (err, count) {
-        res.send(count.toString());
-    });
+Region.route('count', function (req, res, next) {
+  Region.count(function (err, count) {
+    res.send(count.toString());
+  });
 });
 
 //Register manufacturer api for routing
@@ -96,3 +83,29 @@ http://localhost:3001/api/products/
 http://localhost:3001/api/products/?limit=5
 http://localhost:3001/api/products/?name__regex=/^mah/i
 */
+
+
+//Before example
+// Product.before('post', function(req, res, next) {
+//   console.log("before product is added");
+//   next();
+// });
+
+//   var p = new Product.Product({ name: req.body.name,
+//                                 sku: req.body.sku,
+//                                 price: req.body.price,
+//                                 region: req.body.region 
+//                               });
+    //var message = {'message':'success'};   
+    //  p.save(function(err){
+    //    if (err) { message = err };
+    //  })
+
+  //res.send(message);
+  //next();
+  
+//after example
+// Product.after('post', function(req, res, next) {
+//   console.log("after product is added");
+//   //next();
+// });

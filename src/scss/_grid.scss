@@ -3,3 +3,75 @@
   -webkit-border-radius: 7px;
   border-radius: 7px;
 }
+
+.row{
+  padding: 6px;
+  //border-bottom: solid 1px $primary-color;
+  //@include rounded7px; 
+}
+
+.row-separator{
+   border-bottom: solid 1px #afafaf; 
+}
+  
+.grid .row:nth-child(2n){
+  background-color: lightgrey;
+}
+
+.header{
+  background-color: #2bafed; 
+  font-weight: bold;
+  color:#fff;
+}
+
+.footer{
+  background-color: #726B68; 
+  color:#fff;
+  padding: 6px;
+  
+  ul{
+    list-style-type: none;
+    margin: 2px 0px 2px 0px;
+    padding: 0px;
+  }
+  
+  li{
+    display: inline;
+    padding: 3px 5px 3px 5px;
+    cursor: pointer;
+  }  
+  li.current{
+      border:solid 1px #fff;
+      font-weight: bold;
+  }
+}
+
+.row:after, .footer:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+$columns: 12;
+$gutter: 10px;
+$totalcolumns: $columns;
+
+@function calc-percent($curr, $total) {
+  @return ($curr * 100%) / $total;
+}
+
+@while $columns > 0 {
+  .col-#{$columns} {
+    width: calc-percent($columns, $totalcolumns);
+    padding: $gutter/2;
+    //border:solid 2px #ff0000;
+    line-height: 18px;
+    float: left;
+    font-size: 1rem;
+  }
+  $columns: $columns - 1;
+}

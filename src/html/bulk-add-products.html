@@ -12,18 +12,20 @@
 	<div class="add">
 		Number of Products to be added:
 		<input id="noOfProducts" type="number" />
+		<select id="region"></select>
 		<button onclick="addProducts();">Add</button>
 	</div>
 
 	<script src="../js/jquery/dist/jquery.min.js"></script>
 	<script src="../js/core.min.js"></script>
+	<script src="../js/xhrlib.min.js"></script>
 	<script>
 		function addProducts(){
 			var noOfProducts = $("#noOfProducts").val();
 			if(noOfProducts > 0){
 				var data = {};
 				var add = function(noOfProducts){
-					data = {name:getRandomString(10),price:10,sku:getRandomString(12)};
+					data = {name:getRandomString(10),price:10,sku:getRandomString(12),region:$("#region").val()};
 					$.ajax({
 						url: "http://localhost:3001/api/products/",
 						data: JSON.stringify(data),
@@ -46,6 +48,28 @@
 				add(noOfProducts);
 			}
 		}
+		
+		var regions = {};
+		
+		function loadRegions(){
+			XHR().call({
+				url: "regions",
+				success: function(res){
+					regions = res;
+					fillDropDown('region',regions);
+				}
+			});
+		}
+		
+		function fillDropDown(id, source){
+			for(var x in source){
+				$('<option/>').val(source[x]._id).html(source[x].name).appendTo('#'+id);
+			}	
+		}
+		
+		(function(){
+			loadRegions();
+		})();
 	</script>
 </body>
 

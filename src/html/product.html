@@ -7,146 +7,174 @@
 </head>
 
 <body>
-	<h2>Products</h2><span id="noOfProducts"></span> records found
-	<div>Find Products
-		<input type="text" id="search" />
-		<button onclick="loadProducts();">Find</button>
+	<h2>Products</h2><span id="noOfProducts"></span> records found 
+	<div class="search-panel">
+		<div class="row row-separator">
+			<div class="col-12">Find Products</div>
+		</div>
+		<div class="row">			
+			<div class="col-1 right">Name</div>
+			<div class="col-1"><input type="text" id="search_name" /></div>
+			<div class="col-1 right">Region</div>
+			<div class="col-1"><select id="search_region"></select></div>
+			<div class="col-7">
+				<button onclick="loadProductsCount();">Find</button>
+				<button id="addProduct" onclick="showProductInput();">Add New Product</button>
+			</div>
+		</div>
 	</div>
 	<section>
-		<div id="ProductContainer">Loading...</div>
+		<div id="ProductContainer" class="grid">Loading...</div>
+		<div id="ProductInput"></div>
 	</section>
 
-	<div class="add">
-		name:
-		<input type="text" id="name" /> price:
-		<input type="number" id="price" /> sku:
-		<input type="text" id="sku" /> region:
-		<select id="region"></select> 
-		<button onclick="addProduct();">Add</button>
-	</div>
-
 	<script id="RegionTemplate" type="text/x-jQuery-tmpl">
-		<option value="${_id}" {{if _id === $item.selectedId}}selected="selected"{{/if}} }}>${name}</option>
+		<option value="${_id}" {{if _id === $item.selectedId}}selected="selected" {{/if}}>${name}</option>
 	</script>
 
 	<script id="ProductTemplate" type="text/x-jQuery-tmpl">
 		<div class="row">
-			${( $data.index = $item.dataArrayIndex($item.data) ),''} Index: ${$data.index} name:
-			<input type="text" value="${name}"
-			id="${$data.index}_name" /> price: ${globals.currency}
-			<input type="number" id="${$data.index}_price" value="${formatPrice(price)}" /> sku:
-			<input type="text" id="${$data.index}_sku" value="${sku}" /> region:
-			<select id="${$data.index}_region">{{tmpl(regions, {selectedId: region}) "#RegionTemplate"}}</select>
-			<button onclick="updateProduct('${$data.index}','${_id}');">Update</button>
-			<button onclick="deleteProduct('${$data.index}','${_id}');">Delete</button>
+			<div class="col-2 right">Name</div>
+			<div class="col-2 left">
+				<input type="text" id="name" value="${name}" /> </div>
+		</div>
+		<div class="row">
+			<div class="col-2 right">Price ${globals.currency}</div>
+			<div class="col-2 left"><input type="number" id="price" value="${formatPrice(price)}" /> </div>
+		</div>
+		<div class="row">
+			<div class="col-2 right">SKU</div>
+			<div class="col-2 left"><input type="text" id="sku" value="${sku}" /> </div>
+		</div>
+		<div class="row">
+			<div class="col-2 right">Region</div>
+			<div class="col-2 left">
+				<select id="region">{{tmpl(regions, {selectedId: region._id}) "#RegionTemplate"}}</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2 right"></div>
+			<div class="col-2 left"><button onclick="saveProduct('${_id}');">Save</button></div>
+		</div>
+	</script>
+
+	<script id="ProductHeaderTemplate" type="text/x-jQuery-tmpl">
+		<div class="row header">
+			<div class="col-1"></div>
+			<div class="col-2">Name</div>
+			<div class="col-2">Price</div>
+			<div class="col-2">sku</div>
+			<div class="col-2">region</div>
+		</div>
+	</script>
+
+	<script id="ProductFooterTemplate" type="text/x-jQuery-tmpl">
+		<div class="footer">
+			<ul>
+				<li><</li>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>></li>
+			</ul>
+		</div>
+	</script>
+	
+	<script id="ProductGridTemplate" type="text/x-jQuery-tmpl">
+		<div class="row">
+			<div class="col-1">
+				<div class="edit" onclick="showProductInput(this);"></div>
+				<div class="delete" onclick="deleteProduct('${_id}');"></div>
+			</div>
+			<div class="col-2">${name}</div>
+			<div class="col-2">${globals.currency} ${formatPrice(price)}</div>
+			<div class="col-2">${sku}</div>
+			<div class="col-2">${region.name}</div>
 		</div>
 	</script>
 
 	<script src="../js/jquery/dist/jquery.min.js"></script>
 	<script src="../js/jquery.tmpl.min.js"></script>
 	<script src="../js/xhrlib.min.js"></script>
+	<script src="../js/gridPager.min.js"></script>
 	<script>
 		var globals = {};
 			globals.currency = "$";
 			
 			function loadProductsCount(){
-				XHR.call({
-					url: "products/count/?name__regex=/^"+$("#search").val()+"/i",
+				var search = '?name=';
+				if($("#search").val()!==''){
+					search += $("#search_name").val();
+				}
+				search += '&region='+ $("#search_region").val();
+				XHR().call({
+					url: "products/count/"+search,
 					success: function(res){
 						$("#noOfProducts").html(res);
-					},
-					error: function(res){
-						alert('An error has occured while fetching count!');
+						if(res>0){
+							loadProducts();
+						}
 					}
 				});
 			}
 			
 			function loadProducts(){
-				loadProductsCount();
-				$.ajax({
-					url: "http://localhost:3001/api/products/?limit=10&name__regex=/^"+$("#search").val()+"/i",
-					data: "",
-					type: 'GET',
-					crossDomain: true,
-					dataType: 'json',
-					contentType: 'application/json',
+				var search = '?name=';
+				if($("#search").val()!==''){
+					search += $("#search_name").val();
+				}
+				search += '&region='+ $("#search_region").val();
+				XHR().call({
+					url: "products/"+search,
 					success: function(res){
 						// Render the products using the template
 						$("#ProductContainer").html('');
-						$("#ProductTemplate").tmpl(res, {
+						$("#ProductHeaderTemplate").tmpl().appendTo("#ProductContainer");
+						//${( $data.index = $item.dataArrayIndex($item.data) ),''} Index: ${$data.index}
+						$("#ProductGridTemplate").tmpl(res, {
 							dataArrayIndex: function (item) {
 								return $.inArray(item, res) + 1;
 							}
 						}).appendTo("#ProductContainer");
-					},
-					error: function(res){
-						alert('An error has occured!');
+						$("#ProductFooterTemplate").tmpl().appendTo("#ProductContainer");
 					}
 				});
 			}
-			
-			
-			function updateProduct(index,id){
-				var data = {
-							name: $("#"+index+"_name").val(),
-							price: $("#"+index+"_price").val(),
-							sku: $("#"+index+"_sku").val(),
-							// manufacturer: $("#"+index+"_manufacturer").val(),
-							region: $("#"+index+"_region").val()
-						};
-				$.ajax({
-					url: "http://localhost:3001/api/products/"+id,
-					data: JSON.stringify(data),
-					type: 'PUT',
-					crossDomain: true,
-					dataType: 'json',
-					contentType: 'application/json',
-					success: function(res){
-						console.log('record updated');
-					},
-					error: function(res){
-						alert('An error has occured!');
-					}
-				});
-			}
-			function deleteProduct(index,id){
-				var data = {name:$("#"+index+"_name").val()};
-				$.ajax({
-					url: "http://localhost:3001/api/products/"+id,
-					data: JSON.stringify(data),
-					type: 'DELETE',
-					crossDomain: true,
-					dataType: 'json',
-					contentType: 'application/json',
-					success: function(res){
-						console.log('record deleted');
-						loadProducts();
-					},
-					error: function(res){
-						alert('An error has occured!');
-					}
-				});
+		
+			function deleteProduct(id){
+				var res = confirm('Are you sure?');
+				if(res){
+					XHR().call({
+						url: "products/"+id,
+						type: 'DELETE',
+						success: function(res){
+							console.log('record deleted');
+							loadProducts();
+						}
+					});
+				}
 			}
 			
-			function addProduct(){
+			function showProductInput(row){
+				var data = { name: '', price: 0, sku: '', region: '' };
+				if(row!==undefined){
+					data = $(row).tmplItem().data;
+				}
+				$("#ProductInput").html('');
+				$("#ProductTemplate").tmpl(data).appendTo("#ProductInput");
+			}
+			
+			function saveProduct(id){
 				var data = {name:$("#name").val(),price:$("#price").val(),sku:$("#sku").val(),region:$("#region").val()};
-				console.log(data);
-				$.ajax({
-					url: "http://localhost:3001/api/products/",
+				XHR().call({
+					url: "products/"+id,
 					data: JSON.stringify(data),
-					type: 'POST',
-					crossDomain: true,
-					dataType: 'json',
-					contentType: 'application/json',
+					type: (id === '' ?  'POST' : 'PUT'),
 					success: function(res){
-						$("#name").val("");$("#price").val("");$("#sku").val("");
-						console.log('record inserted');
-						loadProducts();
-					},
-					error: function(err){
-						debugger;
-						console.log(err);
-						alert(err.message);
+						console.log('record saved');
+						loadProductsCount();
 					}
 				});
 			}
@@ -156,54 +184,29 @@
            	return price.toFixed(2);
         }
 		
-		var regions = {}, manufacturers = {};
-		
-		function loadManufacturers(){
-			return false;
-			$.ajax({
-				url: "http://localhost:3001/api/manufacturers",
-				data: "",
-				type: 'GET',
-				crossDomain: true,
-				dataType: 'json',
-				contentType: 'application/json',
-				success: function(res){
-					manufacturers = res;
-					fillDropDown('manufacturer',manufacturers);
-				},
-				error: function(res){
-					alert('An error has occured while fetching count!');
-				}
-			});
-		}
+		var regions = {};
 		
 		function loadRegions(){
-			$.ajax({
-				url: "http://localhost:3001/api/regions",
-				data: "",
-				type: 'GET',
-				crossDomain: true,
-				dataType: 'json',
-				contentType: 'application/json',
+			XHR().call({
+				url: "regions",
 				success: function(res){
 					regions = res;
-					fillDropDown('region',regions);
-				},
-				error: function(res){
-					alert('An error has occured while fetching count!');
+					fillDropDown('search_region',regions);
+					loadProductsCount();
 				}
 			});
 		}
 		
 		function fillDropDown(id, source){
+			$('<option/>').val(0).html('Any').appendTo('#'+id);
 			for(var x in source){
 				$('<option/>').val(source[x]._id).html(source[x].name).appendTo('#'+id);
 			}	
 		}
 		
-		loadManufacturers();
-		loadRegions();
-		loadProducts();
+		(function(){
+			loadRegions();
+		})();
 	</script>
 </body>
 
