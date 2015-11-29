@@ -24,7 +24,15 @@
 		</div>
 	</div>
 	<section>
-		<div id="ProductContainer" class="grid">Loading...</div>
+		<div id="ProductHeader" class="row header">
+			<div class="col-1"></div>
+			<div class="col-2">Name</div>
+			<div class="col-2">Price</div>
+			<div class="col-2">sku</div>
+			<div class="col-2">region</div>
+		</div>
+		<div id="ProductContainer" class="grid"></div>
+		<div id="ProductFooter" class="footer"></div>
 		<div id="ProductInput"></div>
 	</section>
 
@@ -57,30 +65,6 @@
 			<div class="col-2 left"><button onclick="saveProduct('${_id}');">Save</button></div>
 		</div>
 	</script>
-
-	<script id="ProductHeaderTemplate" type="text/x-jQuery-tmpl">
-		<div class="row header">
-			<div class="col-1"></div>
-			<div class="col-2">Name</div>
-			<div class="col-2">Price</div>
-			<div class="col-2">sku</div>
-			<div class="col-2">region</div>
-		</div>
-	</script>
-
-	<script id="ProductFooterTemplate" type="text/x-jQuery-tmpl">
-		<div class="footer">
-			<ul>
-				<li><</li>
-				<li>1</li>
-				<li>2</li>
-				<li>3</li>
-				<li>4</li>
-				<li>5</li>
-				<li>></li>
-			</ul>
-		</div>
-	</script>
 	
 	<script id="ProductGridTemplate" type="text/x-jQuery-tmpl">
 		<div class="row">
@@ -97,117 +81,10 @@
 
 	<script src="../js/jquery/dist/jquery.min.js"></script>
 	<script src="../js/jquery.tmpl.min.js"></script>
+	<script src="../js/core.min.js"></script>
 	<script src="../js/xhrlib.min.js"></script>
 	<script src="../js/gridPager.min.js"></script>
-	<script>
-		var globals = {};
-			globals.currency = "$";
-			
-			function loadProductsCount(){
-				var search = '?name=';
-				if($("#search").val()!==''){
-					search += $("#search_name").val();
-				}
-				search += '&region='+ $("#search_region").val();
-				XHR().call({
-					url: "products/count/"+search,
-					success: function(res){
-						$("#noOfProducts").html(res);
-						if(res>0){
-							loadProducts();
-						}
-					}
-				});
-			}
-			
-			function loadProducts(){
-				var search = '?name=';
-				if($("#search").val()!==''){
-					search += $("#search_name").val();
-				}
-				search += '&region='+ $("#search_region").val();
-				XHR().call({
-					url: "products/"+search,
-					success: function(res){
-						// Render the products using the template
-						$("#ProductContainer").html('');
-						$("#ProductHeaderTemplate").tmpl().appendTo("#ProductContainer");
-						//${( $data.index = $item.dataArrayIndex($item.data) ),''} Index: ${$data.index}
-						$("#ProductGridTemplate").tmpl(res, {
-							dataArrayIndex: function (item) {
-								return $.inArray(item, res) + 1;
-							}
-						}).appendTo("#ProductContainer");
-						$("#ProductFooterTemplate").tmpl().appendTo("#ProductContainer");
-					}
-				});
-			}
-		
-			function deleteProduct(id){
-				var res = confirm('Are you sure?');
-				if(res){
-					XHR().call({
-						url: "products/"+id,
-						type: 'DELETE',
-						success: function(res){
-							console.log('record deleted');
-							loadProducts();
-						}
-					});
-				}
-			}
-			
-			function showProductInput(row){
-				var data = { name: '', price: 0, sku: '', region: '' };
-				if(row!==undefined){
-					data = $(row).tmplItem().data;
-				}
-				$("#ProductInput").html('');
-				$("#ProductTemplate").tmpl(data).appendTo("#ProductInput");
-			}
-			
-			function saveProduct(id){
-				var data = {name:$("#name").val(),price:$("#price").val(),sku:$("#sku").val(),region:$("#region").val()};
-				XHR().call({
-					url: "products/"+id,
-					data: JSON.stringify(data),
-					type: (id === '' ?  'POST' : 'PUT'),
-					success: function(res){
-						console.log('record saved');
-						loadProductsCount();
-					}
-				});
-			}
-			
-        function formatPrice(price) {
-			if(price===null){return '';}
-           	return price.toFixed(2);
-        }
-		
-		var regions = {};
-		
-		function loadRegions(){
-			XHR().call({
-				url: "regions",
-				success: function(res){
-					regions = res;
-					fillDropDown('search_region',regions);
-					loadProductsCount();
-				}
-			});
-		}
-		
-		function fillDropDown(id, source){
-			$('<option/>').val(0).html('Any').appendTo('#'+id);
-			for(var x in source){
-				$('<option/>').val(source[x]._id).html(source[x].name).appendTo('#'+id);
-			}	
-		}
-		
-		(function(){
-			loadRegions();
-		})();
-	</script>
+	<script src="../js/page/product.min.js"></script>
 </body>
 
 </html>

@@ -16,10 +16,10 @@ String.prototype.format = function () {
 // new file
 function generateGUID() {
     var guid = function (len) {
-        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
         var str = '';
         for (var i = 0; i < len; i++) {
-            str += chars.charAt(Math.floor(Math.random() * 36));
+            str += chars.charAt(Math.floor(Math.random() * 62));
         }
         return str;
     }
@@ -27,10 +27,10 @@ function generateGUID() {
 }
 
  function getRandomString(len) {
-	var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
 	var str = '';
 	for (var i = 0; i < len; i++) {
-		str += chars.charAt(Math.floor(Math.random() * 36));
+		str += chars.charAt(Math.floor(Math.random() * 62));
 	}
 	return str;
 }

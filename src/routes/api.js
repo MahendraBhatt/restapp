@@ -9,16 +9,18 @@ var Region = require('../models/region');
 //---------------------------------------------------
 //  Products api
 //---------------------------------------------------
-
-//Routes
-Product.ProductRESTModel.methods(['post', 'put', 'delete']);
-
-Product.ProductRESTModel.route('get', function (req, res, next) {
+function getWhereCondition(req){
   var query = { name: new RegExp(req.query.name, "i") };
   if (req.query.region !== '0') {
     query.region = req.query.region;
   }
-  Product.Product.find(query).populate('region').limit(10).exec(function (err, product) {
+  return query;
+}
+//Routes
+Product.ProductRESTModel.methods(['post', 'put', 'delete']);
+
+Product.ProductRESTModel.route('get', function (req, res, next) {
+  Product.Product.find(getWhereCondition(req)).populate('region').limit(10).exec(function (err, product) {
     res.send(product);
   })
 });
@@ -35,12 +37,7 @@ Product.ProductRESTModel.route('isAvailable.get', function (req, res, next) {
 
 //Custom route example with only get
 Product.ProductRESTModel.route('count', function (req, res, next) {
-  var query = { name: new RegExp(req.query.name, "i") };
-  if (req.query.region !== '0') {
-    query.region = req.query.region;
-  }
-  console.log(query);
-  Product.ProductRESTModel.count(query, function (err, count) {
+  Product.ProductRESTModel.count(getWhereCondition(req), function (err, count) {
     res.send(count.toString());
   });
 });
@@ -73,7 +70,6 @@ Region.register(router, '/regions');
 //  End of Region api
 //---------------------------------------------------
  
- 
 //Return router
 module.exports = router;
  
@@ -83,29 +79,3 @@ http://localhost:3001/api/products/
 http://localhost:3001/api/products/?limit=5
 http://localhost:3001/api/products/?name__regex=/^mah/i
 */
-
-
-//Before example
-// Product.before('post', function(req, res, next) {
-//   console.log("before product is added");
-//   next();
-// });
-
-//   var p = new Product.Product({ name: req.body.name,
-//                                 sku: req.body.sku,
-//                                 price: req.body.price,
-//                                 region: req.body.region 
-//                               });
-    //var message = {'message':'success'};   
-    //  p.save(function(err){
-    //    if (err) { message = err };
-    //  })
-
-  //res.send(message);
-  //next();
-  
-//after example
-// Product.after('post', function(req, res, next) {
-//   console.log("after product is added");
-//   //next();
-// });
