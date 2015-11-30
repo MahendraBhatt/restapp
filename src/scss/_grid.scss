@@ -31,6 +31,16 @@
   background-color: #2bafed; 
   font-weight: bold;
   color:#fff;
+  
+  .close{
+    width:20px; 
+    height:20px;
+    border: solid 1px #fff;
+    float:right;
+    cursor: pointer;
+    text-align: center;
+    @include disableTextSelect;
+  }
 }
 
 .footer{

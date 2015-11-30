@@ -26,7 +26,7 @@ var gulp = require('gulp'),
 gulp.task('scripts', function(){
 	gulp.src(['src/js/**/*.js','!src/js/**/*.min.js'])
 		.pipe(rename({suffix:'.min'}))
-		.pipe(uglify())
+		//.pipe(uglify())
 		.pipe(gulp.dest('build/js'))
 		.pipe(reload({stream: true}));
 });

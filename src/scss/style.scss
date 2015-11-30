@@ -49,3 +49,21 @@ h2{
   border: solid 1px #afafaf;
   margin: 5px 0px 5px 0px;
 }
+
+.modal-background{
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  z-index: 999998;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #000;
+}
+
+.modal-dialog{
+  z-index: 999999;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #fff;
+}

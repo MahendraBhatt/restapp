@@ -16,7 +16,7 @@ String.prototype.format = function () {
 // new file
 function generateGUID() {
     var guid = function (len) {
-        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
         var str = '';
         for (var i = 0; i < len; i++) {
             str += chars.charAt(Math.floor(Math.random() * 62));
@@ -27,10 +27,41 @@ function generateGUID() {
 }
 
  function getRandomString(len) {
-	var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
 	var str = '';
 	for (var i = 0; i < len; i++) {
 		str += chars.charAt(Math.floor(Math.random() * 62));
 	}
 	return str;
+}
+
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+function showModalDialog(dialog){
+    var modalid = getRandomString(5);
+    var width = $(window).width();
+    var height = $(window).height();
+    $(document.body).append('<div id="'+modalid+'" class="modal-background" style="width:'+width+'px;height:'+height+'px;"></div>');
+    var d = $('#'+dialog);
+    d.addClass('modal-dialog');
+    d.css({top: height/2 - d.height()/2,left: width/2 - d.width()/2}).show();
+    d.find('.close').click(function(){
+       d.hide(); 
+       $('#'+modalid).remove();
+    });
 }

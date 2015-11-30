@@ -12,10 +12,11 @@ function loadProductsCount(){
 		success: function(res){
 			$("#noOfProducts").html(res);
 			if(res>0){
-				$("#ProductHeader,#ProductFooter").show();
+				$("#ProductHeader,#ProductFooter,#ProductContainer").show();
 				gridPager({count:res, element: '.footer', target: loadProducts }).build();
 			} else {
-				$("#ProductHeader,#ProductFooter").hide();
+				$('#ProductContainer').html('');
+				$("#ProductHeader,#ProductFooter,#ProductContainer").hide();
 			}
 		}
 	});
@@ -62,19 +63,22 @@ function showProductInput(row){
 	}
 	$("#ProductInput").html('');
 	$("#ProductTemplate").tmpl(data).appendTo("#ProductInput");
+	showModalDialog('ProductInput');
 }
 
 function saveProduct(id){
-	var data = {name:$("#name").val(),price:$("#price").val(),sku:$("#sku").val(),region:$("#region").val()};
+	var data = $('#ProductInput').serializeObject();
 	XHR().call({
 		url: "products/"+id,
 		data: JSON.stringify(data),
 		type: (id === '' ?  'POST' : 'PUT'),
 		success: function(res){
 			console.log('record saved');
+			$('#ProductInput .close').click();
 			loadProductsCount();
 		}
 	});
+	return false;
 }
 	
 function formatPrice(price) {

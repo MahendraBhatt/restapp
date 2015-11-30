@@ -1,5 +1,6 @@
 var gridPager = function (options) {
 	return (new function () {
+		var that = this;
 		var maxPagesToShow = 10, pageSize = 10,	currentPageNo = 1, previousPageNo = 0, recordSkip = 0, recordEnd = currentPageNo * pageSize,
 			count = options.count,
 			maxPages = Math.ceil(count / pageSize),
@@ -8,6 +9,14 @@ var gridPager = function (options) {
 			pageType = { previous : 1, page: 2, next: 3 },
 			uid = getRandomString(5),
 			target = options.target;  
+		
+		function isFirstInSeries(pageno){
+			return $('#'+uid+'_'+pageno).prev('li').attr('id') === uid+'_<';
+		}
+		
+		function isLastInSeries(pageno){
+			return $('#'+uid+'_'+pageno).next('li').attr('id') === uid+'_>';
+		}
 		
 		function highlightPageNo(){
 			$('#'+uid + '_' + previousPageNo).removeClass('current');
@@ -24,17 +33,32 @@ var gridPager = function (options) {
 		} 
 		
 		function gotoPreviousPage(){
+			if(currentPageNo === 1) { return false; }
 			currentPageNo = currentPageNo > 1 ? currentPageNo - 1 : 1;
+			if(currentPageNo + 1 > maxPagesToShow){
+				if(isFirstInSeries(currentPageNo + 1)){
+					that.build(currentPageNo - maxPagesToShow, currentPageNo);
+				}
+			}
 			getRecordStartNEnd();
 		}
 		
 		function gotoPage(){
 			currentPageNo = parseInt(this.innerHTML, 10);
+			if(currentPageNo === previousPageNo) { return false; }
 			getRecordStartNEnd();
 		}
 		
 		function gotoNextPage(){
+			if(currentPageNo === maxPages) { return false; }
 			currentPageNo = currentPageNo < maxPages ? currentPageNo + 1 : currentPageNo;
+			if(currentPageNo > maxPagesToShow){
+				if(isLastInSeries(currentPageNo - 1)){
+					var endPage = Math.ceil(count / pageSize);
+					endPage = currentPageNo + maxPagesToShow - 1 > endPage ? endPage : currentPageNo + maxPagesToShow - 1;
+					that.build(currentPageNo, endPage);
+				}
+			}
 			getRecordStartNEnd();
 		}
 		
@@ -56,15 +80,19 @@ var gridPager = function (options) {
 			bindPageEvent(li, type);
 		}
 		
-		this.build = function () {
+		this.build = function (startPage, endPage) {
 			element.html('');
-			var pages = Math.ceil(count / pageSize);
-			pages = maxPagesToShow > pages ? pages : maxPagesToShow;
+			var pages = endPage;
+			startPage = startPage || 1;
+			if(pages === undefined){
+				pages = Math.ceil(count / pageSize);
+				pages = maxPagesToShow > pages ? pages : maxPagesToShow;
+			}
 			var pager = document.createElement('ul');
 			if(showPreviousNext){
 				addListNodeTo(pager, '<', pageType.previous);
 			}
-			for (var i = 1; i <= pages; i++) {
+			for (var i = startPage; i <= pages; i++) {
 				addListNodeTo(pager, i, pageType.page);
 			}
 			if(showPreviousNext){

@@ -15,9 +15,9 @@
 		<div class="row">			
 			<div class="col-1 right">Name</div>
 			<div class="col-1"><input type="text" id="search_name" /></div>
-			<div class="col-1 right">Region</div>
-			<div class="col-1"><select id="search_region"></select></div>
-			<div class="col-7">
+			<div class="col-2 right">Region</div>
+			<div class="col-2"><select id="search_region"></select></div>
+			<div class="col-6">
 				<button onclick="loadProductsCount();">Find</button>
 				<button id="addProduct" onclick="showProductInput();">Add New Product</button>
 			</div>
@@ -33,7 +33,7 @@
 		</div>
 		<div id="ProductContainer" class="grid"></div>
 		<div id="ProductFooter" class="footer"></div>
-		<div id="ProductInput"></div>
+		<form id="ProductInput" style="width:300px;"></form>
 	</section>
 
 	<script id="RegionTemplate" type="text/x-jQuery-tmpl">
@@ -41,28 +41,29 @@
 	</script>
 
 	<script id="ProductTemplate" type="text/x-jQuery-tmpl">
+		<div class="row header">Add Product<div class="close">X</div></div>
 		<div class="row">
-			<div class="col-2 right">Name</div>
-			<div class="col-2 left">
-				<input type="text" id="name" value="${name}" /> </div>
+			<div class="col-4 right">Name</div>
+			<div class="col-4 left">
+				<input type="text" id="name" name="name" value="${name}" /> </div>
 		</div>
 		<div class="row">
-			<div class="col-2 right">Price ${globals.currency}</div>
-			<div class="col-2 left"><input type="number" id="price" value="${formatPrice(price)}" /> </div>
+			<div class="col-4 right">Price ${globals.currency}</div>
+			<div class="col-4 left"><input type="number" name="price" id="price" value="${formatPrice(price)}" /> </div>
 		</div>
 		<div class="row">
-			<div class="col-2 right">SKU</div>
-			<div class="col-2 left"><input type="text" id="sku" value="${sku}" /> </div>
+			<div class="col-4 right">SKU</div>
+			<div class="col-4 left"><input type="text" id="sku" name="sku" value="${sku}" /> </div>
 		</div>
 		<div class="row">
-			<div class="col-2 right">Region</div>
-			<div class="col-2 left">
-				<select id="region">{{tmpl(regions, {selectedId: region._id}) "#RegionTemplate"}}</select>
+			<div class="col-4 right">Region</div>
+			<div class="col-4 left">
+				<select name="region" id="region">{{tmpl(regions, {selectedId: region._id}) "#RegionTemplate"}}</select>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-2 right"></div>
-			<div class="col-2 left"><button onclick="saveProduct('${_id}');">Save</button></div>
+			<div class="col-4 right"></div>
+			<div class="col-4 left"><button onclick="return saveProduct('${_id}');">Save</button></div>
 		</div>
 	</script>
 	
