@@ -20,7 +20,12 @@ function getWhereCondition(req){
 Product.ProductRESTModel.methods(['post', 'put', 'delete']);
 
 Product.ProductRESTModel.route('get', function (req, res, next) {
-  Product.Product.find(getWhereCondition(req)).populate('region').limit(10).exec(function (err, product) {
+   Product.Product.find(getWhereCondition(req))
+                  .populate('region')
+                  .skip(req.query.skip)
+                  .limit(req.query.limit)
+                  .sort({name: 1})
+                  .exec(function (err, product) {
     res.send(product);
   })
 });

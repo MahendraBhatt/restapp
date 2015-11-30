@@ -13,8 +13,7 @@ function loadProductsCount(){
 			$("#noOfProducts").html(res);
 			if(res>0){
 				$("#ProductHeader,#ProductFooter").show();
-				loadProducts();
-				gridPager({count:res, element: '.footer'}).build();
+				gridPager({count:res, element: '.footer', target: loadProducts }).build();
 			} else {
 				$("#ProductHeader,#ProductFooter").hide();
 			}
@@ -22,12 +21,12 @@ function loadProductsCount(){
 	});
 }
 
-function loadProducts(){
+function loadProducts(args){
 	var search = '?name=';
 	if($("#search").val()!==''){
 		search += $("#search_name").val();
 	}
-	search += '&region='+ $("#search_region").val();
+	search += ('&region={0}&skip={1}&limit={2}').format($("#search_region").val(), args.skip, args.limit);
 	XHR().call({
 		url: "products/"+search,
 		success: function(res){
@@ -50,7 +49,7 @@ function deleteProduct(id){
 			type: 'DELETE',
 			success: function(res){
 				console.log('record deleted');
-				loadProducts();
+				loadProductsCount();
 			}
 		});
 	}

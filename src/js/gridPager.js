@@ -1,23 +1,25 @@
 var gridPager = function (options) {
 	return (new function () {
-		var maxPagesToShow = 10, pageSize = 20,	currentPageNo = 1, previousPageNo = 0, recordStart = 1, recordEnd = currentPageNo * pageSize,
+		var maxPagesToShow = 10, pageSize = 10,	currentPageNo = 1, previousPageNo = 0, recordSkip = 0, recordEnd = currentPageNo * pageSize,
 			count = options.count,
 			maxPages = Math.ceil(count / pageSize),
 			element = $(options.element),
 			showPreviousNext = (options.showPreviousNext === undefined) ? true : options.showPreviousNext,
 			pageType = { previous : 1, page: 2, next: 3 },
-			uid = getRandomString(5);  
+			uid = getRandomString(5),
+			target = options.target;  
 		
 		function highlightPageNo(){
 			$('#'+uid + '_' + previousPageNo).removeClass('current');
 			$('#'+uid + '_' + currentPageNo).addClass('current');
 			previousPageNo = currentPageNo;
-			console.log(currentPageNo + ' ' + recordStart + ' ' + recordEnd);
+			target.call(null, { skip: recordSkip, limit: pageSize });
+			//console.log(currentPageNo + ' ' + recordSkip + ' ' + pageSize);
 		} 
 		
 		function getRecordStartNEnd(){
 			recordEnd = currentPageNo * pageSize;
-			recordStart = (recordEnd - pageSize) + 1;
+			recordSkip = recordEnd - pageSize;
 			highlightPageNo();
 		} 
 		
@@ -73,5 +75,3 @@ var gridPager = function (options) {
 		};
 	})
 };
-			
-			

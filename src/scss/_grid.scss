@@ -4,6 +4,15 @@
   border-radius: 7px;
 }
 
+@mixin disableTextSelect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .row{
   padding: 6px;
   //border-bottom: solid 1px $primary-color;
@@ -28,6 +37,7 @@
   background-color: #726B68; 
   color:#fff;
   padding: 6px;
+  @include disableTextSelect;
   
   ul{
     list-style-type: none;
