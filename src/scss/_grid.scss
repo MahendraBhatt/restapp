@@ -41,6 +41,21 @@
     text-align: center;
     @include disableTextSelect;
   }
+  
+  a{
+    text-decoration: none;
+    color:#fff;
+  }
+  
+  a.asc:after{
+    content: url(/images/sort_asc.png);   
+    margin-left: 10px; 
+  }
+  
+  a.desc:after{
+    content: url(/images/sort_desc.png);   
+    margin-left: 10px; 
+  }
 }
 
 .footer{

@@ -29,6 +29,18 @@
   -ms-user-select: none;
   user-select: none;
 }
+.header a {
+  text-decoration: none;
+  color: #fff;
+}
+.header a.asc:after {
+  content: url(/images/sort_asc.png);
+  margin-left: 10px;
+}
+.header a.desc:after {
+  content: url(/images/sort_desc.png);
+  margin-left: 10px;
+}
 
 .footer {
   background-color: #726B68;

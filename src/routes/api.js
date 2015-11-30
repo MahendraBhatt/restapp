@@ -9,6 +9,7 @@ var Region = require('../models/region');
 //---------------------------------------------------
 //  Products api
 //---------------------------------------------------
+
 function getWhereCondition(req){
   var query = { name: new RegExp(req.query.name, "i") };
   if (req.query.region !== '0') {
@@ -16,6 +17,17 @@ function getWhereCondition(req){
   }
   return query;
 }
+
+function getSortExpression(req){
+  var sortExpression = {};
+  console.log('------------------------------------');
+  for(var x in req.query){
+    console.log(x + ' -- ' + req.query[x]);
+  }
+  console.log('------------------------------------');
+  return sortExpression;
+}
+
 //Routes
 Product.ProductRESTModel.methods(['post', 'put', 'delete']);
 
@@ -24,7 +36,7 @@ Product.ProductRESTModel.route('get', function (req, res, next) {
                   .populate('region')
                   .skip(req.query.skip)
                   .limit(req.query.limit)
-                  .sort({name: 1})
+                  .sort(getSortExpression(req))
                   .exec(function (err, product) {
     res.send(product);
   })
