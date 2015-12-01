@@ -1,17 +1,19 @@
-function gridSort(options){
-    var collection = $('#'+options.source+' a[data-sort-expression]'),
-		target = $('#'+options.target);
-    collection.click(function(){
-        var thisObject = $(this);
-        var sortOrder = thisObject.attr('data-sort-order');
-        collection.removeClass('asc desc');
-        collection.attr('data-sort-order','');
-        thisObject.addClass(sortOrder === 'asc' ? 'desc' : 'asc');
-        thisObject.attr('data-sort-order', sortOrder === 'asc' ? 'desc' : 'asc');
+var gridSort = function(options){
+	var collection = $('#'+options.source+' a[data-sort-expression]'),
+		target = $('#'+options.target),
+		count = options.count;
+	collection.unbind('click');		
+	collection.click(function(){
+		var thisObject = $(this);
+		var sortOrder = thisObject.attr('data-sort-order');
+		collection.removeClass('asc desc');
+		collection.attr('data-sort-order','');
+		thisObject.addClass(sortOrder === 'asc' ? 'desc' : 'asc');
+		thisObject.attr('data-sort-order', sortOrder === 'asc' ? 'desc' : 'asc');
 		target.data({'sort-expression':thisObject.attr('data-sort-expression'),'sort-order':thisObject.attr('data-sort-order')});
-		gridPager({ count: options.count, element: options.pager, target: options.target, callback: options.callback }).build();
-    });
-}
+		gridPager({ count: count, element: options.pager, target: options.target, callback: options.callback }).build();
+	});
+};
 
 var gridPager = function (options) {
 	return (new function () {

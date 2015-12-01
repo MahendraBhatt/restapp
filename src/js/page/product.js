@@ -13,7 +13,7 @@ function loadProductsCount() {
 			$("#noOfProducts").html(res);
 			if (res > 0) {
 				$("#ProductHeader,#ProductFooter,#ProductContainer").show();
-				gridSort({  count: res, source: 'ProductHeader', pager: '.footer', target: 'ProductContainer', callback: loadProducts });
+				gridSort({ count: res, source: 'ProductHeader', pager: '.footer', target: 'ProductContainer', callback: loadProducts });
 				gridPager({ count: res, element: '.footer', target: 'ProductContainer', callback: loadProducts }).build();
 			} else {
 				$('#ProductContainer').html('');
@@ -29,15 +29,10 @@ function loadProducts() {
 	if ($("#search").val() !== '') {
 		search += $("#search_name").val();
 	}
-	search += ('&region={0}&skip={1}&limit={2}')
-		.format($("#search_region").val(),
-			target.data('skip'),
-			target.data('limit'));
+	search += ('&region={0}&skip={1}&limit={2}').format($("#search_region").val(), target.data('skip'), target.data('limit'));
 
 	if(target.data('sort-expression')){
-		search += ('&s={0}&so={1}')
-			.format(target.data('sort-expression'),
-				target.data('sort-order'));
+		search += ('&s={0}&so={1}').format(target.data('sort-expression'), target.data('sort-order'));
 	}
 	
 

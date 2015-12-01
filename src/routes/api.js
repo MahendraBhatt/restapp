@@ -3,8 +3,8 @@ var express = require('express');
 var router = express.Router();
 
 //Models
-var Product = require('../models/product');
 var Region = require('../models/region');
+var Product = require('../models/product');
 
 //---------------------------------------------------
 //  Products api

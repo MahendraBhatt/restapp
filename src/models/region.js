@@ -8,4 +8,4 @@ var regionSchema = new mongoose.Schema({
 })
 
 //Return model
-module.exports = restful.model('Regions', regionSchema);
+module.exports = restful.model('Region', regionSchema);
