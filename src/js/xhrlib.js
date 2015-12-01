@@ -1,4 +1,4 @@
-var XHR = function () {
+app.XHR = function () {
 	return (new function () {
 		var url = 'http://localhost:3001/api/';
 		var options = {

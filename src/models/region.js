@@ -4,7 +4,7 @@ var mongoose = restful.mongoose;
 
 //Schema
 var regionSchema = new mongoose.Schema({
-	name: String
+	name: 'String'
 })
 
 //Return model

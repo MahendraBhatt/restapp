@@ -25,7 +25,7 @@
 			if(noOfProducts > 0){
 				var data = {};
 				var add = function(noOfProducts){
-					data = {name:getRandomString(10),price:10,sku:getRandomString(12),region:$("#region").val()};
+					data = {name:app.getRandomString(10),price:10,sku:app.getRandomString(12),region:$("#region").val()};
 					$.ajax({
 						url: "http://localhost:3001/api/products/",
 						data: JSON.stringify(data),
@@ -52,19 +52,13 @@
 		var regions = {};
 		
 		function loadRegions(){
-			XHR().call({
+			app.XHR().call({
 				url: "regions",
 				success: function(res){
 					regions = res;
-					fillDropDown('region',regions);
+					app.fillDropDown('region',regions);
 				}
 			});
-		}
-		
-		function fillDropDown(id, source){
-			for(var x in source){
-				$('<option/>').val(source[x]._id).html(source[x].name).appendTo('#'+id);
-			}	
 		}
 		
 		(function(){

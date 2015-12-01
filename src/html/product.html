@@ -18,8 +18,8 @@
 			<div class="col-2 right">Region</div>
 			<div class="col-2"><select id="search_region"></select></div>
 			<div class="col-6">
-				<button onclick="loadProductsCount();">Find</button>
-				<button id="addProduct" onclick="showProductInput();">Add New Product</button>
+				<button onclick="app.product.count();">Find</button>
+				<button id="addProduct" onclick="app.product.showInput();">Add New Product</button>
 			</div>
 		</div>
 	</div>
@@ -48,8 +48,8 @@
 				<input type="text" id="name" name="name" value="${name}" /> </div>
 		</div>
 		<div class="row">
-			<div class="col-4 right">Price ${globals.currency}</div>
-			<div class="col-4 left"><input type="number" name="price" id="price" value="${formatPrice(price)}" /> </div>
+			<div class="col-4 right">Price ${app.currency}</div>
+			<div class="col-4 left"><input type="number" name="price" id="price" value="${app.formatPrice(price)}" /> </div>
 		</div>
 		<div class="row">
 			<div class="col-4 right">SKU</div>
@@ -58,23 +58,23 @@
 		<div class="row">
 			<div class="col-4 right">Region</div>
 			<div class="col-4 left">
-				<select name="region" id="region">{{tmpl(regions, {selectedId: region._id}) "#RegionTemplate"}}</select>
+				<select name="region" id="region">{{tmpl(app.product.regions, {selectedId: region._id}) "#RegionTemplate"}}</select>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-4 right"></div>
-			<div class="col-4 left"><button onclick="return saveProduct('${_id}');">Save</button></div>
+			<div class="col-4 left"><button onclick="return app.product.save('${_id}');">Save</button></div>
 		</div>
 	</script>
 	
 	<script id="ProductGridTemplate" type="text/x-jQuery-tmpl">
 		<div class="row">
 			<div class="col-1">
-				<div class="edit" onclick="showProductInput(this);"></div>
-				<div class="delete" onclick="deleteProduct('${_id}');"></div>
+				<div class="edit" onclick="app.product.showInput(this);"></div>
+				<div class="delete" onclick="app.product.remove('${_id}');"></div>
 			</div>
 			<div class="col-2">${name}</div>
-			<div class="col-2">${globals.currency} ${formatPrice(price)}</div>
+			<div class="col-2">${app.currency} ${app.formatPrice(price)}</div>
 			<div class="col-2">${sku}</div>
 			<div class="col-2">${region.name}</div>
 		</div>
@@ -84,7 +84,7 @@
 	<script src="../js/jquery.tmpl.min.js"></script>
 	<script src="../js/core.min.js"></script>
 	<script src="../js/xhrlib.min.js"></script>
-	<script src="../js/gridPager.min.js"></script>
+	<script src="../js/grid.min.js"></script>
 	<script src="../js/page/product.min.js"></script>
 </body>
 
