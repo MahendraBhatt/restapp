@@ -1,3 +1,18 @@
+function gridSort(options){
+    var collection = $('#'+options.source+' a[data-sort-expression]'),
+		target = $('#'+options.target);
+    collection.click(function(){
+        var thisObject = $(this);
+        var sortOrder = thisObject.attr('data-sort-order');
+        collection.removeClass('asc desc');
+        collection.attr('data-sort-order','');
+        thisObject.addClass(sortOrder === 'asc' ? 'desc' : 'asc');
+        thisObject.attr('data-sort-order', sortOrder === 'asc' ? 'desc' : 'asc');
+		target.data({'sort-expression':thisObject.attr('data-sort-expression'),'sort-order':thisObject.attr('data-sort-order')});
+		gridPager({ count: options.count, element: options.pager, target: options.target, callback: options.callback }).build();
+    });
+}
+
 var gridPager = function (options) {
 	return (new function () {
 		var that = this;
@@ -8,7 +23,8 @@ var gridPager = function (options) {
 			showPreviousNext = (options.showPreviousNext === undefined) ? true : options.showPreviousNext,
 			pageType = { previous : 1, page: 2, next: 3 },
 			uid = getRandomString(5),
-			target = options.target;  
+			target = $('#'+options.target),
+			callback = options.callback;  
 		
 		function isFirstInSeries(pageno){
 			return $('#'+uid+'_'+pageno).prev('li').attr('id') === uid+'_<';
@@ -22,8 +38,8 @@ var gridPager = function (options) {
 			$('#'+uid + '_' + previousPageNo).removeClass('current');
 			$('#'+uid + '_' + currentPageNo).addClass('current');
 			previousPageNo = currentPageNo;
-			target.call(null, { skip: recordSkip, limit: pageSize });
-			//console.log(currentPageNo + ' ' + recordSkip + ' ' + pageSize);
+			target.data({ skip: recordSkip, limit: pageSize });
+			callback.call();
 		} 
 		
 		function getRecordStartNEnd(){

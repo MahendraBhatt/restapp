@@ -20,11 +20,10 @@ function getWhereCondition(req){
 
 function getSortExpression(req){
   var sortExpression = {};
-  console.log('------------------------------------');
-  for(var x in req.query){
-    console.log(x + ' -- ' + req.query[x]);
+  if(req.query.s){
+    sortExpression[req.query.s] = req.query.so == 'asc' ? 1 : -1;
+    console.log(sortExpression);
   }
-  console.log('------------------------------------');
   return sortExpression;
 }
 

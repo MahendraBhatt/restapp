@@ -1,20 +1,20 @@
 var globals = {};
-	globals.currency = "$";
-	
-function loadProductsCount(){
+globals.currency = "$";
+
+function loadProductsCount() {
 	var search = '?name=';
-	if($("#search").val()!==''){
+	if ($("#search").val() !== '') {
 		search += $("#search_name").val();
 	}
-	search += '&region='+ $("#search_region").val();
+	search += '&region=' + $("#search_region").val();
 	XHR().call({
-		url: "products/count/"+search,
-		success: function(res){
+		url: "products/count/" + search,
+		success: function (res) {
 			$("#noOfProducts").html(res);
-			if(res>0){
+			if (res > 0) {
 				$("#ProductHeader,#ProductFooter,#ProductContainer").show();
-				buildGridSort('ProductHeader');
-				gridPager({count:res, element: '.footer', target: loadProducts }).build();
+				gridSort({  count: res, source: 'ProductHeader', pager: '.footer', target: 'ProductContainer', callback: loadProducts });
+				gridPager({ count: res, element: '.footer', target: 'ProductContainer', callback: loadProducts }).build();
 			} else {
 				$('#ProductContainer').html('');
 				$("#ProductHeader,#ProductFooter,#ProductContainer").hide();
@@ -23,23 +23,27 @@ function loadProductsCount(){
 	});
 }
 
-function loadProducts(args){
+function loadProducts() {
+	var target = $('#ProductContainer');
 	var search = '?name=';
-	if($("#search").val()!==''){
+	if ($("#search").val() !== '') {
 		search += $("#search_name").val();
 	}
-	var sortField = $('#ProductHeader a[data-sort-order]').first();
-	sortField.attr('data-sort-order');
-	search += ('&region={0}&skip={1}&limit={2}&s={3}&so={4}')
-			  .format($("#search_region").val(),
-			  args.skip, 
-			  args.limit,
-			  sortField.attr('data-sort-expression'),
-			  sortField.attr('data-sort-order'));
-			  
+	search += ('&region={0}&skip={1}&limit={2}')
+		.format($("#search_region").val(),
+			target.data('skip'),
+			target.data('limit'));
+
+	if(target.data('sort-expression')){
+		search += ('&s={0}&so={1}')
+			.format(target.data('sort-expression'),
+				target.data('sort-order'));
+	}
+	
+
 	XHR().call({
-		url: "products/"+search,
-		success: function(res){
+		url: "products/" + search,
+		success: function (res) {
 			$('#ProductContainer').html('');
 			//${( $data.index = $item.dataArrayIndex($item.data) ),''} Index: ${$data.index}
 			$("#ProductGridTemplate").tmpl(res, {
@@ -51,13 +55,13 @@ function loadProducts(args){
 	});
 }
 
-function deleteProduct(id){
+function deleteProduct(id) {
 	var res = confirm('Are you sure?');
-	if(res){
+	if (res) {
 		XHR().call({
-			url: "products/"+id,
+			url: "products/" + id,
 			type: 'DELETE',
-			success: function(res){
+			success: function (res) {
 				console.log('record deleted');
 				loadProductsCount();
 			}
@@ -65,9 +69,9 @@ function deleteProduct(id){
 	}
 }
 
-function showProductInput(row){
+function showProductInput(row) {
 	var data = { name: '', price: 0, sku: '', region: '' };
-	if(row!==undefined){
+	if (row !== undefined) {
 		data = $(row).tmplItem().data;
 	}
 	$("#ProductInput").html('');
@@ -75,13 +79,13 @@ function showProductInput(row){
 	showModalDialog('ProductInput');
 }
 
-function saveProduct(id){
+function saveProduct(id) {
 	var data = $('#ProductInput').serializeObject();
 	XHR().call({
-		url: "products/"+id,
+		url: "products/" + id,
 		data: JSON.stringify(data),
-		type: (id === '' ?  'POST' : 'PUT'),
-		success: function(res){
+		type: (id === '' ? 'POST' : 'PUT'),
+		success: function (res) {
 			console.log('record saved');
 			$('#ProductInput .close').click();
 			loadProductsCount();
@@ -89,32 +93,32 @@ function saveProduct(id){
 	});
 	return false;
 }
-	
+
 function formatPrice(price) {
-	if(price===null){return '';}
+	if (price === null) { return ''; }
 	return price.toFixed(2);
 }
 
 var regions = {};
 
-function loadRegions(){
+function loadRegions() {
 	XHR().call({
 		url: "regions",
-		success: function(res){
+		success: function (res) {
 			regions = res;
-			fillDropDown('search_region',regions);
+			fillDropDown('search_region', regions);
 			loadProductsCount();
 		}
 	});
 }
 
-function fillDropDown(id, source){
-	$('<option/>').val(0).html('Any').appendTo('#'+id);
-	for(var x in source){
-		$('<option/>').val(source[x]._id).html(source[x].name).appendTo('#'+id);
-	}	
+function fillDropDown(id, source) {
+	$('<option/>').val(0).html('Any').appendTo('#' + id);
+	for (var x in source) {
+		$('<option/>').val(source[x]._id).html(source[x].name).appendTo('#' + id);
+	}
 }
 
-(function(){
+(function () {
 	loadRegions();
 })();

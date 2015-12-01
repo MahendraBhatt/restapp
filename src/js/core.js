@@ -65,15 +65,3 @@ function showModalDialog(dialog){
        $('#'+modalid).remove();
     });
 }
-
-function buildGridSort(headerId){
-    var collection = $('#'+headerId+' a[data-sort-expression]');
-    collection.click(function(){
-        var thisObject = $(this);
-        var sortOrder = thisObject.attr('data-sort-order');
-        collection.removeClass('asc desc');
-        collection.attr('data-sort-order','');
-        thisObject.addClass(sortOrder === 'asc' ? 'desc' : 'asc');
-        thisObject.attr('data-sort-order', sortOrder === 'asc' ? 'desc' : 'asc');
-    });
-}
