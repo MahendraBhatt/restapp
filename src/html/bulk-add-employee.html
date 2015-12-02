@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Bulk add Employees</title>
+	<link rel="stylesheet" href="../css/style.css" type="text/css" />
+</head>
+
+<body>
+	<h2>Bulk Add Employees</h2>
+
+	<div class="add">
+		Number of Employees to be added:
+		<input id="noOfEmployees" type="number" />
+		<button onclick="addEmployees();">Add</button>
+	</div>
+
+	<script src="../js/jquery/dist/jquery.min.js"></script>
+	<script src="../js/core.min.js"></script>
+	<script src="../js/xhrlib.min.js"></script>
+	<script>
+		function addEmployees(){
+			var noOfEmployees = $("#noOfEmployees").val();
+			if(noOfEmployees > 0){
+				var data = {};
+				var add = function(noOfEmployees){
+					data = {EmpNo: app.getRandomString(5),
+							FirstName: app.getRandomString(10),
+							MiddleInitial: app.getRandomString(1),
+							LastName: app.getRandomString(10),
+							Dept: app.getRandomString(10),
+							Phone: app.getRandomString(10),
+							HireDate: null,
+							Job: app.getRandomString(5),
+							Sex: "Male",
+							BirthDate: null,
+							Salary: 10000,
+							Bonus: 1000};
+					$.ajax({
+						url: "http://localhost:3001/api/employees/",
+						data: JSON.stringify(data),
+						type: 'POST',
+						crossDomain: true,
+						dataType: 'json',
+						contentType: 'application/json',
+						success: function(res){
+							console.log('record inserted');
+							if(noOfEmployees > 1){
+								add(noOfEmployees-1);
+							}
+						},
+						error: function(err){
+							console.log(err);
+							alert(err.message);
+						}
+					});
+				};
+				add(noOfEmployees);
+			}
+		}
+	</script>
+</body>
+
+</html>
