@@ -143,6 +143,10 @@ npm install copy --save-dev
 
 npm install mongodb --save-dev
 
+npm install gulp-param
+
+npm install xlsx
+
 ---------------------
 DOWNLOAD PYTHON
 ---------------------

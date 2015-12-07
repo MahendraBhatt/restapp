@@ -4,7 +4,7 @@
 // Required
 ///////////////////////////////////////
 
-var gulp = require('gulp'),
+var gulp = require('gulp-param')(require('gulp'), process.argv),
 	uglify = require('gulp-uglify'),
 	rename = require('gulp-rename'),
 	compass = require('gulp-compass'),
@@ -115,8 +115,11 @@ gulp.task('clean', function() {
 // Code Generator Task
 ///////////////////////////////////////
 
-gulp.task('generate', function() {
-	console.log('inside code generate');
+gulp.task('codegen', function(schema) {
+	gulp.src('./codegen/test.js')
+		.pipe();
+	//console.log('inside code generate ' + schema);
+	//return;
 });
 
 ///////////////////////////////////////
