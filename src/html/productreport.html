@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Product Report</title>
+	<link rel="stylesheet" href="../css/style.css" type="text/css" />
+</head>
+
+<body>
+	<h2>Products</h2> 
+	<hr/>
+	<div id="ProductContainer"></div>
+	<script id="ProductGridTemplate" type="text/x-jQuery-tmpl">
+		${( $data.index = $item.dataArrayIndex($item.data) ),''} 
+		<div class="row">
+			<div class="col-2">Index: ${$data.index}</div>
+			<div class="col-2">Name: ${name}</div>
+			<div class="col-2">Price: ${app.currency} ${app.formatPrice(price)}</div>
+			<div class="col-2">SKU: ${sku}</div>
+			<div class="col-2">Region: ${region.name}</div>
+			<div class="col-12"><hr/></div>
+		</div>
+	</script>
+
+	<script src="../js/jquery/dist/jquery.min.js"></script>
+	<script src="../js/jquery.tmpl.min.js"></script>
+	<script src="../js/core.min.js"></script>
+	<script src="../js/xhrlib.min.js"></script>
+	<script src="../js/report/product.min.js"></script>
+</body>
+
+</html>
