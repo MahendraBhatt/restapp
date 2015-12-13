@@ -5,7 +5,7 @@ app.productreport = {
 		if ($("#search").val() !== '') {
 			search += 'name=';
 		}
-		search += ('&region={0}&skip={1}&limit={2}').format("0","0", "99999");
+		search += ('&region={0}&skip={1}&limit={2}').format("0","0", "2000");
 	
 		////if(target.data('sort-expression')){
 //			search += ('&s={0}&so={1}').format(target.data('sort-expression'), target.data('sort-order'));

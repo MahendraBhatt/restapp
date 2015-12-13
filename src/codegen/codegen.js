@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------------------------------------
 
 var fs = require('fs');
-var schema = require('./schema.js');
+var schema = require('./schema/'+process.argv[2]+'.js');
 var name = schema.name;
 
 //------------------------------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ fs.readFile('template/model.txt', 'utf8', function (err, data) {
 	var newmodel = model.replace(/{{name}}/g, name.toLowerCase())
 		.replace(/{{camelized-name}}/g, name)
 		.replace(/{{schema}}/g, getMongooseSchema(schema.columns));
-	fs.writeFile('output/model/' + name.toLowerCase() + '.js', newmodel, function (err) {
+	fs.writeFile('../models/' + name.toLowerCase() + '.js', newmodel, function (err) {
 		if (err) throw err;
 		console.log(name + ' Model Created!');
 	});
@@ -33,17 +33,21 @@ fs.readFile('template/model.txt', 'utf8', function (err, data) {
 //------------------------------------------------------------------------------------------------------------
 	 
 function getQueryWhereCondition(columns) {
-	var queryWhereCondition = '{';
+	var queryWhereCondition = '';
 	columns.filter(function (obj) {
-				return obj.searchable;
-			})
-			.forEach(function (element, index, array) {
-				queryWhereCondition += ' ' + element.name + ': new RegExp(req.query.' + element.name + ', "i")';
-				if (index + 1 < array.length) {
-					queryWhereCondition += ',\r\t';
-				}
-			});
-	queryWhereCondition += '}';
+		return obj.searchable;
+	})
+	.forEach(function (element, index, array) {
+		if(element.type === 'Date'){
+			queryWhereCondition += '\tif(req.query.From'+element.name+' !== undefined || req.query.To'+element.name+' !== undefined){\r'+
+									'\t\t\t\tquery.'+element.name+' = {};\r'+
+									'\t\t\t\tif(req.query.From'+element.name+'){ query.'+element.name+'.$gte = req.query.From'+element.name+'; }\r'+
+									'\t\t\t\tif(req.query.To'+element.name+'){ query.'+element.name+'.$lte = req.query.To'+element.name+'; }\r'+
+									'\t}\r';
+		} else {
+			queryWhereCondition += '\t\tquery.' + element.name + ' = new RegExp(req.query.' + element.name + ', "i");\r';
+		}
+	});
 	return queryWhereCondition;
 }
 
@@ -52,7 +56,7 @@ fs.readFile('template/api.txt', 'utf8', function (err, data) {
 	var newrestapi = restapi.replace(/{{name}}/g, name.toLowerCase())
 		.replace(/{{camelized-name}}/g, name)
 		.replace(/{{queryWhereCondition}}/g, getQueryWhereCondition(schema.columns));
-	fs.writeFile('output/api/' + name.toLowerCase() + '-api.js', newrestapi, function (err) {
+	fs.writeFile('../routes/' + name.toLowerCase() + '-api.js', newrestapi, function (err) {
 		if (err) throw err;
 		console.log(name + ' API Created!');
 	});
@@ -98,8 +102,15 @@ function getSearchControls(columns){
 			})
 			.forEach(function (element, index, array) {
 				var type = getInputType(element.type); 
-				searchControls += '<div class="col-1 right">'+element.name+'</div>\r\t\t\t' 
-									+ '<div class="col-1"><input type="'+type+'" id="search_'+element.name+'" /></div>';
+				if(element.type === 'Date'){
+					searchControls += '<div class="col-1 right">From '+element.name+'</div>\r\t\t\t' 
+									+ '<div class="col-2"><input type="'+type+'" id="search_From'+element.name+'" /></div>'
+									+ '<div class="col-1 right">To '+element.name+'</div>\r\t\t\t' 
+									+ '<div class="col-2"><input type="'+type+'" id="search_To'+element.name+'" /></div>';
+				}else{
+					searchControls += '<div class="col-1 right">'+element.name+'</div>\r\t\t\t' 
+									+ '<div class="col-2"><input type="'+type+'" id="search_'+element.name+'" /></div>';
+				}		
 				if (index + 1 < array.length) {
 					searchControls += '\r\t\t\t';
 				}
@@ -130,7 +141,7 @@ fs.readFile('template/html.txt', 'utf8', function (err, data) {
 		.replace(/{{grid-header-columns}}/g, gridColumns.header)
 		.replace(/{{search-controls}}/g, getSearchControls(schema.columns))
 		.replace(/{{form-input-controls}}/g, getFormControls(schema.columns));
-	fs.writeFile('output/html/' + name.toLowerCase() + '.html', newhtml, function (err) {
+	fs.writeFile('../html/' + name.toLowerCase() + '.html', newhtml, function (err) {
 		if (err) throw err;
 		console.log(name + ' HTML Created!');
 	});
@@ -147,8 +158,15 @@ function generateSearchQueryString(columns){
 			})
 			.forEach(function (element, index, array) {
 				var separator = index == 0 ? '' : '&';
-				searchQueryString += 'if ($("#search_' + element.name + '").val() !== \'\') {\r\t\t\t' +
-									 'search += \'' + separator + element.name + '=\' + $("#search_' + element.name + '").val();\r\t\t}\r\t\t';
+				if(element.type === 'Date'){
+					searchQueryString += 'if ($("#search_From' + element.name + '").val() !== \'\') {\r\t\t\t' +
+										 'search += \'' + separator + 'From' + element.name + '=\' + $("#search_From' + element.name + '").val();\r\t\t}\r\t\t' +
+										 'if ($("#search_To' + element.name + '").val() !== \'\') {\r\t\t\t' +
+										 'search += \'' + separator + 'To' + element.name + '=\' + $("#search_To' + element.name + '").val();\r\t\t}\r\t\t';
+				} else {
+					searchQueryString += 'if ($("#search_' + element.name + '").val() !== \'\') {\r\t\t\t' +
+										 'search += \'' + separator + element.name + '=\' + $("#search_' + element.name + '").val();\r\t\t}\r\t\t';
+				}
 			});
 	return searchQueryString;
 }
@@ -159,7 +177,7 @@ fs.readFile('template/js.txt', 'utf8', function (err, data) {
 		.replace(/{{camelized-name}}/g, name)
 		.replace(/{{namespace}}/g, schema.namespace)
 		.replace(/{{search-query-string}}/g, generateSearchQueryString(schema.columns));
-	fs.writeFile('output/js/' + name.toLowerCase() + '.js', newjs, function (err) {
+	fs.writeFile('../js/page/' + name.toLowerCase() + '.js', newjs, function (err) {
 		if (err) throw err;
 		console.log(name + ' JS Created!');
 	});
@@ -167,4 +185,25 @@ fs.readFile('template/js.txt', 'utf8', function (err, data) {
 
 //------------------------------------------------------------------------------------------------------------
 //								End of Code Generation
+//------------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------------------------
+//								Injecting Api Line in main app.js
+//------------------------------------------------------------------------------------------------------------
+
+fs.readFile('../app.js', 'utf8', function (err, data) {
+	var appJs = data.split('\n');
+	var lineNumber = appJs.indexOf('\/\/Routes\r')+1;
+	if(appJs.indexOf("app.use(\'/api\', require(\'./routes/" + name.toLowerCase() + "-api\'));\r") < 0){
+		appJs.splice(lineNumber, 0, "app.use(\'/api\', require(\'./routes/" + name.toLowerCase() + "-api\'));\r");
+		var text = appJs.join("\n");
+		fs.writeFile('../app.js', text, function (err) {
+			if (err) throw err;
+			console.log(name + ' Api Line Injected!');
+		});
+	}
+});
+
+//------------------------------------------------------------------------------------------------------------
+//								 End of Api Line Injection
 //------------------------------------------------------------------------------------------------------------

@@ -95,7 +95,16 @@ gulp.task('browser-sync', function() {
 	browserSync({
 		server:{
 			baseDir: './build/'
-		}
+		},
+		online: false,
+		rewriteRules: [
+			{
+				match: '/html/product.html',
+				fn: function(){
+					return 'products';
+				}
+			}
+		]
 	});
 });
 
@@ -114,13 +123,13 @@ gulp.task('clean', function() {
 ///////////////////////////////////////
 // Code Generator Task
 ///////////////////////////////////////
-
-gulp.task('codegen', function(schema) {
-	gulp.src('./codegen/test.js')
-		.pipe();
-	//console.log('inside code generate ' + schema);
-	//return;
-});
+// 
+// gulp.task('codegen', function(schema) {
+// 	gulp.src('./codegen/test.js')
+// 		.pipe();
+// 	//console.log('inside code generate ' + schema);
+// 	//return;
+// });
 
 ///////////////////////////////////////
 // Default Task

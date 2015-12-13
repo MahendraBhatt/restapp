@@ -3,21 +3,24 @@ var express = require('express');
 var router = express.Router();
 
 //Models
-var Employee = require('../models/employee');
+var Order = require('../models/order');
 
 //---------------------------------------------------
-//  Employees api
+//  Orders api
 //---------------------------------------------------
 
 function getWhereCondition(req){
   var query = {};
-  		query.EmpNo = new RegExp(req.query.EmpNo, "i");
-		query.FirstName = new RegExp(req.query.FirstName, "i");
-	if(req.query.FromHireDate !== undefined || req.query.ToHireDate !== undefined){
-				query.HireDate = {};
-				if(req.query.FromHireDate){ query.HireDate.$gte = req.query.FromHireDate; }
-				if(req.query.ToHireDate){ query.HireDate.$lte = req.query.ToHireDate; }
-	}
+  query.No = new RegExp(req.query.No, "i");
+  if(req.query.FromDate !== undefined || req.query.ToDate !== undefined){
+	   query.Date = {};
+     if(req.query.FromDate){
+       query.Date.$gte = req.query.FromDate;
+     }
+     if(req.query.ToDate){
+       query.Date.$lte = req.query.ToDate;
+     }
+  }
   //following is example of expandable where condition 
   //for e.g. you have a value for search and it is optional for search
   /*
@@ -37,32 +40,32 @@ function getSortExpression(req){
 }
 
 //Routes
-Employee.EmployeeRESTModel.methods(['post', 'put', 'delete']);
+Order.OrderRESTModel.methods(['post', 'put', 'delete']);
 
 // Customizing get method so that all records are not fetched at one time
 // Use .populate(foreigntablename) to fill foreign table values in query after find 
-Employee.EmployeeRESTModel.route('get', function (req, res, next) {
-   Employee.Employee.find(getWhereCondition(req))
+Order.OrderRESTModel.route('get', function (req, res, next) {
+   Order.Order.find(getWhereCondition(req))
                   .skip(req.query.skip)
                   .limit(req.query.limit)
                   .sort(getSortExpression(req))
-                  .exec(function (err, employee) {
-                      res.send(employee);
+                  .exec(function (err, order) {
+                      res.send(order);
                   });
 });
 
 //Custom route example with only get
-Employee.EmployeeRESTModel.route('count', function (req, res, next) {
-  Employee.EmployeeRESTModel.count(getWhereCondition(req), function (err, count) {
+Order.OrderRESTModel.route('count', function (req, res, next) {
+  Order.OrderRESTModel.count(getWhereCondition(req), function (err, count) {
     res.send((count || 0).toString());
   });
 });
 
-//Register employees api for routing
-Employee.EmployeeRESTModel.register(router, '/employees');
+//Register orders api for routing
+Order.OrderRESTModel.register(router, '/orders');
 
 //---------------------------------------------------
-//  End of Employees api
+//  End of Orders api
 //---------------------------------------------------
 
 //Return router

@@ -1,7 +1,7 @@
 app.employee = {
 	count: function(){
 		var search = '?';
-		if ($("#search_EmpNo").val() !== '') {			search += 'EmpNo=' + $("#search_EmpNo").val();		}		if ($("#search_FirstName").val() !== '') {			search += '&FirstName=' + $("#search_FirstName").val();		}		
+		if ($("#search_EmpNo").val() !== '') {			search += 'EmpNo=' + $("#search_EmpNo").val();		}		if ($("#search_FirstName").val() !== '') {			search += '&FirstName=' + $("#search_FirstName").val();		}		if ($("#search_FromHireDate").val() !== '') {			search += '&FromHireDate=' + $("#search_FromHireDate").val();		}		if ($("#search_ToHireDate").val() !== '') {			search += '&ToHireDate=' + $("#search_ToHireDate").val();		}		
 		app.XHR().call({
 			url: "employees/count/" + search,
 			success: function (res) {
@@ -20,7 +20,7 @@ app.employee = {
 	load: function(){
 		var target = $('#EmployeeContainer');
 		var search = '?';
-		if ($("#search_EmpNo").val() !== '') {			search += 'EmpNo=' + $("#search_EmpNo").val();		}		if ($("#search_FirstName").val() !== '') {			search += '&FirstName=' + $("#search_FirstName").val();		}		
+		if ($("#search_EmpNo").val() !== '') {			search += 'EmpNo=' + $("#search_EmpNo").val();		}		if ($("#search_FirstName").val() !== '') {			search += '&FirstName=' + $("#search_FirstName").val();		}		if ($("#search_FromHireDate").val() !== '') {			search += '&FromHireDate=' + $("#search_FromHireDate").val();		}		if ($("#search_ToHireDate").val() !== '') {			search += '&ToHireDate=' + $("#search_ToHireDate").val();		}		
 		search += ('&skip={0}&limit={1}').format(target.data('skip'), target.data('limit'));
 	
 		if(target.data('sort-expression')){

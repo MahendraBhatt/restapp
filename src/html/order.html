@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Orders</title>
+	<link rel="stylesheet" href="../css/style.css" type="text/css" />
+</head>
+
+<body>
+	<h2>Orders</h2><span id="noOfOrders"></span> records found 
+	<div class="search-panel">
+		<div class="row row-separator">
+			<div class="col-12">Find Orders</div>
+		</div>
+		<div class="row">			
+			<div class="col-1 right">No</div>
+			<div class="col-2"><input type="text" id="search_No" /></div>
+			<div class="col-1 right">From Date</div>
+			<div class="col-2"><input type="date" id="search_FromDate" /></div>
+			<div class="col-1 right">To Date</div>
+			<div class="col-2"><input type="date" id="search_ToDate" /></div>
+			<div class="col-2">
+				<button onclick="app.order.count();">Find</button>
+				<button id="addOrder" onclick="app.order.showInput();">Add New Order</button>
+			</div>
+		</div>
+	</div>
+	<section>
+		<div id="OrderHeader" class="row header">
+			<div class="col-1"></div>
+			<div class="col-1"><a href="#" data-sort-expression="No" data-sort-order="none">No</a></div>
+			<div class="col-1"><a href="#" data-sort-expression="Date" data-sort-order="none">Date</a></div>
+			<div class="col-1">Value</div>
+		</div>
+		<div id="OrderContainer" class="grid"></div>
+		<div id="OrderFooter" class="footer"></div>
+		<form id="OrderInput" style="width:500px;"></form>
+	</section>
+
+	<script id="OrderTemplate" type="text/x-jQuery-tmpl">
+		<div class="row header">Add Order<div class="close">X</div></div>
+		<div class="row">
+			<div class="col-4 right">No</div>
+			<div class="col-4 left"><input type="text" name="No" value="${No}" /></div>
+		</div>
+		<div class="row">
+			<div class="col-4 right">Date</div>
+			<div class="col-4 left"><input type="date" name="Date" value="${Date}" /></div>
+		</div>
+		<div class="row">
+			<div class="col-4 right">Value</div>
+			<div class="col-4 left"><input type="text" name="Value" value="${Value}" /></div>
+		</div>
+		<div class="row">
+			<div class="col-4 right"></div>
+			<div class="col-4 left"><button onclick="return app.order.save('${_id}');">Save</button></div>
+		</div>
+	</script>
+	
+	<script id="OrderGridTemplate" type="text/x-jQuery-tmpl">
+		<div class="row">
+			<div class="col-1">
+				<div class="edit" onclick="app.order.showInput(this);"></div>
+				<div class="delete" onclick="app.order.remove('${_id}');"></div>
+			</div>
+			<div class="col-1">${No}</div>
+			<div class="col-1">${Date}</div>
+			<div class="col-1">${Value}</div>
+		</div>
+	</script>
+
+	<script src="../js/jquery/dist/jquery.min.js"></script>
+	<script src="../js/jquery.tmpl.min.js"></script>
+	<script src="../js/core.min.js"></script>
+	<script src="../js/xhrlib.min.js"></script>
+	<script src="../js/grid.min.js"></script>
+	<script src="../js/page/order.min.js"></script>
+</body>
+
+</html>

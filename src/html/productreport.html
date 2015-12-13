@@ -19,6 +19,7 @@
 			<div class="col-2">SKU: ${sku}</div>
 			<div class="col-2">Region: ${region.name}</div>
 			<div class="col-12"><hr/></div>
+			{{if $data.index % 10 == 0 }} <div style="page-break-before: always;"></div> {{/if}}
 		</div>
 	</script>
 

@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //Routes
+app.use('/api', require('./routes/order-api'));
 app.use('/api', require('./routes/product-api'));
 app.use('/api', require('./routes/region-api'));
 app.use('/api', require('./routes/employee-api'));

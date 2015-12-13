@@ -10,7 +10,8 @@ var {{camelized-name}} = require('../models/{{name}}');
 //---------------------------------------------------
 
 function getWhereCondition(req){
-  var query = {{queryWhereCondition}};
+  var query = {};
+  {{queryWhereCondition}}
   //following is example of expandable where condition 
   //for e.g. you have a value for search and it is optional for search
   /*
@@ -47,7 +48,7 @@ function getSortExpression(req){
 //Custom route example with only get
 {{camelized-name}}.{{camelized-name}}RESTModel.route('count', function (req, res, next) {
   {{camelized-name}}.{{camelized-name}}RESTModel.count(getWhereCondition(req), function (err, count) {
-    res.send(count.toString());
+    res.send((count || 0).toString());
   });
 });
 
