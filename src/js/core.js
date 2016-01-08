@@ -42,6 +42,7 @@ $.fn.serializeObject = function()
 //Declaring namespace
 var app = {
     currency: '$',
+    currentModalDialogId: '',
     generateGUID: function() {
         var guid = function (len) {
             var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
@@ -63,6 +64,7 @@ var app = {
     },
     showModalDialog: function(dialog){
         var modalid = app.getRandomString(5);
+        app.currentModalDialogId = modalid;
         var width = $(window).width();
         var height = $(window).height();
         $(document.body).append('<div id="'+modalid+'" class="modal-background" style="width:'+width+'px;height:'+height+'px;"></div>');
@@ -73,6 +75,7 @@ var app = {
             d.hide(); 
             $('#'+modalid).remove();
         });
+        app.attachCalendarEvent(dialog);
     },
     formatPrice: function(price) {
         if (price === null) { return ''; }
@@ -83,5 +86,13 @@ var app = {
         for (var x in source) {
             $('<option/>').val(source[x]._id).html(source[x].name).appendTo('#' + id);
         }
+    },
+    attachCalendarEvent: function(container){
+        var containerId = container === undefined ? '' : '#'+container+' ';
+        $(containerId + '.calendar').off('click').on('click', function(e){
+            calendar.input = $(this);
+            calendar.show();
+            e.stopPropagation();
+        });
     }
 };

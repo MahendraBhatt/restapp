@@ -1,4 +1,4 @@
-(function(){
+//(function(){
     var calendar = {
         input: null,
         minYear: 1900,
@@ -308,9 +308,5 @@
         calendar.hide();
     });
     
-    $('.calendar').click(function(e){
-        calendar.input = $(this);
-        calendar.show();
-        e.stopPropagation();
-    });
-})();
+    app.attachCalendarEvent();
+//})();

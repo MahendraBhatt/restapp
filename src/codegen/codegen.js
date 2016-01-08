@@ -89,9 +89,9 @@ function getGridColumns(columns) {
 function getInputType(systemType){
 	if(systemType == 'Number' || systemType == 'Double'){
 		return 'number';
-	} else if(systemType == 'Date'){
-		return 'date';
-	}
+	}// else if(systemType == 'Date'){
+		//return 'date';
+	//}
 	return 'text';
 }
 
@@ -104,9 +104,9 @@ function getSearchControls(columns){
 				var type = getInputType(element.type); 
 				if(element.type === 'Date'){
 					searchControls += '<div class="col-1 right">From '+element.name+'</div>\r\t\t\t' 
-									+ '<div class="col-2"><input type="'+type+'" id="search_From'+element.name+'" /></div>'
+									+ '<div class="col-2"><input class="calendar" id="search_From'+element.name+'" /></div>'
 									+ '<div class="col-1 right">To '+element.name+'</div>\r\t\t\t' 
-									+ '<div class="col-2"><input type="'+type+'" id="search_To'+element.name+'" /></div>';
+									+ '<div class="col-2"><input class="calendar" id="search_To'+element.name+'" /></div>';
 				}else{
 					searchControls += '<div class="col-1 right">'+element.name+'</div>\r\t\t\t' 
 									+ '<div class="col-2"><input type="'+type+'" id="search_'+element.name+'" /></div>';
@@ -123,7 +123,7 @@ function getFormControls(columns){
 	columns.forEach(function (element, index, array) {
 				var type = getInputType(element.type); 
 				formControls += '<div class="row">\r\t\t\t<div class="col-4 right">'+element.name+'</div>\r\t\t\t' 
-									+ '<div class="col-4 left"><input type="'+type+'" name="'+element.name+'" value="${'+element.name+'}" /></div>\r\t\t</div>';
+									+ '<div class="col-4 left"><input '+(element.type === 'Date' ? 'class="calendar"' : '')+' type="'+type+'" name="'+element.name+'" value="${'+element.name+'}" /></div>\r\t\t</div>';
 				if (index + 1 < array.length) {
 					formControls += '\r\t\t';
 				}

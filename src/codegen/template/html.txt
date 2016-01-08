@@ -55,6 +55,7 @@
 	<script src="../js/xhrlib.min.js"></script>
 	<script src="../js/grid.min.js"></script>
 	<script src="../js/page/{{name}}.min.js"></script>
+    <script src="../js/calendar.min.js"></script>
 </body>
 
 </html>
