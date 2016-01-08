@@ -68,7 +68,8 @@ h2{
   background-color: #fff;
 }
 
-.calendar{
+.calendar-control{
+    display: none;
     background-color: #fff;
     border: #afafaf solid 1px;
     position: absolute;
@@ -102,29 +103,36 @@ h2{
         display: inline-block;
         line-height:20px;
     }  
+    a:hover{
+       color: #008FFF;
+    }
     a:visited{
        color: #1069AF;
     }  
     a.leftarrow {
-        background-image: url(/images/leftarrow.png);
         background-repeat: no-repeat;
         width:15px;
         height:20px;
         display: inline-block;
         background-position: 0px 3px;
     }
-    a.leftarrow:hover {
+    a.leftarrow-image{
+        background-image: url(/images/leftarrow.png);
+    }
+    a.leftarrow-image:hover {
         background-image: url(/images/leftarrow_hover.png);
     }
     a.rightarrow {
-        background-image: url(/images/rightarrow.png);
         background-repeat: no-repeat;
         width:15px;
         height:20px;
         background-position: 5px 3px;
         display: inline-block;
     }
-    a.rightarrow:hover {
+    a.rightarrow-image{
+        background-image: url(/images/rightarrow.png);
+    }
+    a.rightarrow-image:hover {
         background-image: url(/images/rightarrow_hover.png);
     }
     ul{
@@ -135,15 +143,28 @@ h2{
         li {
             float: left;
             width: 25px;
-            padding: 3px;
+            padding: 3px 6px 3px 6px;
             text-align: right;
         }
     }
     ul.dates{
+        li.today{
+            border:solid 1px #4881AD;
+            border-radius: 3px;
+            color: #1069AF;
+            padding: 2px 5px 2px 5px;
+            background: #ffffff;
+            background: -moz-linear-gradient(top,  #ffffff 30%, #ccd9e2 100%);
+            background: -webkit-linear-gradient(top,  #ffffff 30%,#ccd9e2 100%);
+            background: linear-gradient(to bottom,  #ffffff 30%,#ccd9e2 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ccd9e2',GradientType=0 );
+
+        }
         li:hover{
             color: #1069AF;
-            padding: 2px;
+            padding: 2px 5px 2px 5px;
             border:solid 1px #64BCFA;
+            border-radius: 3px;
         }
     }
     ul.days li{
@@ -163,6 +184,7 @@ h2{
     ul.months li:hover{
         color: #1069AF;
         border:solid 1px #64BCFA;
+        border-radius: 3px;
     }
     .dateNotOfCurrentMonth{
         color:#c0c0c0;

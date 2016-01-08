@@ -239,7 +239,8 @@ h2 {
   background-color: #fff;
 }
 
-.calendar {
+.calendar-control {
+  display: none;
   background-color: #fff;
   border: #afafaf solid 1px;
   position: absolute;
@@ -260,17 +261,17 @@ h2 {
   -ms-user-select: none;
   user-select: none;
 }
-.calendar .wrapper {
+.calendar-control .wrapper {
   width: 500px;
   height: 154px;
   position: relative;
 }
-.calendar .floater {
+.calendar-control .floater {
   float: left;
   transform: scale(1);
   margin: 0px 10px 10px 8px;
 }
-.calendar a {
+.calendar-control a {
   text-decoration: none;
   color: #1069AF;
   font-weight: bold;
@@ -279,70 +280,90 @@ h2 {
   display: inline-block;
   line-height: 20px;
 }
-.calendar a:visited {
+.calendar-control a:hover {
+  color: #008FFF;
+}
+.calendar-control a:visited {
   color: #1069AF;
 }
-.calendar a.leftarrow {
-  background-image: url(/images/leftarrow.png);
+.calendar-control a.leftarrow {
   background-repeat: no-repeat;
   width: 15px;
   height: 20px;
   display: inline-block;
   background-position: 0px 3px;
 }
-.calendar a.leftarrow:hover {
+.calendar-control a.leftarrow-image {
+  background-image: url(/images/leftarrow.png);
+}
+.calendar-control a.leftarrow-image:hover {
   background-image: url(/images/leftarrow_hover.png);
 }
-.calendar a.rightarrow {
-  background-image: url(/images/rightarrow.png);
+.calendar-control a.rightarrow {
   background-repeat: no-repeat;
   width: 15px;
   height: 20px;
   background-position: 5px 3px;
   display: inline-block;
 }
-.calendar a.rightarrow:hover {
+.calendar-control a.rightarrow-image {
+  background-image: url(/images/rightarrow.png);
+}
+.calendar-control a.rightarrow-image:hover {
   background-image: url(/images/rightarrow_hover.png);
 }
-.calendar ul {
+.calendar-control ul {
   margin: 0px;
   padding: 0px;
   list-style: none;
   clear: both;
 }
-.calendar ul li {
+.calendar-control ul li {
   float: left;
   width: 25px;
-  padding: 3px;
+  padding: 3px 6px 3px 6px;
   text-align: right;
 }
-.calendar ul.dates li:hover {
+.calendar-control ul.dates li.today {
+  border: solid 1px #4881AD;
+  border-radius: 3px;
   color: #1069AF;
-  padding: 2px;
-  border: solid 1px #64BCFA;
+  padding: 2px 5px 2px 5px;
+  background: #ffffff;
+  background: -moz-linear-gradient(top, #ffffff 30%, #ccd9e2 100%);
+  background: -webkit-linear-gradient(top, #ffffff 30%, #ccd9e2 100%);
+  background: linear-gradient(to bottom, #ffffff 30%, #ccd9e2 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ccd9e2',GradientType=0 );
 }
-.calendar ul.days li {
+.calendar-control ul.dates li:hover {
+  color: #1069AF;
+  padding: 2px 5px 2px 5px;
+  border: solid 1px #64BCFA;
+  border-radius: 3px;
+}
+.calendar-control ul.days li {
   font-weight: bold;
   border-bottom: 1px solid #dfdfdf;
 }
-.calendar ul.months {
+.calendar-control ul.months {
   margin-top: 16px;
 }
-.calendar ul.months li {
+.calendar-control ul.months li {
   width: 46px;
   height: 46px;
   text-align: center;
   border: solid 1px #f0f0f0;
   padding-top: 12px;
 }
-.calendar ul.months li:hover {
+.calendar-control ul.months li:hover {
   color: #1069AF;
   border: solid 1px #64BCFA;
+  border-radius: 3px;
 }
-.calendar .dateNotOfCurrentMonth {
+.calendar-control .dateNotOfCurrentMonth {
   color: #c0c0c0;
 }
-.calendar .separator {
+.calendar-control .separator {
   border-top: 1px solid #efefff;
   display: block;
   margin-top: 5px;

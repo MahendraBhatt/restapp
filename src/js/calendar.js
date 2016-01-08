@@ -1,10 +1,12 @@
 (function(){
     var calendar = {
+        input: null,
         minYear: 1900,
         maxYear: 2099,
         id: parseInt(Math.random() * 1000, 10),
         levels: { decade: 1, year:2, month: 3 },
         currentLevel: 3,
+        today: null,
         modes: { previous: 'previous', upper: 'upper', next: 'next' },
         months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September','October', 'November', 'December'],
         days: ['Su','Mo','Tu','We','Th','Fr','Sa'],
@@ -13,7 +15,8 @@
         subContainer: document.createElement('div'),
         setDate: function(){
             var d = new Date($(this).attr('data'));
-            console.log(d.mmddyyyy());
+            calendar.input.val(d.mmddyyyy());
+            calendar.hide();
         },
         load: function(mode, year, month){
             if(mode === calendar.modes.upper){
@@ -46,7 +49,7 @@
         renderMonthYear: function(year, month){
             var frag = document.createDocumentFragment();
             var leftArrow = document.createElement('a');
-            leftArrow.className = 'leftarrow';
+            leftArrow.className = 'leftarrow leftarrow-image';
             leftArrow.innerHTML = '&nbsp;';
             leftArrow.id = 'leftarrow_'+calendar.id;
             $(leftArrow).on('click',function(e){ calendar.load(calendar.modes.previous, year, month); e.preventDefault(); });
@@ -57,7 +60,7 @@
             $(monthYear).on('click',function(){ calendar.load(calendar.modes.upper, year, month); });
             frag.appendChild(monthYear);
             var rightArrow = document.createElement('a');
-            rightArrow.className = 'rightarrow';
+            rightArrow.className = 'rightarrow rightarrow-image';
             rightArrow.id = 'rightarrow_'+calendar.id;
             rightArrow.innerHTML = '&nbsp;';
             $(rightArrow).on('click',function(){ calendar.load(calendar.modes.next, year, month); });
@@ -86,19 +89,28 @@
             } 
             
             if(assignLeftEvent === true){
+                leftArrow.addClass('leftarrow-image');
                 leftArrow.on('click',function(e){
                     calendar.load(calendar.modes.previous, year, month);
                 });
+            } else {
+                leftArrow.removeClass('leftarrow-image');
             }
+            
             if(assignRightEvent === true){
+                rightArrow.addClass('rightarrow-image');
                 rightArrow.on('click',function(e){
                     calendar.load(calendar.modes.next, year, month);
                 });
+            } else {
+                rightArrow.removeClass('rightarrow-image');
             }
                         
             var monthyear = $('#monthyear_'+calendar.id);
             monthyear.off('click').on('click',function(e){
-                calendar.load(calendar.modes.upper, year, month);
+                if(calendar.currentLevel !== calendar.levels.decade){
+                    calendar.load(calendar.modes.upper, year, month);
+                }
             });
             if(calendar.currentLevel === calendar.levels.decade){
                 var decadeStartYear = year;
@@ -133,10 +145,12 @@
                         }
                         li.innerHTML = i;
                         li.onclick = function(){ 
+                            var y = parseInt($(this).attr('data-year'), 10);
+                            var m = parseInt($(this).attr('data-month'), 10);
                             $(calendar.subContainer).html('');
                             calendar.currentLevel = calendar.levels.year;
-                            calendar.changeMonthYearEvent($(this).attr('data-year'), $(this).attr('data-month'));
-                            calendar.renderMonths($(this).attr('data-year'), $(this).attr('data-month'));
+                            calendar.changeMonthYearEvent(y, m);
+                            calendar.renderMonths(y, m);
                         };
                     }
                     ul.appendChild(li);
@@ -157,11 +171,10 @@
                     var li = document.createElement('li');
                     li.setAttribute('data-month', i);
                     li.setAttribute('data-year', year);
-                    li.onclick = function(){ 
-                        $(calendar.wrapper).html('');
-                        calendar.currentLevel = calendar.levels.month;
-                        calendar.changeMonthYearEvent($(this).attr('data-year'), $(this).attr('data-month'));
-                        calendar.render($(this).attr('data-year'), $(this).attr('data-month'));
+                    li.onclick = function(){
+                        var y = parseInt($(this).attr('data-year'), 10);
+                        var m = parseInt($(this).attr('data-month'), 10); 
+                        calendar.renderMonth(y, m);
                     };
                     li.innerHTML = calendar.months[i].substr(0, 3);
                     ul.appendChild(li);
@@ -173,6 +186,12 @@
                 }
             }
         },
+        renderMonth: function(y, m){
+            $(calendar.wrapper).html('');
+            calendar.currentLevel = calendar.levels.month;
+            calendar.changeMonthYearEvent(y, m);
+            calendar.render(y, m);
+        },
         renderWeek: function(frag, day, firstDay, lastDay){
             var ul = document.createElement('ul');
             ul.className = 'dates';
@@ -181,6 +200,8 @@
                 var li = document.createElement('li');
                 if(day < firstDay || day > lastDay){
                     li.className = 'dateNotOfCurrentMonth';
+                } else if(day.mmddyyyy() === calendar.today) {
+                    li.className = 'today';
                 }
                 li.innerHTML = day.getDate().toString();
                 li.setAttribute('data', day.toString());
@@ -240,19 +261,6 @@
                     });
                 } else if(mode === calendar.modes.upper){
                     $(calendar.subContainer).html('');
-                    // var sub = $(calendar.subContainer);
-                    // var timer = setInterval(function(){
-                    //     var val = sub.css('transform');
-                    //     val = val.replace('matrix(','')
-                    //     val = parseFloat(val.substring(0, val.indexOf(',')));
-                    //     if(val > 0.1){
-                    //         $(sub).css({
-                    //             'transform': 'scale(' + (val - 0.1) + ')'
-                    //         });
-                    //     } else {
-                    //         clearInterval(timer);                              
-                    //     }
-                    // }, 10);
                 }
             } else{
                 calendar.subContainer.className = 'floater';
@@ -271,14 +279,38 @@
         },
         build: function(date){
             var y = date.getFullYear(), m = date.getMonth();
-            $(calendar.container).addClass('calendar');
+            calendar.today = date.mmddyyyy();
+            $(calendar.container).addClass('calendar-control');
             calendar.renderMonthYear(y, m);
             calendar.wrapper.className = 'wrapper';
             $(calendar.container).append(calendar.wrapper);
             calendar.render(y, m);
             document.body.appendChild(calendar.container);
-        }   
+            $(calendar.container).click(function(e){
+                e.stopPropagation();
+            });
+        },
+        show: function(){
+            var offset = calendar.input.offset();
+            $(calendar.container).css({ top: parseFloat(calendar.input.outerHeight() + offset.top) +'px', left: offset.left+'px' });
+            $(calendar.container).show();
+        }, 
+        hide: function(){
+            $(calendar.container).hide();
+            //var d = new Date();
+            //calendar.renderMonth(d.getFullYear(), d.getMonth());
+        }
     };
 
     calendar.build(new Date());
+    
+    $(document).click(function(e){
+        calendar.hide();
+    });
+    
+    $('.calendar').click(function(e){
+        calendar.input = $(this);
+        calendar.show();
+        e.stopPropagation();
+    });
 })();
