@@ -67,3 +67,95 @@ h2{
   left: 0px;
   background-color: #fff;
 }
+
+.calendar{
+    background-color: #fff;
+    border: #afafaf solid 1px;
+    position: absolute;
+    z-index: 99999;
+    top: 100px;
+    left: 100px;
+    width: 200px;
+    height: 200px;
+    padding-top: 6px;
+    text-align: center;
+    font-size: 0.8rem;
+    cursor: default;
+    overflow: hidden;
+    @include disableTextSelect;
+    .wrapper{
+        width: 500px;
+        height: 154px;
+        position: relative;
+    }
+    .floater{
+        float: left;
+        transform: scale(1);
+        margin: 0px 10px 10px 8px;
+    }
+    a {
+        text-decoration: none;
+        color: #1069AF;
+        font-weight: bold;
+        cursor: default;
+        width: 150px;
+        display: inline-block;
+        line-height:20px;
+    }  
+    a:visited{
+       color: #1069AF;
+    }  
+    a.leftarrow {
+        background-image: url(/images/leftarrow.png);
+        background-repeat: no-repeat;
+        width:15px;
+        height:20px;
+        display: inline-block;
+        background-position: 0px 3px;
+    }
+    a.leftarrow:hover {
+        background-image: url(/images/leftarrow_hover.png);
+    }
+    a.rightarrow {
+        background-image: url(/images/rightarrow.png);
+        background-repeat: no-repeat;
+        width:15px;
+        height:20px;
+        background-position: 5px 3px;
+        display: inline-block;
+    }
+    a.rightarrow:hover {
+        background-image: url(/images/rightarrow_hover.png);
+    }
+    ul{
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+        clear: both;
+        li {
+            float: left;
+            width: 25px;
+            padding: 3px;
+            text-align: right;
+        }
+    }
+    ul.dates{
+        li:hover{
+            color: #1069AF;
+            padding: 2px;
+            border:solid 1px #64BCFA;
+        }
+    }
+    ul.days li{
+        font-weight: bold;
+        border-bottom: 1px solid #dfdfdf;
+    }
+    .dateNotOfCurrentMonth{
+        color:#a0a0a0;
+    }
+    .separator{
+        border-top: 1px solid #efefff;
+        display: block;
+        margin-top: 5px;
+    }
+}

@@ -238,3 +238,98 @@ h2 {
   left: 0px;
   background-color: #fff;
 }
+
+.calendar {
+  background-color: #fff;
+  border: #afafaf solid 1px;
+  position: absolute;
+  z-index: 99999;
+  top: 100px;
+  left: 100px;
+  width: 200px;
+  height: 200px;
+  padding-top: 6px;
+  text-align: center;
+  font-size: 0.8rem;
+  cursor: default;
+  overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.calendar .wrapper {
+  width: 500px;
+  height: 154px;
+  position: relative;
+}
+.calendar .floater {
+  float: left;
+  transform: scale(1);
+  margin: 0px 10px 10px 8px;
+}
+.calendar a {
+  text-decoration: none;
+  color: #1069AF;
+  font-weight: bold;
+  cursor: default;
+  width: 150px;
+  display: inline-block;
+  line-height: 20px;
+}
+.calendar a:visited {
+  color: #1069AF;
+}
+.calendar a.leftarrow {
+  background-image: url(/images/leftarrow.png);
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 20px;
+  display: inline-block;
+  background-position: 0px 3px;
+}
+.calendar a.leftarrow:hover {
+  background-image: url(/images/leftarrow_hover.png);
+}
+.calendar a.rightarrow {
+  background-image: url(/images/rightarrow.png);
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 20px;
+  background-position: 5px 3px;
+  display: inline-block;
+}
+.calendar a.rightarrow:hover {
+  background-image: url(/images/rightarrow_hover.png);
+}
+.calendar ul {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+  clear: both;
+}
+.calendar ul li {
+  float: left;
+  width: 25px;
+  padding: 3px;
+  text-align: right;
+}
+.calendar ul.dates li:hover {
+  color: #1069AF;
+  padding: 2px;
+  border: solid 1px #64BCFA;
+}
+.calendar ul.days li {
+  font-weight: bold;
+  border-bottom: 1px solid #dfdfdf;
+}
+.calendar .dateNotOfCurrentMonth {
+  color: #a0a0a0;
+}
+.calendar .separator {
+  border-top: 1px solid #efefff;
+  display: block;
+  margin-top: 5px;
+}

@@ -80,6 +80,9 @@ app.product = {
 		$("#ProductInput").html('');
 		$("#ProductTemplate").tmpl(data).appendTo("#ProductInput");
 		app.showModalDialog('ProductInput');
+           $('input[type=number]').focusout(function(){
+           $(this).val(parseFloat($(this).val()).toFixed(2)); 
+        }); 
 	},
 	regions: {},
 	loadRegions: function(){

@@ -18,7 +18,7 @@ app.grid = {
 	pager: function(options){
 		return (new function () {
 			var that = this;
-			var maxPagesToShow = 10, pageSize = 10,	currentPageNo = 1, previousPageNo = 0, recordSkip = 0, recordEnd = currentPageNo * pageSize,
+			var maxPagesToShow = 3, pageSize = 10,	currentPageNo = 1, previousPageNo = 0, recordSkip = 0, recordEnd = currentPageNo * pageSize,
 				count = options.count,
 				maxPages = Math.ceil(count / pageSize),
 				element = $(options.element),

@@ -86,6 +86,13 @@
 	<script src="../js/xhrlib.min.js"></script>
 	<script src="../js/grid.min.js"></script>
 	<script src="../js/page/product.min.js"></script>
+    
+    <script>
+        $('input[type=number]').focusout(function(){
+           $(this).val(parseFloat($(this).val()).toFixed(2)); 
+        });        
+    </script>
+    
 </body>
 
 </html>
