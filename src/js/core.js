@@ -13,13 +13,6 @@ String.prototype.format = function () {
 };
 // e.g. '{0}, how are you {1}?'.format('test 1','test 2')
 
-//format Date to yyyymmdd format 
-Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = this.getMonth().toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]); // padding
-};
 //format Date to mmddyyyy format 
 Date.prototype.mmddyyyy = function() {
    var yyyy = this.getFullYear().toString();
@@ -33,11 +26,10 @@ $.fn.serializeObject = function()
 {
     var o = {};
     $(this).find('input,select,textarea').each(function(){
-        var val = this.value;
+        var val = this.value.trim();
         if($(this).hasClass('calendar') === true){
             var arr = val.split('/'); 
-            var d = new Date(arr[2],arr[0],arr[1]);
-            val = d.yyyymmdd();
+            val = new Date(arr[2],arr[0] - 1,arr[1]);
         }
         o[this.name] = val || '';
     });
