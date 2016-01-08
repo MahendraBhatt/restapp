@@ -11,7 +11,7 @@ var schema = {
 		{ name: 'HireDate', type: 'Date', sortable: false, searchable: true, showInGrid: true },
 		{ name: 'Job', type: 'String', sortable: false, searchable: false, showInGrid: true },
 		{ name: 'Sex', type: 'String', sortable: false, searchable: false, showInGrid: true },
-		{ name: 'BirthDate', type: 'Date', sortable: false, searchable: false, showInGrid: true },
+		{ name: 'BirthDate', type: 'Date', sortable: false, searchable: true, showInGrid: true },
 		{ name: 'Salary', type: 'Number', sortable: false, searchable: false, showInGrid: false },
 		{ name: 'Bonus', type: 'Number', sortable: false, searchable: false, showInGrid: false }
 	]

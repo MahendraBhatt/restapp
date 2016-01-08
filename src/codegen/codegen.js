@@ -72,7 +72,9 @@ function getGridColumns(columns) {
 				return obj.showInGrid;
 			})
 			.forEach(function (element, index, array) {
-				gridDisplayColumns += '<div class="col-1">${' + element.name + '}</div>';
+				gridDisplayColumns += '<div class="col-1">${'+
+                                        (element.type === 'Date' ? 'app.formatDate('+element.name+')' :  element.name )
+                                        +'}</div>';
 				gridHeaderColumns += '<div class="col-1">'+
 									(element.sortable ? '<a href="#" data-sort-expression="' + element.name +
 														'" data-sort-order="none">'+element.name+'</a>' 
@@ -123,7 +125,7 @@ function getFormControls(columns){
 	columns.forEach(function (element, index, array) {
 				var type = getInputType(element.type); 
 				formControls += '<div class="row">\r\t\t\t<div class="col-4 right">'+element.name+'</div>\r\t\t\t' 
-									+ '<div class="col-4 left"><input '+(element.type === 'Date' ? 'class="calendar"' : '')+' type="'+type+'" name="'+element.name+'" value="${'+element.name+'}" /></div>\r\t\t</div>';
+									+ '<div class="col-4 left"><input type="'+type+'" name="'+element.name+'" '+(element.type === 'Date' ? 'class="calendar" value="${app.formatDate('+element.name+')}"' : ' value="${'+element.name+'}" ')+' /></div>\r\t\t</div>';
 				if (index + 1 < array.length) {
 					formControls += '\r\t\t';
 				}

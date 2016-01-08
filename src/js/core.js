@@ -14,6 +14,13 @@ String.prototype.format = function () {
 // e.g. '{0}, how are you {1}?'.format('test 1','test 2')
 
 //format Date to yyyymmdd format 
+Date.prototype.yyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = this.getMonth().toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]); // padding
+};
+//format Date to mmddyyyy format 
 Date.prototype.mmddyyyy = function() {
    var yyyy = this.getFullYear().toString();
    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
@@ -25,16 +32,14 @@ Date.prototype.mmddyyyy = function() {
 $.fn.serializeObject = function()
 {
     var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
+    $(this).find('input,select,textarea').each(function(){
+        var val = this.value;
+        if($(this).hasClass('calendar') === true){
+            var arr = val.split('/'); 
+            var d = new Date(arr[2],arr[0],arr[1]);
+            val = d.yyyymmdd();
         }
+        o[this.name] = val || '';
     });
     return o;
 };
@@ -76,6 +81,10 @@ var app = {
             $('#'+modalid).remove();
         });
         app.attachCalendarEvent(dialog);
+    },
+    formatDate: function(val){
+        var d = new Date(val);
+        return d.mmddyyyy();
     },
     formatPrice: function(price) {
         if (price === null) { return ''; }

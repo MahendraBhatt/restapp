@@ -11,7 +11,7 @@ var Employee = require('../models/employee');
 
 function getWhereCondition(req){
   var query = {};
-  		query.EmpNo = new RegExp(req.query.EmpNo, "i");		query.FirstName = new RegExp(req.query.FirstName, "i");	if(req.query.FromHireDate !== undefined || req.query.ToHireDate !== undefined){				query.HireDate = {};				if(req.query.FromHireDate){ query.HireDate.$gte = req.query.FromHireDate; }				if(req.query.ToHireDate){ query.HireDate.$lte = req.query.ToHireDate; }	}
+  		query.EmpNo = new RegExp(req.query.EmpNo, "i");		query.FirstName = new RegExp(req.query.FirstName, "i");	if(req.query.FromHireDate !== undefined || req.query.ToHireDate !== undefined){				query.HireDate = {};				if(req.query.FromHireDate){ query.HireDate.$gte = req.query.FromHireDate; }				if(req.query.ToHireDate){ query.HireDate.$lte = req.query.ToHireDate; }	}	if(req.query.FromBirthDate !== undefined || req.query.ToBirthDate !== undefined){				query.BirthDate = {};				if(req.query.FromBirthDate){ query.BirthDate.$gte = req.query.FromBirthDate; }				if(req.query.ToBirthDate){ query.BirthDate.$lte = req.query.ToBirthDate; }	}
   //following is example of expandable where condition 
   //for e.g. you have a value for search and it is optional for search
   /*

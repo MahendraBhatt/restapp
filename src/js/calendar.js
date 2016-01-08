@@ -297,8 +297,8 @@
         }, 
         hide: function(){
             $(calendar.container).hide();
-            //var d = new Date();
-            //calendar.renderMonth(d.getFullYear(), d.getMonth());
+            var d = new Date();
+            calendar.renderMonth(d.getFullYear(), d.getMonth());
         }
     };
 
