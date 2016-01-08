@@ -20,31 +20,22 @@
                 } else if(calendar.currentLevel == calendar.levels.year){
                    calendar.currentLevel = calendar.levels.decade;
                 }
-                // var sub = $(calendar.subContainer);
-                // var timer = setInterval(function(){
-                //     var val = sub.css('transform');
-                //     val = val.replace('matrix(','')
-                //     val = parseFloat(val.substring(0, val.indexOf(',')));
-                //     if(val > 0.1){
-                //         $(sub).css({
-                //             'transform': 'scale(' + (val - 0.1) + ')'
-                //         });
-                //     } else {
-                //         clearInterval(timer);                              
-                //     }
-                // }, 10);
             } else {
-                if(calendar.currentLevel == calendar.levels.year){
-                   year = (mode == calendar.modes.previous) ? year - 1 : year + 1;
-                } else if(calendar.currentLevel == calendar.levels.decade){
-                   year = year - 10; 
+                if(calendar.currentLevel == calendar.levels.decade){
+                    if(year + 10 <= 2099 && year - 10 >= 1900){
+                        year = (mode == calendar.modes.previous) ? year - 10 : year + 10;
+                    }
+                } else if(calendar.currentLevel == calendar.levels.year){
+                    if(year < 2099 && year > 1900){
+                        year = (mode == calendar.modes.previous) ? year - 1 : year + 1;
+                    }
+                } else if(calendar.currentLevel == calendar.levels.month){
+                   month = (mode == calendar.modes.previous) ? month - 1 : month + 1;
                 }
-                month = (mode == calendar.modes.previous) ? month - 1 : month + 1;
             }
-            var d = new Date(year, month, 0);
-            calendar.changeMonthYearEvent(year, d.getMonth());
-            calendar.render(year, d.getMonth(), mode);
-            console.log(mode + ' ' + calendar.currentLevel);
+            var d = new Date(year, month, 1);
+            calendar.changeMonthYearEvent(d.getFullYear(), d.getMonth());
+            calendar.render(d.getFullYear(), d.getMonth(), mode);
         },
         renderMonthYear: function(year, month){
             var frag = document.createDocumentFragment();
@@ -156,14 +147,36 @@
                         $(calendar.wrapper).css('left', 0);
                         $(oldSubContainer).remove();    
                     });
+                } else if(mode === calendar.modes.upper){
+                    $(calendar.subContainer).html('');
+                    // var sub = $(calendar.subContainer);
+                    // var timer = setInterval(function(){
+                    //     var val = sub.css('transform');
+                    //     val = val.replace('matrix(','')
+                    //     val = parseFloat(val.substring(0, val.indexOf(',')));
+                    //     if(val > 0.1){
+                    //         $(sub).css({
+                    //             'transform': 'scale(' + (val - 0.1) + ')'
+                    //         });
+                    //     } else {
+                    //         clearInterval(timer);                              
+                    //     }
+                    // }, 10);
                 }
             } else{
                 calendar.subContainer.className = 'floater';
                 $(calendar.subContainer).html('');
                 $(calendar.wrapper).append(calendar.subContainer);    
             }
-            calendar.renderDaysOfWeek();
-            calendar.renderDays(year, month);
+            
+            if(calendar.currentLevel === calendar.levels.month){
+                calendar.renderDaysOfWeek();
+                calendar.renderDays(year, month);
+            } else if(calendar.currentLevel === calendar.levels.year){
+                //renderMonths
+            } else if(calendar.currentLevel === calendar.levels.decade){
+                //renderYears
+            }
         },
         build: function(date){
             var y = date.getFullYear(), m = date.getMonth();
