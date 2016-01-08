@@ -75,8 +75,11 @@ var app = {
         app.attachCalendarEvent(dialog);
     },
     formatDate: function(val){
-        var d = new Date(val);
-        return d.mmddyyyy();
+        if(val!==''){
+            var d = new Date(val);
+            return d.mmddyyyy();
+        }
+        return '';
     },
     formatPrice: function(price) {
         if (price === null) { return ''; }

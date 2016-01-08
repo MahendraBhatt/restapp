@@ -173,9 +173,23 @@ function generateSearchQueryString(columns){
 	return searchQueryString;
 }
 
+function getDateFields(columns){
+    var dateFields = '';
+    columns.filter(function (obj) {
+				return obj.type === 'Date';
+			}).forEach(function(element, index, array){
+                dateFields += element.name + ': \'\'';
+                if (index + 1 < array.length) {
+					dateFields += ', ';
+				}
+            });
+    return dateFields;    
+}
+
 fs.readFile('template/js.txt', 'utf8', function (err, data) {
 	var js = data;
 	var newjs = js.replace(/{{name}}/g, name.toLowerCase())
+        .replace(/{{date-fields}}/g, getDateFields(schema.columns))
 		.replace(/{{camelized-name}}/g, name)
 		.replace(/{{namespace}}/g, schema.namespace)
 		.replace(/{{search-query-string}}/g, generateSearchQueryString(schema.columns));

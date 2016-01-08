@@ -68,7 +68,7 @@ app.employee = {
 		return false;
 	},
 	showInput: function(row){
-		var data = {};
+		var data = { HireDate: '', BirthDate: '' };
 		if (row !== undefined) {
 			data = $(row).tmplItem().data;
 		}

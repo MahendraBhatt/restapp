@@ -68,7 +68,7 @@
 		return false;
 	},
 	showInput: function(row){
-		var data = {};
+		var data = { {{date-fields}} };
 		if (row !== undefined) {
 			data = $(row).tmplItem().data;
 		}
