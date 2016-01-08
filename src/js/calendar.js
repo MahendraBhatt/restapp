@@ -1,5 +1,7 @@
 (function(){
     var calendar = {
+        minYear: 1900,
+        maxYear: 2099,
         id: parseInt(Math.random() * 1000, 10),
         levels: { decade: 1, year:2, month: 3 },
         currentLevel: 3,
@@ -22,12 +24,16 @@
                 }
             } else {
                 if(calendar.currentLevel == calendar.levels.decade){
-                    if(year + 10 <= 2099 && year - 10 >= 1900){
-                        year = (mode == calendar.modes.previous) ? year - 10 : year + 10;
+                    if(mode === calendar.modes.previous && year - 10 >= calendar.minYear){
+                        year = year - 10;
+                    }else if(mode === calendar.modes.next && year + 10 <= calendar.maxYear){
+                        year = year + 10;
                     }
                 } else if(calendar.currentLevel == calendar.levels.year){
-                    if(year < 2099 && year > 1900){
-                        year = (mode == calendar.modes.previous) ? year - 1 : year + 1;
+                    if(mode === calendar.modes.previous && year > calendar.minYear){
+                        year = year - 1;
+                    }else if(mode === calendar.modes.next && year < calendar.maxYear){
+                        year = year + 1;
                     }
                 } else if(calendar.currentLevel == calendar.levels.month){
                    month = (mode == calendar.modes.previous) ? month - 1 : month + 1;
@@ -62,15 +68,36 @@
             $(calendar.container).append(frag);
         },
         changeMonthYearEvent: function(year, month){
-            $('#leftarrow_'+calendar.id).off('click').on('click',function(e){
-                calendar.load(calendar.modes.previous, year, month);
-                e.preventDefault();
-            });
-            $('#rightarrow_'+calendar.id).off('click').on('click',function(){
-                calendar.load(calendar.modes.next, year, month);
-            });
+            var leftArrow = $('#leftarrow_'+calendar.id);
+            var rightArrow = $('#rightarrow_'+calendar.id); 
+            leftArrow.off('click');
+            rightArrow.off('click');
+            var assignLeftEvent = true, assignRightEvent = true;
+
+            if(calendar.currentLevel === calendar.levels.month){
+                assignLeftEvent = !(year == calendar.minYear && month == 0);
+                assignRightEvent = !(year == calendar.maxYear && month == 11);
+            } else if(calendar.currentLevel === calendar.levels.year){
+                assignLeftEvent = year !== calendar.minYear;
+                assignRightEvent = year !== calendar.maxYear;
+            } else if(calendar.currentLevel === calendar.levels.decade){
+                assignLeftEvent = year - 10 >= calendar.minYear;  
+                assignRightEvent =  year + 10 <= calendar.maxYear;
+            } 
+            
+            if(assignLeftEvent === true){
+                leftArrow.on('click',function(e){
+                    calendar.load(calendar.modes.previous, year, month);
+                });
+            }
+            if(assignRightEvent === true){
+                rightArrow.on('click',function(e){
+                    calendar.load(calendar.modes.next, year, month);
+                });
+            }
+                        
             var monthyear = $('#monthyear_'+calendar.id);
-            monthyear.off('click').on('click',function(){
+            monthyear.off('click').on('click',function(e){
                 calendar.load(calendar.modes.upper, year, month);
             });
             if(calendar.currentLevel === calendar.levels.decade){
@@ -85,6 +112,67 @@
                 monthyear.html(calendar.months[month]+ ', '+year);
             }
         },
+        renderYears: function(year, month){
+            var decadeStartYear = year, decadeEndYear = 0;
+            while (decadeStartYear % 10 !== 0) {
+                decadeStartYear--;
+            }
+            var actualDecadeStartYear = decadeStartYear, actualDecadeEndYear = decadeStartYear + 9;
+            decadeStartYear = decadeStartYear - 1;
+            decadeEndYear = decadeStartYear + 3;
+            for(var d = 0; d <= 2; d++){
+                var ul = document.createElement('ul');
+                ul.className = 'months';
+                for(var i = decadeStartYear; i <= decadeEndYear; i++){ 
+                    var li = document.createElement('li');
+                    if(i >= calendar.minYear && i <= calendar.maxYear){
+                        li.setAttribute('data-month', month);
+                        li.setAttribute('data-year', i);
+                        if(i < actualDecadeStartYear || i > actualDecadeEndYear){
+                            li.className = 'dateNotOfCurrentMonth';
+                        }
+                        li.innerHTML = i;
+                        li.onclick = function(){ 
+                            $(calendar.subContainer).html('');
+                            calendar.currentLevel = calendar.levels.year;
+                            calendar.changeMonthYearEvent($(this).attr('data-year'), $(this).attr('data-month'));
+                            calendar.renderMonths($(this).attr('data-year'), $(this).attr('data-month'));
+                        };
+                    }
+                    ul.appendChild(li);
+                }
+                $(calendar.subContainer).append(ul);
+                if(decadeEndYear + 4 < decadeStartYear + 11){
+                    decadeStartYear = decadeStartYear + 4;
+                    decadeEndYear = decadeEndYear + 4;
+                }
+            }
+        },
+        renderMonths: function(year, month){
+            var startMonth = 0, endMonth = 3;
+            for(var d = 0; d <= 2; d++){
+                var ul = document.createElement('ul');
+                ul.className = 'months';
+                for(var i = startMonth; i <= endMonth; i++){ 
+                    var li = document.createElement('li');
+                    li.setAttribute('data-month', i);
+                    li.setAttribute('data-year', year);
+                    li.onclick = function(){ 
+                        $(calendar.wrapper).html('');
+                        calendar.currentLevel = calendar.levels.month;
+                        calendar.changeMonthYearEvent($(this).attr('data-year'), $(this).attr('data-month'));
+                        calendar.render($(this).attr('data-year'), $(this).attr('data-month'));
+                    };
+                    li.innerHTML = calendar.months[i].substr(0, 3);
+                    ul.appendChild(li);
+                }
+                $(calendar.subContainer).append(ul);
+                if(endMonth + 4 < calendar.months.length){
+                    startMonth = startMonth + 4;
+                    endMonth = endMonth + 4;
+                }
+            }
+        },
         renderWeek: function(frag, day, firstDay, lastDay){
             var ul = document.createElement('ul');
             ul.className = 'dates';
@@ -94,9 +182,9 @@
                 if(day < firstDay || day > lastDay){
                     li.className = 'dateNotOfCurrentMonth';
                 }
+                li.innerHTML = day.getDate().toString();
                 li.setAttribute('data', day.toString());
                 li.onclick = calendar.setDate;
-                li.innerHTML = day.getDate().toString();
                 ul.appendChild(li);
             }
             frag.appendChild(ul);
@@ -119,22 +207,25 @@
             var lastDay = new Date(y, m + 1, 0);
             var frag = document.createDocumentFragment();
             var rows = 0;
-            for (var i = firstDayOfWeek; i <= lastDay; i.setDate(i.getDate() + 7)) {
+            for (var i = firstDayOfWeek; i < lastDay; i.setDate(i.getDate() + 7)) {
                 calendar.renderWeek(frag, day, firstDay, lastDay);
                 rows++;
             }
+            var isLastYearLastMonth = !(y == calendar.maxYear && m == 11);
             //Ensuring always 6 rows are rendered in calendar for consistency
-            if(rows === 5){
+            if((rows === 5 && isLastYearLastMonth === true) || rows === 4){
                 calendar.renderWeek(frag, day, firstDay, lastDay);
-            }
+            } 
             $(calendar.subContainer).append(frag);
         },
         render: function(year, month, mode){
             if(mode !== undefined){
-                var oldSubContainer = calendar.subContainer;
-                var newSubContainer = document.createElement('div');
-                newSubContainer.className = 'floater';
-                calendar.subContainer = newSubContainer;
+                if(mode !== calendar.modes.upper){
+                    var oldSubContainer = calendar.subContainer;
+                    var newSubContainer = document.createElement('div');
+                    newSubContainer.className = 'floater';
+                    calendar.subContainer = newSubContainer;
+                }
                 if(mode === calendar.modes.previous){
                     $(oldSubContainer).before(newSubContainer);
                     $(calendar.wrapper).css('left', '-175px');
@@ -173,9 +264,9 @@
                 calendar.renderDaysOfWeek();
                 calendar.renderDays(year, month);
             } else if(calendar.currentLevel === calendar.levels.year){
-                //renderMonths
+                calendar.renderMonths(year, month);
             } else if(calendar.currentLevel === calendar.levels.decade){
-                //renderYears
+                calendar.renderYears(year, month);
             }
         },
         build: function(date){

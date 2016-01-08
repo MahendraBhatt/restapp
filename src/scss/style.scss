@@ -79,7 +79,7 @@ h2{
     height: 200px;
     padding-top: 6px;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     cursor: default;
     overflow: hidden;
     @include disableTextSelect;
@@ -150,8 +150,22 @@ h2{
         font-weight: bold;
         border-bottom: 1px solid #dfdfdf;
     }
+    ul.months{
+        margin-top: 16px;
+    }
+    ul.months li{
+        width: 46px;
+        height: 46px;
+        text-align: center;
+        border: solid 1px #f0f0f0;
+        padding-top: 12px; 
+    }
+    ul.months li:hover{
+        color: #1069AF;
+        border:solid 1px #64BCFA;
+    }
     .dateNotOfCurrentMonth{
-        color:#a0a0a0;
+        color:#c0c0c0;
     }
     .separator{
         border-top: 1px solid #efefff;
