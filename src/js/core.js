@@ -39,7 +39,6 @@ $.fn.serializeObject = function()
 //Declaring namespace
 var app = {
     currency: '$',
-    dateformat: 'mm/dd/yyyy',
     currentModalDialogId: '',
     generateGUID: function() {
         var guid = function (len) {
@@ -106,6 +105,32 @@ var app = {
             calendar.input = $(this);
             calendar.show();
             e.stopPropagation();
+        }).off('focusout').on('focusout', function(e){
+            var val = $(this).val().trim();
+            if(val !== ''){
+                var dateRegEx = /^([0-1]?[0-9]{1})\/([0-3]?[0-9]{1})\/(\d{4})$/g;
+                var match = dateRegEx.exec(val);
+                var invalid = false;
+                if(match === null){
+                    invalid = true;
+                } else {
+                    var m = parseInt(match[1]), d = parseInt(match[2]), y = parseInt(match[3]);
+                    if(y > calendar.maxYear || y < calendar.minYear){
+                        invalid = true;
+                    } else if(m == 2 && ((y % 4 == 0 && d > 29) || (y % 4 != 0 && d > 28))){
+                        invalid = true;
+                    } else {
+                        var dt = new Date(val);
+                        if(dt.toString() == 'Invalid Date'){
+                            invalid = true;
+                        }
+                    }
+                }
+                if(invalid === true){
+                    $(this).val('');
+                    $(this).focus();
+                }
+            }
         });
     },
     validate: function(container) {

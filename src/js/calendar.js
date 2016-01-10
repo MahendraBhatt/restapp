@@ -301,7 +301,7 @@
             var offset = calendar.input.offset();
             $(calendar.container).css({ top: parseFloat(calendar.input.outerHeight() + offset.top) +'px', left: offset.left+'px' });
             $(calendar.container).show();
-            if(calendar.input.val() !== ''){
+            if(calendar.input.val().trim() !== ''){
                 var d = new Date(calendar.input.val());
                 calendar.renderMonth(d.getFullYear(), d.getMonth());
             }

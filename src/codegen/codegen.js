@@ -143,13 +143,14 @@ function getSearchControls(columns){
                 label = (element.label === undefined) ? element.name : element.label;
                 if(element.type === 'Date'){
                     searchControls += '<div class="col-1 right">From '+label+'</div>\r\t\t\t' 
-                                    + '<div class="col-2"><input autocomplete="off" class="calendar" id="search_From'+element.name+'" /></div>'
+                                    + '<div class="col-2"><input autocomplete="off" class="calendar" maxlength="10" id="search_From'+element.name+'" /></div>'
                                     + '<div class="col-1 right">To '+label+'</div>\r\t\t\t' 
-                                    + '<div class="col-2"><input autocomplete="off" class="calendar" id="search_To'+element.name+'" /></div>';
+                                    + '<div class="col-2"><input autocomplete="off" class="calendar" maxlength="10" id="search_To'+element.name+'" /></div>';
                 }else{
                     searchControls += '<div class="col-1 right">'+label+'</div>\r\t\t\t';
                     if(element.referenceFrom === undefined) {
-                        searchControls += '<div class="col-2"><input autocomplete="off" type="'+type+'" id="search_'+element.name+'" /></div>';
+                        searchControls += '<div class="col-2"><input autocomplete="off" type="'+type+'" id="search_'+element.name+'" '
+                                        +(element.maxLength === undefined ? '' : 'maxlength="'+element.maxLength+'"')+' /></div>';
                     }else{
                         searchControls += '<div class="col-2"><select id="search_'+element.name+'"></select></div>';
                     }	
@@ -173,9 +174,10 @@ function getFormControls(columns){
 				formControls += '<div class="col-1 right">'+((element.mandatory === true) ? '<span class="asterix">*</span> ' : '')+label+'</div>\r\t\t\t'; 
           		if(element.referenceFrom === undefined) {
                     formControls += '<div class="col-2 left"><input autocomplete="off" type="'+type+'" name="'+element.name+'" data-label="'+label+'" '
-                                    +(element.type === 'Date' ? 'class="calendar'+((element.mandatory === true) ? ' mandatory' : '')
-                                    +'" value="${app.formatDate('+element.name+')}"' : 
-                                    ((element.mandatory === true) ? 'class="mandatory"' : '')+' value="${'+element.name+'}" ')+' /></div>';
+                                    +(element.type === 'Date'
+                                     ? 'class="calendar' + ((element.mandatory === true) ? ' mandatory' : '') +'" maxlength="10" value="${app.formatDate('+element.name+')}" '
+                                     : ((element.mandatory === true) ? 'class="mandatory"' : '')+' value="${'+element.name+'}" ')
+                                    +(element.maxLength === undefined ? '' : 'maxlength="'+element.maxLength+'"')+' /></div>';
                 }else{
                     formControls += '<div class="col-2 left"><select name="'+element.name+'">{{tmpl('
                                     +schema.namespace+'.'+name.toLowerCase()+'.'+element.name.toLowerCase()+'s, {selectedId: '
