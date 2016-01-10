@@ -4,11 +4,7 @@ var mongoose = restful.mongoose;
 var Schema = mongoose.Schema;
 
 //order Schema
-var orderSchema = new Schema({
-	"No": "String",
-	"Date": "Date",
-	"Value": "String"
-})
+var orderSchema = new Schema({No: 'String',	Date: 'Date',	Value: 'String'});
 
 var orderModel = mongoose.model('Order', orderSchema);
 

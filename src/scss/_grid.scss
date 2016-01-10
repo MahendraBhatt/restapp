@@ -16,8 +16,14 @@
 .row{
   padding: 6px;
   //border-bottom: solid 1px $primary-color;
-  //@include rounded7px; 
+  //@include rounded7px;
+  div{
+    line-height: 18px;
+    float: left;
+    font-size: 1rem;  
+  } 
 }
+
 
 .row-separator{
    border-bottom: solid 1px #afafaf; 
@@ -99,14 +105,43 @@ $totalcolumns: $columns;
   @return ($curr * 100%) / $total;
 }
 
-@while $columns > 0 {
-  .col-#{$columns} {
-    width: calc-percent($columns, $totalcolumns);
-    padding: $gutter/2;
-    //border:solid 2px #ff0000;
-    line-height: 18px;
-    float: left;
-    font-size: 1rem;
-  }
-  $columns: $columns - 1;
+@media (min-width: 1360px) {
+    @while $columns > 0 {
+    .col-#{$columns} {
+        width: calc-percent($columns, $totalcolumns);
+        padding: $gutter/2;
+    }
+    $columns: $columns - 1;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1359px) {
+    @while $columns > 0 {
+        $column1: $columns - 1;
+        $column2: $columns - 2;
+        .col-#{$columns},.col-#{$column1},.col-#{$column2} {
+            width: calc-percent($columns, $totalcolumns);
+            padding: $gutter/2;
+        }
+        $columns: $columns - 3;
+    }
+}
+
+@media (min-width: 400px) and (max-width: 767px) {
+    .col-12, .col-11, .col-10, .col-9{
+        width: 100%;
+        padding: $gutter/2;
+    }
+     .col-8, .col-7, .col-6, .col-5 {
+         width: 75%;
+        padding: $gutter/2;
+     }
+     .col-4,.col-3, .col-2 {
+        width: 65%;
+        padding: $gutter/2;
+    }
+    .col-1{
+        width:35%;
+        padding: $gutter/2;
+    }
 }

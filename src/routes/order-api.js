@@ -11,16 +11,7 @@ var Order = require('../models/order');
 
 function getWhereCondition(req){
   var query = {};
-  query.No = new RegExp(req.query.No, "i");
-  if(req.query.FromDate !== undefined || req.query.ToDate !== undefined){
-	   query.Date = {};
-     if(req.query.FromDate){
-       query.Date.$gte = req.query.FromDate;
-     }
-     if(req.query.ToDate){
-       query.Date.$lte = req.query.ToDate;
-     }
-  }
+  	query.No = new RegExp(req.query.No, "i");	if(req.query.FromDate !== undefined || req.query.ToDate !== undefined){				query.Date = {};				if(req.query.FromDate){ query.Date.$gte = req.query.FromDate; }				if(req.query.ToDate){ query.Date.$lte = req.query.ToDate; }	}
   //following is example of expandable where condition 
   //for e.g. you have a value for search and it is optional for search
   /*
@@ -46,7 +37,7 @@ Order.OrderRESTModel.methods(['post', 'put', 'delete']);
 // Use .populate(foreigntablename) to fill foreign table values in query after find 
 Order.OrderRESTModel.route('get', function (req, res, next) {
    Order.Order.find(getWhereCondition(req))
-                  .skip(req.query.skip)
+    .skip(req.query.skip)
                   .limit(req.query.limit)
                   .sort(getSortExpression(req))
                   .exec(function (err, order) {

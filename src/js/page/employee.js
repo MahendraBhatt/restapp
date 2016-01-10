@@ -1,8 +1,32 @@
 app.employee = {
-    openInputPanelInModalDialog: true,
+    openInputPanelInModalDialog: false,
 	count: function(){
 		var search = '?';
-		if ($("#search_EmpNo").val() !== '') {			search += 'EmpNo=' + $("#search_EmpNo").val();		}		if ($("#search_FirstName").val() !== '') {			search += '&FirstName=' + $("#search_FirstName").val();		}		if ($("#search_FromHireDate").val() !== '') {			search += '&FromHireDate=' + $("#search_FromHireDate").val();		}		if ($("#search_ToHireDate").val() !== '') {			search += '&ToHireDate=' + $("#search_ToHireDate").val();		}		if ($("#search_Gender").val() !== '') {			search += '&Gender=' + $("#search_Gender").val();		}		if ($("#search_Region").val() !== '') {			search += '&Region=' + $("#search_Region").val();		}		if ($("#search_FromBirthDate").val() !== '') {			search += '&FromBirthDate=' + $("#search_FromBirthDate").val();		}		if ($("#search_ToBirthDate").val() !== '') {			search += '&ToBirthDate=' + $("#search_ToBirthDate").val();		}		
+		if ($("#search_EmpNo").val() !== '') {
+			search += 'EmpNo=' + $("#search_EmpNo").val();
+		}
+		if ($("#search_FirstName").val() !== '') {
+			search += '&FirstName=' + $("#search_FirstName").val();
+		}
+		if ($("#search_FromHireDate").val() !== '') {
+			search += '&FromHireDate=' + $("#search_FromHireDate").val();
+		}
+		if ($("#search_ToHireDate").val() !== '') {
+			search += '&ToHireDate=' + $("#search_ToHireDate").val();
+		}
+		if ($("#search_Gender").val() !== '') {
+			search += '&Gender=' + $("#search_Gender").val();
+		}
+		if ($("#search_Region").val() !== '') {
+			search += '&Region=' + $("#search_Region").val();
+		}
+		if ($("#search_FromBirthDate").val() !== '') {
+			search += '&FromBirthDate=' + $("#search_FromBirthDate").val();
+		}
+		if ($("#search_ToBirthDate").val() !== '') {
+			search += '&ToBirthDate=' + $("#search_ToBirthDate").val();
+		}
+		
 		app.XHR().call({
 			url: "employees/count/" + search,
 			success: function (res) {
@@ -21,7 +45,31 @@ app.employee = {
 	load: function(){
 		var target = $('#EmployeeContainer');
 		var search = '?';
-		if ($("#search_EmpNo").val() !== '') {			search += 'EmpNo=' + $("#search_EmpNo").val();		}		if ($("#search_FirstName").val() !== '') {			search += '&FirstName=' + $("#search_FirstName").val();		}		if ($("#search_FromHireDate").val() !== '') {			search += '&FromHireDate=' + $("#search_FromHireDate").val();		}		if ($("#search_ToHireDate").val() !== '') {			search += '&ToHireDate=' + $("#search_ToHireDate").val();		}		if ($("#search_Gender").val() !== '') {			search += '&Gender=' + $("#search_Gender").val();		}		if ($("#search_Region").val() !== '') {			search += '&Region=' + $("#search_Region").val();		}		if ($("#search_FromBirthDate").val() !== '') {			search += '&FromBirthDate=' + $("#search_FromBirthDate").val();		}		if ($("#search_ToBirthDate").val() !== '') {			search += '&ToBirthDate=' + $("#search_ToBirthDate").val();		}		
+		if ($("#search_EmpNo").val() !== '') {
+			search += 'EmpNo=' + $("#search_EmpNo").val();
+		}
+		if ($("#search_FirstName").val() !== '') {
+			search += '&FirstName=' + $("#search_FirstName").val();
+		}
+		if ($("#search_FromHireDate").val() !== '') {
+			search += '&FromHireDate=' + $("#search_FromHireDate").val();
+		}
+		if ($("#search_ToHireDate").val() !== '') {
+			search += '&ToHireDate=' + $("#search_ToHireDate").val();
+		}
+		if ($("#search_Gender").val() !== '') {
+			search += '&Gender=' + $("#search_Gender").val();
+		}
+		if ($("#search_Region").val() !== '') {
+			search += '&Region=' + $("#search_Region").val();
+		}
+		if ($("#search_FromBirthDate").val() !== '') {
+			search += '&FromBirthDate=' + $("#search_FromBirthDate").val();
+		}
+		if ($("#search_ToBirthDate").val() !== '') {
+			search += '&ToBirthDate=' + $("#search_ToBirthDate").val();
+		}
+		
 		search += ('&skip={0}&limit={1}').format(target.data('skip'), target.data('limit'));
 	
 		if(target.data('sort-expression')){
@@ -94,10 +142,35 @@ app.employee = {
             $('#EmployeeRecordsFound').hide();
             app.showHidePanel('EmployeeInput','EmployeeSearch');
         }
-	},	genders: {},	loadGenders: function(next){		app.XHR().call({			url: "genders",			success: function (res) {				app.employee.genders = res;				app.fillDropDown('search_Gender', app.employee.genders, 'name');				next();			}		});	},	regions: {},	loadRegions: function(next){		app.XHR().call({			url: "regions",			success: function (res) {				app.employee.regions = res;				app.fillDropDown('search_Region', app.employee.regions);				next();			}		});	}
+	},
+	genders: {},
+	loadGenders: function(next){
+		app.XHR().call({
+			url: "genders",
+			success: function (res) {
+				app.employee.genders = res;
+				app.fillDropDown('search_Gender', app.employee.genders, 'name');
+				next();
+			}
+		});
+	},
+	regions: {},
+	loadRegions: function(next){
+		app.XHR().call({
+			url: "regions",
+			success: function (res) {
+				app.employee.regions = res;
+				app.fillDropDown('search_Region', app.employee.regions);
+				next();
+			}
+		});
+	}
 };
 
 (function () {
-    app.employee.loadGenders(function(){		app.employee.loadRegions(function(){			app.employee.count();
-    	});	});
+    app.employee.loadGenders(function(){
+		app.employee.loadRegions(function(){
+			app.employee.count();
+    	});
+	});
 })();

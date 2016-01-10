@@ -1,16 +1,8 @@
 app.order = {
+    openInputPanelInModalDialog: true,
 	count: function(){
 		var search = '?';
-		if ($("#search_No").val() !== '') {
-			search += 'No=' + $("#search_No").val();
-		}
-		if ($("#search_FromDate").val() !== '') {
-			search += '&FromDate=' + $("#search_FromDate").val();
-		}
-		if ($("#search_ToDate").val() !== '') {
-			search += '&ToDate=' + $("#search_ToDate").val();
-		}
-		
+		if ($("#search_No").val() !== '') {			search += 'No=' + $("#search_No").val();		}		if ($("#search_FromDate").val() !== '') {			search += '&FromDate=' + $("#search_FromDate").val();		}		if ($("#search_ToDate").val() !== '') {			search += '&ToDate=' + $("#search_ToDate").val();		}		
 		app.XHR().call({
 			url: "orders/count/" + search,
 			success: function (res) {
@@ -29,16 +21,7 @@ app.order = {
 	load: function(){
 		var target = $('#OrderContainer');
 		var search = '?';
-		if ($("#search_No").val() !== '') {
-			search += 'No=' + $("#search_No").val();
-		}
-		if ($("#search_FromDate").val() !== '') {
-			search += '&FromDate=' + $("#search_FromDate").val();
-		}
-		if ($("#search_ToDate").val() !== '') {
-			search += '&ToDate=' + $("#search_ToDate").val();
-		}
-		
+		if ($("#search_No").val() !== '') {			search += 'No=' + $("#search_No").val();		}		if ($("#search_FromDate").val() !== '') {			search += '&FromDate=' + $("#search_FromDate").val();		}		if ($("#search_ToDate").val() !== '') {			search += '&ToDate=' + $("#search_ToDate").val();		}		
 		search += ('&skip={0}&limit={1}').format(target.data('skip'), target.data('limit'));
 	
 		if(target.data('sort-expression')){
@@ -71,6 +54,14 @@ app.order = {
 			});
 		}
 	},
+    cancel: function(){
+        if(app.order.openInputPanelInModalDialog === true){
+            $('#OrderInput .close').click();
+        } else {
+            $('#OrderRecordsFound').show();
+            app.showHidePanel('OrderSearch','OrderInput');
+        }
+    },
 	save: function(id){
 		var data = $('#OrderInput').serializeObject();
 		app.XHR().call({
@@ -79,23 +70,34 @@ app.order = {
 			type: (id === '' ? 'POST' : 'PUT'),
 			success: function (res) {
 				console.log('record saved');
-				$('#OrderInput .close').click();
+                if(app.order.openInputPanelInModalDialog === true){
+                    $('#OrderInput .close').click();
+                } else {
+                    $('#OrderRecordsFound').show();
+                    app.showHidePanel('OrderSearch','OrderInput');
+                }
 				app.order.count();
 			}
 		});
 		return false;
 	},
 	showInput: function(row){
-		var data = {};
+		var data = { _id: '', Date: '' };
 		if (row !== undefined) {
 			data = $(row).tmplItem().data;
 		}
 		$("#OrderInput").html('');
 		$("#OrderTemplate").tmpl(data).appendTo("#OrderInput");
-		app.showModalDialog('OrderInput');
+        if(app.order.openInputPanelInModalDialog === true){
+            app.showModalDialog('OrderInput');
+        } else {
+            $('#OrderRecordsFound').hide();
+            app.showHidePanel('OrderInput','OrderSearch');
+        }
 	}
 };
 
 (function () {
-	app.order.count();
+    app.order.count();
+    
 })();

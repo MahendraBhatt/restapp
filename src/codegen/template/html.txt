@@ -29,7 +29,7 @@
 		<div id="{{camelized-name}}Container" class="grid"></div>
 		<div id="{{camelized-name}}Footer" class="footer"></div>
     </div>
-    <form id="{{camelized-name}}Input"></form>
+    <form id="{{camelized-name}}Input" class="search-panel"></form>
 
     {{reference-input-templates}}
 

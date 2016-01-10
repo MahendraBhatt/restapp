@@ -15,8 +15,21 @@
                 <div class="col-12">Find Employees</div>
             </div>
             <div class="row">			
-                <div class="col-1 right">EmpNo</div>			<div class="col-2"><input autocomplete="off" type="text" id="search_EmpNo" /></div>			<div class="col-1 right">FirstName</div>			<div class="col-2"><input autocomplete="off" type="text" id="search_FirstName" /></div>			<div class="col-1 right">From HireDate</div>			<div class="col-2"><input autocomplete="off" class="calendar" id="search_FromHireDate" /></div><div class="col-1 right">To HireDate</div>			<div class="col-2"><input autocomplete="off" class="calendar" id="search_ToHireDate" /></div>			<div class="col-1 right">Gender</div>			<div class="col-2"><select id="search_Gender"></select></div>			<div class="col-1 right">Region</div>			<div class="col-2"><select id="search_Region"></select></div>			<div class="col-1 right">From BirthDate</div>			<div class="col-2"><input autocomplete="off" class="calendar" id="search_FromBirthDate" /></div><div class="col-1 right">To BirthDate</div>			<div class="col-2"><input autocomplete="off" class="calendar" id="search_ToBirthDate" /></div>
-                <div class="col-2">
+                <div class="col-1 right">EmpNo</div>
+			<div class="col-2"><input autocomplete="off" type="text" id="search_EmpNo" /></div>
+			<div class="col-1 right">FirstName</div>
+			<div class="col-2"><input autocomplete="off" type="text" id="search_FirstName" /></div>
+			<div class="col-1 right">From HireDate</div>
+			<div class="col-2"><input autocomplete="off" class="calendar" id="search_FromHireDate" /></div><div class="col-1 right">To HireDate</div>
+			<div class="col-2"><input autocomplete="off" class="calendar" id="search_ToHireDate" /></div>
+			<div class="col-1 right">Gender</div>
+			<div class="col-2"><select id="search_Gender"></select></div>
+			<div class="col-1 right">Region</div>
+			<div class="col-2"><select id="search_Region"></select></div>
+			<div class="col-1 right">From BirthDate</div>
+			<div class="col-2"><input autocomplete="off" class="calendar" id="search_FromBirthDate" /></div><div class="col-1 right">To BirthDate</div>
+			<div class="col-2"><input autocomplete="off" class="calendar" id="search_ToBirthDate" /></div>
+                <div class="col-4">
                     <button onclick="app.employee.count();">Find</button>
                     <button id="addEmployee" onclick="app.employee.showInput();">Add New Employee</button>
                 </div>
@@ -24,21 +37,58 @@
         </div>
 		<div id="EmployeeHeader" class="row header">
 			<div class="col-1"></div>
-			<div class="col-1"><a href="#" data-sort-expression="EmpNo" data-sort-order="none">EmpNo</a></div>			<div class="col-1">FirstName</div>			<div class="col-1">MiddleInitial</div>			<div class="col-1">LastName</div>			<div class="col-1">HireDate</div>			<div class="col-1">JobTitle</div>			<div class="col-1"><a href="#" data-sort-expression="Gender" data-sort-order="none">Gender</a></div>			<div class="col-1"><a href="#" data-sort-expression="Region" data-sort-order="none">Region</a></div>			<div class="col-1">BirthDate</div>
+			<div class="col-1"><a href="#" data-sort-expression="EmpNo" data-sort-order="none">EmpNo</a></div>
+			<div class="col-1">FirstName</div>
+			<div class="col-1">MiddleInitial</div>
+			<div class="col-1">LastName</div>
+			<div class="col-1">HireDate</div>
+			<div class="col-1">JobTitle</div>
+			<div class="col-1"><a href="#" data-sort-expression="Gender" data-sort-order="none">Gender</a></div>
+			<div class="col-1"><a href="#" data-sort-expression="Region" data-sort-order="none">Region</a></div>
+			<div class="col-1">BirthDate</div>
 		</div>
 		<div id="EmployeeContainer" class="grid"></div>
 		<div id="EmployeeFooter" class="footer"></div>
     </div>
-    <form id="EmployeeInput"></form>
+    <form id="EmployeeInput" class="search-panel"></form>
 
-    <script id="GenderTemplate" type="text/x-jQuery-tmpl">		<option value="${name}" {{if name === $item.selectedId}}selected="selected" {{/if}}>${name}</option>	</script>	<script id="RegionTemplate" type="text/x-jQuery-tmpl">		<option value="${_id}" {{if _id === $item.selectedId}}selected="selected" {{/if}}>${name}</option>	</script>	
+    <script id="GenderTemplate" type="text/x-jQuery-tmpl">
+		<option value="${name}" {{if name === $item.selectedId}}selected="selected" {{/if}}>${name}</option>
+	</script>
+	<script id="RegionTemplate" type="text/x-jQuery-tmpl">
+		<option value="${_id}" {{if _id === $item.selectedId}}selected="selected" {{/if}}>${name}</option>
+	</script>
+	
 
 	<script id="EmployeeTemplate" type="text/x-jQuery-tmpl">
 		<div class="row header">{{if _id == ''}}Add{{else}}Edit{{/if}} Employee<div class="close">X</div></div>
-		<div class="row">			<div class="col-4 right">EmpNo</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="EmpNo"  value="${EmpNo}"  /></div>		</div>		<div class="row">			<div class="col-4 right">FirstName</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="FirstName"  value="${FirstName}"  /></div>		</div>		<div class="row">			<div class="col-4 right">MiddleInitial</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="MiddleInitial"  value="${MiddleInitial}"  /></div>		</div>		<div class="row">			<div class="col-4 right">LastName</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="LastName"  value="${LastName}"  /></div>		</div>		<div class="row">			<div class="col-4 right">HireDate</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="HireDate" class="calendar" value="${app.formatDate(HireDate)}" /></div>		</div>		<div class="row">			<div class="col-4 right">JobTitle</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="JobTitle"  value="${JobTitle}"  /></div>		</div>		<div class="row">			<div class="col-4 right">Gender</div>			<div class="col-4 left"><select name="Gender">{{tmpl(app.employee.genders, {selectedId: Gender}) "#GenderTemplate"}}</select></div>		</div>		<div class="row">			<div class="col-4 right">Region</div>			<div class="col-4 left"><select name="Region">{{tmpl(app.employee.regions, {selectedId: Region._id}) "#RegionTemplate"}}</select></div>		</div>		<div class="row">			<div class="col-4 right">BirthDate</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="BirthDate" class="calendar" value="${app.formatDate(BirthDate)}" /></div>		</div>		<div class="row">			<div class="col-4 right">Salary</div>			<div class="col-4 left"><input autocomplete="off" type="number" name="Salary"  value="${Salary}"  /></div>		</div>
 		<div class="row">
-			<div class="col-4 right"></div>
-			<div class="col-4 left"><button type="button" onclick="app.employee.save('${_id}');">Save</button>&nbsp;&nbsp;<button type="button" onclick="app.employee.cancel();">Cancel</button></div>
+			<div class="col-1 right">EmpNo</div>
+			<div class="col-2 left"><input autocomplete="off" type="text" name="EmpNo"  value="${EmpNo}"  /></div>
+			<div class="col-1 right">FirstName</div>
+			<div class="col-2 left"><input autocomplete="off" type="text" name="FirstName"  value="${FirstName}"  /></div>
+			<div class="col-1 right">MiddleInitial</div>
+			<div class="col-2 left"><input autocomplete="off" type="text" name="MiddleInitial"  value="${MiddleInitial}"  /></div>
+			<div class="col-1 right">LastName</div>
+			<div class="col-2 left"><input autocomplete="off" type="text" name="LastName"  value="${LastName}"  /></div>
+		</div>
+		<div class="row">
+			<div class="col-1 right">HireDate</div>
+			<div class="col-2 left"><input autocomplete="off" type="text" name="HireDate" class="calendar" value="${app.formatDate(HireDate)}" /></div>
+			<div class="col-1 right">JobTitle</div>
+			<div class="col-2 left"><input autocomplete="off" type="text" name="JobTitle"  value="${JobTitle}"  /></div>
+			<div class="col-1 right">Gender</div>
+			<div class="col-2 left"><select name="Gender">{{tmpl(app.employee.genders, {selectedId: Gender}) "#GenderTemplate"}}</select></div>
+			<div class="col-1 right">Region</div>
+			<div class="col-2 left"><select name="Region">{{tmpl(app.employee.regions, {selectedId: Region._id}) "#RegionTemplate"}}</select></div>
+		</div>
+		<div class="row">
+			<div class="col-1 right">BirthDate</div>
+			<div class="col-2 left"><input autocomplete="off" type="text" name="BirthDate" class="calendar" value="${app.formatDate(BirthDate)}" /></div>
+			<div class="col-1 right">Salary</div>
+			<div class="col-2 left"><input autocomplete="off" type="number" name="Salary"  value="${Salary}"  /></div>
+			<div class="col-1 right"></div>
+			<div class="col-2 left"><button type="button" onclick="app.employee.save('${_id}');">Save</button>&nbsp;&nbsp;<button type="button" onclick="app.employee.cancel();">Cancel</button></div>
 		</div>
 	</script>
 	
@@ -48,7 +98,15 @@
 				<div class="edit" onclick="app.employee.showInput(this);"></div>
 				<div class="delete" onclick="app.employee.remove('${_id}');"></div>
 			</div>
-			<div class="col-1">${EmpNo}</div>			<div class="col-1">${FirstName}</div>			<div class="col-1">${MiddleInitial}</div>			<div class="col-1">${LastName}</div>			<div class="col-1">${app.formatDate(HireDate)}</div>			<div class="col-1">${JobTitle}</div>			<div class="col-1">${Gender}</div>			<div class="col-1">${Region.name}</div>			<div class="col-1">${app.formatDate(BirthDate)}</div>
+			<div class="col-1">${EmpNo}</div>
+			<div class="col-1">${FirstName}</div>
+			<div class="col-1">${MiddleInitial}</div>
+			<div class="col-1">${LastName}</div>
+			<div class="col-1">${app.formatDate(HireDate)}</div>
+			<div class="col-1">${JobTitle}</div>
+			<div class="col-1">${Gender}</div>
+			<div class="col-1">${Region.name}</div>
+			<div class="col-1">${app.formatDate(BirthDate)}</div>
 		</div>
 	</script>
 

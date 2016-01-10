@@ -12,6 +12,7 @@
 	<div class="add">
 		Number of Employees to be added:
 		<input id="noOfEmployees" type="number" />
+        <select id="region"></select>
 		<button onclick="addEmployees();">Add</button>
 	</div>
 
@@ -19,6 +20,8 @@
 	<script src="../js/core.min.js"></script>
 	<script src="../js/xhrlib.min.js"></script>
 	<script>
+        var d = new Date();
+        var birthDate = new Date(1980,1,1);        
 		function addEmployees(){
 			var noOfEmployees = $("#noOfEmployees").val();
 			if(noOfEmployees > 0){
@@ -28,14 +31,12 @@
 							FirstName: app.getRandomString(10),
 							MiddleInitial: app.getRandomString(1),
 							LastName: app.getRandomString(10),
-							Dept: app.getRandomString(10),
-							Phone: app.getRandomString(10),
-							HireDate: null,
+							HireDate: d,
 							Job: app.getRandomString(5),
-							Sex: "Male",
-							BirthDate: null,
-							Salary: 10000,
-							Bonus: 1000};
+							Gender: "Female",
+                            Region:$("#region").val(),
+							BirthDate: birthDate,
+							Salary: 10000};
 					$.ajax({
 						url: "http://localhost:3001/api/employees/",
 						data: JSON.stringify(data),
@@ -58,6 +59,22 @@
 				add(noOfEmployees);
 			}
 		}
+        
+        var regions = {};
+		
+		function loadRegions(){
+			app.XHR().call({
+				url: "regions",
+				success: function(res){
+					regions = res;
+					app.fillDropDown('region',regions);
+				}
+			});
+		}
+		
+		(function(){
+			loadRegions();
+		})();
 	</script>
 </body>
 
