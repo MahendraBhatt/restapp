@@ -419,14 +419,14 @@ button {
 .calendar-control ul li {
   float: left;
   width: 25px;
-  padding: 3px 6px 3px 6px;
+  padding: 2px 5px 2px 5px;
   text-align: right;
 }
 .calendar-control ul.dates li.today {
   border: solid 1px #4881AD;
   border-radius: 3px;
   color: #1069AF;
-  padding: 2px 5px 2px 5px;
+  padding: 1px 4px 1px 4px;
   background: #ffffff;
   background: -moz-linear-gradient(top, #ffffff 30%, #ccd9e2 100%);
   background: -webkit-linear-gradient(top, #ffffff 30%, #ccd9e2 100%);
@@ -435,7 +435,7 @@ button {
 }
 .calendar-control ul.dates li:hover {
   color: #1069AF;
-  padding: 2px 5px 2px 5px;
+  padding: 1px 4px 1px 4px;
   border: solid 1px #64BCFA;
   border-radius: 3px;
 }

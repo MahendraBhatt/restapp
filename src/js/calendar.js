@@ -237,6 +237,13 @@
             if((rows === 5 && isLastYearLastMonth === true) || rows === 4){
                 calendar.renderWeek(frag, day, firstDay, lastDay);
             } 
+            var today = document.createElement('a');
+            today.innerHTML = 'Today';
+            today.onclick = function(){
+                calendar.input.val(calendar.today);
+                calendar.hide();
+            };
+            frag.appendChild(today);
             $(calendar.subContainer).append(frag);
         },
         render: function(year, month, mode){
