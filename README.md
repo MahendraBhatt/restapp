@@ -192,3 +192,10 @@ npm install -g loadtest
 Usage:
 
 loadtest [-n requests] [-c concurrency] [-k] URL
+
+-------------------------------------------------------------------
+    There are 3 possible ways of foreign key in mongo
+-------------------------------------------------------------------
+1. save as document reference
+2. save value itself for small table reference or master data
+3. sub documents

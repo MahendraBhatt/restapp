@@ -30,6 +30,8 @@
 		<form id="{{camelized-name}}Input" style="width:500px;"></form>
 	</section>
 
+    {{reference-input-templates}}
+
 	<script id="{{camelized-name}}Template" type="text/x-jQuery-tmpl">
 		<div class="row header">Add {{camelized-name}}<div class="close">X</div></div>
 		{{form-input-controls}}

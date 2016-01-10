@@ -4,7 +4,7 @@ var mongoose = restful.mongoose;
 var Schema = mongoose.Schema;
 
 //{{name}} Schema
-var {{name}}Schema = new Schema({{schema}})
+var {{name}}Schema = new Schema({{schema}});
 
 var {{name}}Model = mongoose.model('{{camelized-name}}', {{name}}Schema);
 

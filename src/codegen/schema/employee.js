@@ -10,7 +10,8 @@ var schema = {
 		{ name: 'Phone', type: 'String', sortable: false, searchable: false, showInGrid: true },
 		{ name: 'HireDate', type: 'Date', sortable: false, searchable: true, showInGrid: true },
 		{ name: 'Job', type: 'String', sortable: false, searchable: false, showInGrid: true },
-		{ name: 'Sex', type: 'String', sortable: false, searchable: false, showInGrid: true },
+		{ name: 'Gender', type: 'String', sortable: true, searchable: true, showInGrid: true, referenceFrom: 'Gender', referenceFieldName: 'name' },
+        { name: 'Region', type: 'Reference', sortable: true, searchable: true, showInGrid: true, referenceFrom: 'Region', referenceFieldName: 'name' },
 		{ name: 'BirthDate', type: 'Date', sortable: false, searchable: true, showInGrid: true },
 		{ name: 'Salary', type: 'Number', sortable: false, searchable: false, showInGrid: false },
 		{ name: 'Bonus', type: 'Number', sortable: false, searchable: false, showInGrid: false }

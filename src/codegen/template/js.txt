@@ -68,16 +68,17 @@
 		return false;
 	},
 	showInput: function(row){
-		var data = { {{date-fields}} };
+		var data = { {{date-n-reference-fields}} };
 		if (row !== undefined) {
 			data = $(row).tmplItem().data;
 		}
 		$("#{{camelized-name}}Input").html('');
 		$("#{{camelized-name}}Template").tmpl(data).appendTo("#{{camelized-name}}Input");
 		{{namespace}}.showModalDialog('{{camelized-name}}Input');
-	}
+	}{{reference-field-load-methods}}
 };
 
 (function () {
-	{{namespace}}.{{name}}.count();
+    {{call-reference-field-load-methods-start}}{{namespace}}.{{name}}.count();
+    {{call-reference-field-load-methods-end}}
 })();

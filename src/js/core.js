@@ -85,10 +85,11 @@ var app = {
         if (price === null) { return ''; }
         return price.toFixed(2);
     },
-    fillDropDown: function(id, source) {
+    fillDropDown: function(id, source, valueField) {
+        valueField = valueField || '_id';
         $('<option/>').val(0).html('Any').appendTo('#' + id);
         for (var x in source) {
-            $('<option/>').val(source[x]._id).html(source[x].name).appendTo('#' + id);
+            $('<option/>').val(source[x][valueField]).html(source[x].name).appendTo('#' + id);
         }
     },
     attachCalendarEvent: function(container){

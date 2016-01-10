@@ -3,10 +3,10 @@ var express = require('express');
 var router = express.Router();
 
 //Models
-var Region = require('../models/region');
+var Gender = require('../models/gender');
 
 //---------------------------------------------------
-//  Regions api
+//  Genders api
 //---------------------------------------------------
 
 function getWhereCondition(req){
@@ -31,32 +31,32 @@ function getSortExpression(req){
 }
 
 //Routes
-Region.RegionRESTModel.methods(['post', 'put', 'delete']);
+Gender.GenderRESTModel.methods(['post', 'put', 'delete']);
 
 // Customizing get method so that all records are not fetched at one time
 // Use .populate(foreigntablename) to fill foreign table values in query after find 
-Region.RegionRESTModel.route('get', function (req, res, next) {
-   Region.Region.find(getWhereCondition(req))
+Gender.GenderRESTModel.route('get', function (req, res, next) {
+   Gender.Gender.find(getWhereCondition(req))
                   .skip(req.query.skip)
                   .limit(req.query.limit)
                   .sort(getSortExpression(req))
-                  .exec(function (err, region) {
-                      res.send(region);
+                  .exec(function (err, gender) {
+                      res.send(gender);
                   });
 });
 
 //Custom route example with only get
-Region.RegionRESTModel.route('count', function (req, res, next) {
-  Region.RegionRESTModel.count(getWhereCondition(req), function (err, count) {
+Gender.GenderRESTModel.route('count', function (req, res, next) {
+  Gender.GenderRESTModel.count(getWhereCondition(req), function (err, count) {
     res.send((count || 0).toString());
   });
 });
 
-//Register regions api for routing
-Region.RegionRESTModel.register(router, '/regions');
+//Register genders api for routing
+Gender.GenderRESTModel.register(router, '/genders');
 
 //---------------------------------------------------
-//  End of Regions api
+//  End of Genders api
 //---------------------------------------------------
 
 //Return router

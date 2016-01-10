@@ -1,11 +1,17 @@
 // Dependencies
 var restful = require('node-restful');
 var mongoose = restful.mongoose;
+var Schema = mongoose.Schema;
 
-//Schema
-var regionSchema = new mongoose.Schema({
-	name: 'String'
+//region Schema
+var regionSchema = new Schema({
+	"name": "String"
 })
 
+var regionModel = mongoose.model('Region', regionSchema);
+
 //Return model
-module.exports = restful.model('Region', regionSchema);
+module.exports = {
+		RegionRESTModel : restful.model('Region', regionSchema),
+		Region: regionModel
+};

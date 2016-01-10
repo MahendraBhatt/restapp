@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Regions</title>
+	<link rel="stylesheet" href="../css/style.css" type="text/css" />
+</head>
+
+<body>
+	<h2>Regions</h2><span id="noOfRegions"></span> records found 
+	<div class="search-panel">
+		<div class="row row-separator">
+			<div class="col-12">Find Regions</div>
+		</div>
+		<div class="row">			
+			<div class="col-1 right">name</div>			<div class="col-2"><input type="text" id="search_name" /></div>
+			<div class="col-2">
+				<button onclick="app.region.count();">Find</button>
+				<button id="addRegion" onclick="app.region.showInput();">Add New Region</button>
+			</div>
+		</div>
+	</div>
+	<section>
+		<div id="RegionHeader" class="row header">
+			<div class="col-1"></div>
+			<div class="col-1"><a href="#" data-sort-expression="name" data-sort-order="none">name</a></div>
+		</div>
+		<div id="RegionContainer" class="grid"></div>
+		<div id="RegionFooter" class="footer"></div>
+		<form id="RegionInput" style="width:500px;"></form>
+	</section>
+
+	<script id="RegionTemplate" type="text/x-jQuery-tmpl">
+		<div class="row header">Add Region<div class="close">X</div></div>
+		<div class="row">			<div class="col-4 right">name</div>			<div class="col-4 left"><input type="text" name="name"  value="${name}"  /></div>		</div>
+		<div class="row">
+			<div class="col-4 right"></div>
+			<div class="col-4 left"><button onclick="return app.region.save('${_id}');">Save</button></div>
+		</div>
+	</script>
+	
+	<script id="RegionGridTemplate" type="text/x-jQuery-tmpl">
+		<div class="row">
+			<div class="col-1">
+				<div class="edit" onclick="app.region.showInput(this);"></div>
+				<div class="delete" onclick="app.region.remove('${_id}');"></div>
+			</div>
+			<div class="col-1">${name}</div>
+		</div>
+	</script>
+
+	<script src="../js/jquery/dist/jquery.min.js"></script>
+	<script src="../js/jquery.tmpl.min.js"></script>
+	<script src="../js/core.min.js"></script>
+	<script src="../js/xhrlib.min.js"></script>
+	<script src="../js/grid.min.js"></script>
+	<script src="../js/page/region.min.js"></script>
+    <script src="../js/calendar.min.js"></script>
+</body>
+
+</html>

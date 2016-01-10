@@ -11,7 +11,7 @@ var Employee = require('../models/employee');
 
 function getWhereCondition(req){
   var query = {};
-  		query.EmpNo = new RegExp(req.query.EmpNo, "i");		query.FirstName = new RegExp(req.query.FirstName, "i");	if(req.query.FromHireDate !== undefined || req.query.ToHireDate !== undefined){				query.HireDate = {};				if(req.query.FromHireDate){ query.HireDate.$gte = req.query.FromHireDate; }				if(req.query.ToHireDate){ query.HireDate.$lte = req.query.ToHireDate; }	}	if(req.query.FromBirthDate !== undefined || req.query.ToBirthDate !== undefined){				query.BirthDate = {};				if(req.query.FromBirthDate){ query.BirthDate.$gte = req.query.FromBirthDate; }				if(req.query.ToBirthDate){ query.BirthDate.$lte = req.query.ToBirthDate; }	}
+  	query.EmpNo = new RegExp(req.query.EmpNo, "i");	query.FirstName = new RegExp(req.query.FirstName, "i");	if(req.query.FromHireDate !== undefined || req.query.ToHireDate !== undefined){				query.HireDate = {};				if(req.query.FromHireDate){ query.HireDate.$gte = req.query.FromHireDate; }				if(req.query.ToHireDate){ query.HireDate.$lte = req.query.ToHireDate; }	}	if(req.query.Gender !== '0'){		query.Gender = req.query.Gender;	}	if(req.query.Region !== '0'){		query.Region = req.query.Region;	}	if(req.query.FromBirthDate !== undefined || req.query.ToBirthDate !== undefined){				query.BirthDate = {};				if(req.query.FromBirthDate){ query.BirthDate.$gte = req.query.FromBirthDate; }				if(req.query.ToBirthDate){ query.BirthDate.$lte = req.query.ToBirthDate; }	}
   //following is example of expandable where condition 
   //for e.g. you have a value for search and it is optional for search
   /*
@@ -37,7 +37,7 @@ Employee.EmployeeRESTModel.methods(['post', 'put', 'delete']);
 // Use .populate(foreigntablename) to fill foreign table values in query after find 
 Employee.EmployeeRESTModel.route('get', function (req, res, next) {
    Employee.Employee.find(getWhereCondition(req))
-                  .skip(req.query.skip)
+    .populate('Region').skip(req.query.skip)
                   .limit(req.query.limit)
                   .sort(getSortExpression(req))
                   .exec(function (err, employee) {
