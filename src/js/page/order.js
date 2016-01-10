@@ -1,5 +1,5 @@
 app.order = {
-    openInputPanelInModalDialog: true,
+    openInputPanelInModalDialog: false,
 	count: function(){
 		var search = '?';
 		if ($("#search_No").val() !== '') {			search += 'No=' + $("#search_No").val();		}		if ($("#search_FromDate").val() !== '') {			search += '&FromDate=' + $("#search_FromDate").val();		}		if ($("#search_ToDate").val() !== '') {			search += '&ToDate=' + $("#search_ToDate").val();		}		if ($("#search_Region").val() !== '') {			search += '&Region=' + $("#search_Region").val();		}		
@@ -63,23 +63,24 @@ app.order = {
         }
     },
 	save: function(id){
-		var data = $('#OrderInput').serializeObject();
-		app.XHR().call({
-			url: "orders/" + id,
-			data: JSON.stringify(data),
-			type: (id === '' ? 'POST' : 'PUT'),
-			success: function (res) {
-				console.log('record saved');
-                if(app.order.openInputPanelInModalDialog === true){
-                    $('#OrderInput .close').click();
-                } else {
-                    $('#OrderRecordsFound').show();
-                    app.showHidePanel('OrderSearch','OrderInput');
+        if(app.validate('OrderInput') == true){
+            var data = $('#OrderInput').serializeObject();
+            app.XHR().call({
+                url: "orders/" + id,
+                data: JSON.stringify(data),
+                type: (id === '' ? 'POST' : 'PUT'),
+                success: function (res) {
+                    console.log('record saved');
+                    if(app.order.openInputPanelInModalDialog === true){
+                        $('#OrderInput .close').click();
+                    } else {
+                        $('#OrderRecordsFound').show();
+                        app.showHidePanel('OrderSearch','OrderInput');
+                    }
+                    app.order.count();
                 }
-				app.order.count();
-			}
-		});
-		return false;
+            });
+        }
 	},
 	showInput: function(row){
 		var data = { _id: '', Date: '', ExpectedBy: '', Region: '' };

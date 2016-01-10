@@ -39,6 +39,7 @@ $.fn.serializeObject = function()
 //Declaring namespace
 var app = {
     currency: '$',
+    dateformat: 'mm/dd/yyyy',
     currentModalDialogId: '',
     generateGUID: function() {
         var guid = function (len) {
@@ -106,5 +107,18 @@ var app = {
             calendar.show();
             e.stopPropagation();
         });
+    },
+    validate: function(container) {
+        var mandatoryCheck = true, errMessage = '';
+        $('#'+container+' .mandatory').each(function(){ 
+            if($(this).val().trim() === ''){
+                mandatoryCheck = false;
+                errMessage += 'Please enter '+$(this).attr('data-label')+'\r';
+            }
+        });
+        if(errMessage !== ''){
+            alert(errMessage);
+        }
+        return mandatoryCheck;
     }
 };

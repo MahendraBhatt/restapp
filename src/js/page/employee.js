@@ -63,23 +63,24 @@ app.employee = {
         }
     },
 	save: function(id){
-		var data = $('#EmployeeInput').serializeObject();
-		app.XHR().call({
-			url: "employees/" + id,
-			data: JSON.stringify(data),
-			type: (id === '' ? 'POST' : 'PUT'),
-			success: function (res) {
-				console.log('record saved');
-                if(app.employee.openInputPanelInModalDialog === true){
-                    $('#EmployeeInput .close').click();
-                } else {
-                    $('#EmployeeRecordsFound').show();
-                    app.showHidePanel('EmployeeSearch','EmployeeInput');
+        if(app.validate('EmployeeInput') == true){
+            var data = $('#EmployeeInput').serializeObject();
+            app.XHR().call({
+                url: "employees/" + id,
+                data: JSON.stringify(data),
+                type: (id === '' ? 'POST' : 'PUT'),
+                success: function (res) {
+                    console.log('record saved');
+                    if(app.employee.openInputPanelInModalDialog === true){
+                        $('#EmployeeInput .close').click();
+                    } else {
+                        $('#EmployeeRecordsFound').show();
+                        app.showHidePanel('EmployeeSearch','EmployeeInput');
+                    }
+                    app.employee.count();
                 }
-				app.employee.count();
-			}
-		});
-		return false;
+            });
+        }
 	},
 	showInput: function(row){
 		var data = { _id: '', HireDate: '', Gender: '', Region: '', BirthDate: '' };

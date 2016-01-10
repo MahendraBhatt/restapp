@@ -63,23 +63,24 @@
         }
     },
 	save: function(id){
-		var data = $('#{{camelized-name}}Input').serializeObject();
-		{{namespace}}.XHR().call({
-			url: "{{name}}s/" + id,
-			data: JSON.stringify(data),
-			type: (id === '' ? 'POST' : 'PUT'),
-			success: function (res) {
-				console.log('record saved');
-                if({{namespace}}.{{name}}.openInputPanelInModalDialog === true){
-                    $('#{{camelized-name}}Input .close').click();
-                } else {
-                    $('#{{camelized-name}}RecordsFound').show();
-                    {{namespace}}.showHidePanel('{{camelized-name}}Search','{{camelized-name}}Input');
+        if({{namespace}}.validate('{{camelized-name}}Input') == true){
+            var data = $('#{{camelized-name}}Input').serializeObject();
+            {{namespace}}.XHR().call({
+                url: "{{name}}s/" + id,
+                data: JSON.stringify(data),
+                type: (id === '' ? 'POST' : 'PUT'),
+                success: function (res) {
+                    console.log('record saved');
+                    if({{namespace}}.{{name}}.openInputPanelInModalDialog === true){
+                        $('#{{camelized-name}}Input .close').click();
+                    } else {
+                        $('#{{camelized-name}}RecordsFound').show();
+                        {{namespace}}.showHidePanel('{{camelized-name}}Search','{{camelized-name}}Input');
+                    }
+                    {{namespace}}.{{name}}.count();
                 }
-				{{namespace}}.{{name}}.count();
-			}
-		});
-		return false;
+            });
+        }
 	},
 	showInput: function(row){
 		var data = { {{date-n-reference-fields}} };

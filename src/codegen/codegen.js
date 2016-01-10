@@ -172,7 +172,7 @@ function getFormControls(columns){
                 label = (element.label === undefined) ? element.name : element.label;
 				formControls += '<div class="col-1 right">'+((element.mandatory === true) ? '<span class="asterix">*</span> ' : '')+label+'</div>\r\t\t\t'; 
           		if(element.referenceFrom === undefined) {
-                    formControls += '<div class="col-2 left"><input autocomplete="off" type="'+type+'" name="'+element.name+'" '
+                    formControls += '<div class="col-2 left"><input autocomplete="off" type="'+type+'" name="'+element.name+'" data-label="'+label+'" '
                                     +(element.type === 'Date' ? 'class="calendar'+((element.mandatory === true) ? ' mandatory' : '')
                                     +'" value="${app.formatDate('+element.name+')}"' : 
                                     ((element.mandatory === true) ? 'class="mandatory"' : '')+' value="${'+element.name+'}" ')+' /></div>';
