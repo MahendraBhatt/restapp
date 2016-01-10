@@ -1,4 +1,5 @@
 {{namespace}}.{{name}} = {
+    openInputPanelInModalDialog: {{open-input-panel-in-modal-dialog}},
 	count: function(){
 		var search = '?';
 		{{search-query-string}}
@@ -53,6 +54,14 @@
 			});
 		}
 	},
+    cancel: function(){
+        if({{namespace}}.{{name}}.openInputPanelInModalDialog === true){
+            $('#{{camelized-name}}Input .close').click();
+        } else {
+            $('#{{camelized-name}}RecordsFound').show();
+            {{namespace}}.showHidePanel('{{camelized-name}}Search','{{camelized-name}}Input');
+        }
+    },
 	save: function(id){
 		var data = $('#{{camelized-name}}Input').serializeObject();
 		{{namespace}}.XHR().call({
@@ -61,7 +70,12 @@
 			type: (id === '' ? 'POST' : 'PUT'),
 			success: function (res) {
 				console.log('record saved');
-				$('#{{camelized-name}}Input .close').click();
+                if({{namespace}}.{{name}}.openInputPanelInModalDialog === true){
+                    $('#{{camelized-name}}Input .close').click();
+                } else {
+                    $('#{{camelized-name}}RecordsFound').show();
+                    {{namespace}}.showHidePanel('{{camelized-name}}Search','{{camelized-name}}Input');
+                }
 				{{namespace}}.{{name}}.count();
 			}
 		});
@@ -74,7 +88,12 @@
 		}
 		$("#{{camelized-name}}Input").html('');
 		$("#{{camelized-name}}Template").tmpl(data).appendTo("#{{camelized-name}}Input");
-		{{namespace}}.showModalDialog('{{camelized-name}}Input');
+        if({{namespace}}.{{name}}.openInputPanelInModalDialog === true){
+            {{namespace}}.showModalDialog('{{camelized-name}}Input');
+        } else {
+            $('#{{camelized-name}}RecordsFound').hide();
+            {{namespace}}.showHidePanel('{{camelized-name}}Input','{{camelized-name}}Search');
+        }
 	}{{reference-field-load-methods}}
 };
 

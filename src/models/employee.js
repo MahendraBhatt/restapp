@@ -4,7 +4,7 @@ var mongoose = restful.mongoose;
 var Schema = mongoose.Schema;
 
 //employee Schema
-var employeeSchema = new Schema({EmpNo: 'String',	FirstName: 'String',	MiddleInitial: 'String',	LastName: 'String',	Dept: 'String',	Phone: 'String',	HireDate: 'Date',	Job: 'String',	Gender: 'String',	Region: { type: Schema.Types.ObjectId, ref: 'Region' },	BirthDate: 'Date',	Salary: 'Number',	Bonus: 'Number'});
+var employeeSchema = new Schema({EmpNo: 'String',	FirstName: 'String',	MiddleInitial: 'String',	LastName: 'String',	HireDate: 'Date',	JobTitle: 'String',	Gender: 'String',	Region: { type: Schema.Types.ObjectId, ref: 'Region' },	BirthDate: 'Date',	Salary: 'Number'});
 
 var employeeModel = mongoose.model('Employee', employeeSchema);
 

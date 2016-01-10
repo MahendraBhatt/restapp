@@ -67,12 +67,19 @@ var app = {
         $(document.body).append('<div id="'+modalid+'" class="modal-background" style="width:'+width+'px;height:'+height+'px;"></div>');
         var d = $('#'+dialog);
         d.addClass('modal-dialog');
+        d.width(width/2);
         d.css({top: height/2 - d.height()/2,left: width/2 - d.width()/2}).show();
         d.find('.close').click(function(){
             d.hide(); 
             $('#'+modalid).remove();
         });
         app.attachCalendarEvent(dialog);
+    },
+    showHidePanel: function(panel1, panel2){
+        $('#'+panel1+' .close').hide();
+        $('#'+panel1).show();
+        $('#'+panel2).hide();
+        app.attachCalendarEvent(panel1);
     },
     formatDate: function(val){
         if(val!==''){

@@ -191,6 +191,10 @@ body {
   text-align: right;
 }
 
+.inline {
+  display: inline;
+}
+
 h2 {
   display: inline;
   padding: 20px;

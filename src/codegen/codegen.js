@@ -292,7 +292,8 @@ fs.readFile('template/js.txt', 'utf8', function (err, data) {
 		.replace(/{{search-query-string}}/g, generateSearchQueryString(schema.columns))
         .replace(/{{reference-field-load-methods}}/g, generateReferenceFieldLoadMethods(schema.columns))
         .replace(/{{call-reference-field-load-methods-start}}/g, callReferenceLoadMethods.start)
-        .replace(/{{call-reference-field-load-methods-end}}/g, callReferenceLoadMethods.end);
+        .replace(/{{call-reference-field-load-methods-end}}/g, callReferenceLoadMethods.end)
+        .replace(/{{open-input-panel-in-modal-dialog}}/g, schema.openInputPanelInModalDialog);
 	fs.writeFile('../js/page/' + name.toLowerCase() + '.js', newjs, function (err) {
 		if (err) throw err;
 		console.log(name + ' JS Created!');
