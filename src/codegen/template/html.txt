@@ -17,8 +17,8 @@
             <div class="row">			
                 {{search-controls}}
                 <div class="col-2">
-                    <button onclick="{{namespace}}.{{name}}.count();">Find</button>
-                    <button id="add{{camelized-name}}" onclick="{{namespace}}.{{name}}.showInput();">Add New {{camelized-name}}</button>
+                    <button onclick="{{namespace}}.{{name}}.count();"><span class="find"></span>Find</button>
+                    <button id="add{{camelized-name}}" onclick="{{namespace}}.{{name}}.showInput();"><span class="addnew"></span>Add New {{camelized-name}}</button>
                 </div>
             </div>
         </div>
@@ -37,8 +37,8 @@
 		<div class="row header">{{if _id == ''}}Add{{else}}Edit{{/if}} {{camelized-name}}<div class="close">X</div></div>
 		{{form-input-controls}}
 		<div class="row">
-			<div class="col-4 right"></div>
-			<div class="col-4 left"><button type="button" onclick="{{namespace}}.{{name}}.save('${_id}');">Save</button>&nbsp;&nbsp;<button type="button" onclick="{{namespace}}.{{name}}.cancel();">Cancel</button></div>
+			<div class="col-1 right"></div>
+			<div class="col-4 left"><button type="button" onclick="{{namespace}}.{{name}}.save('${_id}');"><span class="save"></span>Save</button>&nbsp;&nbsp;<button type="button" onclick="{{namespace}}.{{name}}.cancel();"><span class="cancel"></span>Cancel</button></div>
 		</div>
 	</script>
 	

@@ -2,7 +2,7 @@ app.order = {
     openInputPanelInModalDialog: true,
 	count: function(){
 		var search = '?';
-		if ($("#search_No").val() !== '') {			search += 'No=' + $("#search_No").val();		}		if ($("#search_FromDate").val() !== '') {			search += '&FromDate=' + $("#search_FromDate").val();		}		if ($("#search_ToDate").val() !== '') {			search += '&ToDate=' + $("#search_ToDate").val();		}		
+		if ($("#search_No").val() !== '') {			search += 'No=' + $("#search_No").val();		}		if ($("#search_FromDate").val() !== '') {			search += '&FromDate=' + $("#search_FromDate").val();		}		if ($("#search_ToDate").val() !== '') {			search += '&ToDate=' + $("#search_ToDate").val();		}		if ($("#search_Region").val() !== '') {			search += '&Region=' + $("#search_Region").val();		}		
 		app.XHR().call({
 			url: "orders/count/" + search,
 			success: function (res) {
@@ -21,7 +21,7 @@ app.order = {
 	load: function(){
 		var target = $('#OrderContainer');
 		var search = '?';
-		if ($("#search_No").val() !== '') {			search += 'No=' + $("#search_No").val();		}		if ($("#search_FromDate").val() !== '') {			search += '&FromDate=' + $("#search_FromDate").val();		}		if ($("#search_ToDate").val() !== '') {			search += '&ToDate=' + $("#search_ToDate").val();		}		
+		if ($("#search_No").val() !== '') {			search += 'No=' + $("#search_No").val();		}		if ($("#search_FromDate").val() !== '') {			search += '&FromDate=' + $("#search_FromDate").val();		}		if ($("#search_ToDate").val() !== '') {			search += '&ToDate=' + $("#search_ToDate").val();		}		if ($("#search_Region").val() !== '') {			search += '&Region=' + $("#search_Region").val();		}		
 		search += ('&skip={0}&limit={1}').format(target.data('skip'), target.data('limit'));
 	
 		if(target.data('sort-expression')){
@@ -82,7 +82,7 @@ app.order = {
 		return false;
 	},
 	showInput: function(row){
-		var data = { _id: '', Date: '' };
+		var data = { _id: '', Date: '', ExpectedBy: '', Region: '' };
 		if (row !== undefined) {
 			data = $(row).tmplItem().data;
 		}
@@ -94,10 +94,10 @@ app.order = {
             $('#OrderRecordsFound').hide();
             app.showHidePanel('OrderInput','OrderSearch');
         }
-	}
+	},	regions: {},	loadRegions: function(next){		app.XHR().call({			url: "regions",			success: function (res) {				app.order.regions = res;				app.fillDropDown('search_Region', app.order.regions);				next();			}		});	}
 };
 
 (function () {
-    app.order.count();
-    
+    app.order.loadRegions(function(){		app.order.count();
+    	});
 })();

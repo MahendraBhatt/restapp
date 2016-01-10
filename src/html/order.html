@@ -15,30 +15,30 @@
                 <div class="col-12">Find Orders</div>
             </div>
             <div class="row">			
-                <div class="col-1 right">No</div>			<div class="col-2"><input autocomplete="off" type="text" id="search_No" /></div>			<div class="col-1 right">From Date</div>			<div class="col-2"><input autocomplete="off" class="calendar" id="search_FromDate" /></div><div class="col-1 right">To Date</div>			<div class="col-2"><input autocomplete="off" class="calendar" id="search_ToDate" /></div>
+                <div class="col-1 right">No</div>			<div class="col-2"><input autocomplete="off" type="text" id="search_No" /></div>			<div class="col-1 right">From Date</div>			<div class="col-2"><input autocomplete="off" class="calendar" id="search_FromDate" /></div><div class="col-1 right">To Date</div>			<div class="col-2"><input autocomplete="off" class="calendar" id="search_ToDate" /></div>			<div class="col-1 right">Region</div>			<div class="col-2"><select id="search_Region"></select></div>
                 <div class="col-2">
-                    <button onclick="app.order.count();">Find</button>
-                    <button id="addOrder" onclick="app.order.showInput();">Add New Order</button>
+                    <button onclick="app.order.count();"><span class="find"></span>Find</button>
+                    <button id="addOrder" onclick="app.order.showInput();"><span class="addnew"></span>Add New Order</button>
                 </div>
             </div>
         </div>
 		<div id="OrderHeader" class="row header">
 			<div class="col-1"></div>
-			<div class="col-1"><a href="#" data-sort-expression="No" data-sort-order="none">No</a></div>			<div class="col-1"><a href="#" data-sort-expression="Date" data-sort-order="none">Date</a></div>			<div class="col-1"><a href="#" data-sort-expression="Value" data-sort-order="none">Value</a></div>
+			<div class="col-1"><a href="#" data-sort-expression="No" data-sort-order="none">No</a></div>			<div class="col-1"><a href="#" data-sort-expression="Date" data-sort-order="none">Date</a></div>			<div class="col-1"><a href="#" data-sort-expression="Value" data-sort-order="none">Value</a></div>			<div class="col-1"><a href="#" data-sort-expression="ExpectedBy" data-sort-order="none">ExpectedBy</a></div>			<div class="col-1"><a href="#" data-sort-expression="Region" data-sort-order="none">Region</a></div>
 		</div>
 		<div id="OrderContainer" class="grid"></div>
 		<div id="OrderFooter" class="footer"></div>
     </div>
-    <form id="OrderInput"></form>
+    <form id="OrderInput" class="search-panel"></form>
 
-    
+    <script id="RegionTemplate" type="text/x-jQuery-tmpl">		<option value="${_id}" {{if _id === $item.selectedId}}selected="selected" {{/if}}>${name}</option>	</script>	
 
 	<script id="OrderTemplate" type="text/x-jQuery-tmpl">
 		<div class="row header">{{if _id == ''}}Add{{else}}Edit{{/if}} Order<div class="close">X</div></div>
-		<div class="row">			<div class="col-4 right">No</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="No"  value="${No}"  /></div>		</div>		<div class="row">			<div class="col-4 right">Date</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="Date" class="calendar" value="${app.formatDate(Date)}" /></div>		</div>		<div class="row">			<div class="col-4 right">Value</div>			<div class="col-4 left"><input autocomplete="off" type="text" name="Value"  value="${Value}"  /></div>		</div>
+		<div class="row">			<div class="col-1 right">No</div>			<div class="col-2 left"><input autocomplete="off" type="text" name="No"  value="${No}"  /></div>			<div class="col-1 right">Date</div>			<div class="col-2 left"><input autocomplete="off" type="text" name="Date" class="calendar" value="${app.formatDate(Date)}" /></div>			<div class="col-1 right">Value</div>			<div class="col-2 left"><input autocomplete="off" type="text" name="Value"  value="${Value}"  /></div>			<div class="col-1 right">ExpectedBy</div>			<div class="col-2 left"><input autocomplete="off" type="text" name="ExpectedBy" class="calendar" value="${app.formatDate(ExpectedBy)}" /></div>		</div>		<div class="row">			<div class="col-1 right">Region</div>			<div class="col-2 left"><select name="Region">{{tmpl(app.order.regions, {selectedId: Region._id}) "#RegionTemplate"}}</select></div>		</div>
 		<div class="row">
-			<div class="col-4 right"></div>
-			<div class="col-4 left"><button type="button" onclick="app.order.save('${_id}');">Save</button>&nbsp;&nbsp;<button type="button" onclick="app.order.cancel();">Cancel</button></div>
+			<div class="col-1 right"></div>
+			<div class="col-4 left"><button type="button" onclick="app.order.save('${_id}');"><span class="save"></span>Save</button>&nbsp;&nbsp;<button type="button" onclick="app.order.cancel();"><span class="cancel"></span>Cancel</button></div>
 		</div>
 	</script>
 	
@@ -48,7 +48,7 @@
 				<div class="edit" onclick="app.order.showInput(this);"></div>
 				<div class="delete" onclick="app.order.remove('${_id}');"></div>
 			</div>
-			<div class="col-1">${No}</div>			<div class="col-1">${app.formatDate(Date)}</div>			<div class="col-1">${Value}</div>
+			<div class="col-1">${No}</div>			<div class="col-1">${app.formatDate(Date)}</div>			<div class="col-1">${Value}</div>			<div class="col-1">${app.formatDate(ExpectedBy)}</div>			<div class="col-1">${Region.name}</div>
 		</div>
 	</script>
 

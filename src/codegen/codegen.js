@@ -97,7 +97,7 @@ fs.readFile('template/api.txt', 'utf8', function (err, data) {
 //------------------------------------------------------------------------------------------------------------
 
 function getGridColumns(columns) {
-	var gridDisplayColumns = '', gridHeaderColumns = '';
+	var gridDisplayColumns = '', gridHeaderColumns = '', label = '';
 	columns.filter(function (obj) {
 				return obj.showInGrid;
 			})
@@ -109,10 +109,11 @@ function getGridColumns(columns) {
                                         (element.type === 'Date' ? 'app.formatDate('+element.name+')' :  element.name )
                                         +'}</div>';
                 }
+                label = (element.label === undefined) ? element.name : element.label;
 				gridHeaderColumns += '<div class="col-1">'+
 									(element.sortable ? '<a href="#" data-sort-expression="' + element.name +
-														'" data-sort-order="none">'+element.name+'</a>' 
-														: element.name)
+														'" data-sort-order="none">'+label+'</a>' 
+														: label)
 									 +'</div>';
 				if (index + 1 < array.length) {
 					gridDisplayColumns += '\r\t\t\t';
@@ -132,21 +133,21 @@ function getInputType(systemType){
 }
 
 function getSearchControls(columns){
-	var searchControls = '';
+	var searchControls = '', label = '';
 	columns.filter(function (obj) {
 				return obj.searchable;
 			})
 			.forEach(function (element, index, array) {
                 //referenceFrom
 				var type = getInputType(element.type);
-
+                label = (element.label === undefined) ? element.name : element.label;
                 if(element.type === 'Date'){
-                    searchControls += '<div class="col-1 right">From '+element.name+'</div>\r\t\t\t' 
+                    searchControls += '<div class="col-1 right">From '+label+'</div>\r\t\t\t' 
                                     + '<div class="col-2"><input autocomplete="off" class="calendar" id="search_From'+element.name+'" /></div>'
-                                    + '<div class="col-1 right">To '+element.name+'</div>\r\t\t\t' 
+                                    + '<div class="col-1 right">To '+label+'</div>\r\t\t\t' 
                                     + '<div class="col-2"><input autocomplete="off" class="calendar" id="search_To'+element.name+'" /></div>';
                 }else{
-                    searchControls += '<div class="col-1 right">'+element.name+'</div>\r\t\t\t';
+                    searchControls += '<div class="col-1 right">'+label+'</div>\r\t\t\t';
                     if(element.referenceFrom === undefined) {
                         searchControls += '<div class="col-2"><input autocomplete="off" type="'+type+'" id="search_'+element.name+'" /></div>';
                     }else{
@@ -161,19 +162,31 @@ function getSearchControls(columns){
 }
 
 function getFormControls(columns){
-	var formControls = '';
+	var formControls = '', label = '';
 	columns.forEach(function (element, index, array) {
         //referenceFrom
-				var type = getInputType(element.type); 
-				formControls += '<div class="row">\r\t\t\t<div class="col-4 right">'+element.name+'</div>\r\t\t\t'; 
-          		if(element.referenceFrom === undefined) {
-                    formControls += '<div class="col-4 left"><input autocomplete="off" type="'+type+'" name="'+element.name+'" '+(element.type === 'Date' ? 'class="calendar" value="${app.formatDate('+element.name+')}"' : ' value="${'+element.name+'}" ')+' /></div>';
-                }else{
-                    formControls += '<div class="col-4 left"><select name="'+element.name+'">{{tmpl('+schema.namespace+'.'+name.toLowerCase()+'.'+element.name.toLowerCase()+'s, {selectedId: '+element.name+(element.type === 'Reference' ? '._id' : '')+'}) "#'+element.name+'Template"}}</select></div>';  
+                if((index+1)%4 === 1){
+                    formControls += '<div class="row">\r\t\t\t';
                 }
-                formControls += '\r\t\t</div>';
+				var type = getInputType(element.type); 
+                label = (element.label === undefined) ? element.name : element.label;
+				formControls += '<div class="col-1 right">'+((element.mandatory === true) ? '<span class="asterix">*</span> ' : '')+label+'</div>\r\t\t\t'; 
+          		if(element.referenceFrom === undefined) {
+                    formControls += '<div class="col-2 left"><input autocomplete="off" type="'+type+'" name="'+element.name+'" '
+                                    +(element.type === 'Date' ? 'class="calendar'+((element.mandatory === true) ? ' mandatory' : '')
+                                    +'" value="${app.formatDate('+element.name+')}"' : 
+                                    ((element.mandatory === true) ? 'class="mandatory"' : '')+' value="${'+element.name+'}" ')+' /></div>';
+                }else{
+                    formControls += '<div class="col-2 left"><select name="'+element.name+'">{{tmpl('
+                                    +schema.namespace+'.'+name.toLowerCase()+'.'+element.name.toLowerCase()+'s, {selectedId: '
+                                    +element.name+(element.type === 'Reference' ? '._id' : '')+'}) "#'+element.name+'Template"}}</select></div>';
+                }
+                
+                if((index + 1) % 4 === 0 || (index + 1) === array.length){
+                    formControls += '\r\t\t</div>';
+                } 
 				if (index + 1 < array.length) {
-					formControls += '\r\t\t';
+					formControls += '\r\t\t' + ((index+1)%4 == 0 ? '': '\t');
 				}
 			});
 	return formControls;
