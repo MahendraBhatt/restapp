@@ -239,14 +239,11 @@ function generateSearchQueryString(columns){
 }
 
 function getDateNReferenceFields(columns){
-    var dateFields = '';
+    var dateFields = '_id: \'\'';
     columns.filter(function (obj) {
 				return obj.type === 'Date' || obj.referenceFrom !== undefined;
 			}).forEach(function(element, index, array){
-                dateFields += element.name + ': \'\'';
-                if (index + 1 < array.length) {
-					dateFields += ', ';
-				}
+                dateFields += ', '+element.name + ': \'\'';
             });
     return dateFields;    
 }
