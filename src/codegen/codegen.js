@@ -169,7 +169,7 @@ function getFormControls(columns){
           		if(element.referenceFrom === undefined) {
                     formControls += '<div class="col-4 left"><input autocomplete="off" type="'+type+'" name="'+element.name+'" '+(element.type === 'Date' ? 'class="calendar" value="${app.formatDate('+element.name+')}"' : ' value="${'+element.name+'}" ')+' /></div>';
                 }else{
-                    formControls += '<div class="col-4 left"><select name="'+element.name+'">{{tmpl('+schema.namespace+'.'+name.toLowerCase()+'.'+element.name.toLowerCase()+'s, {selectedId: '+element.name+'}) "#'+element.name+'Template"}}</select></div>';  
+                    formControls += '<div class="col-4 left"><select name="'+element.name+'">{{tmpl('+schema.namespace+'.'+name.toLowerCase()+'.'+element.name.toLowerCase()+'s, {selectedId: '+element.name+(element.type === 'Reference' ? '._id' : '')+'}) "#'+element.name+'Template"}}</select></div>';  
                 }
                 formControls += '\r\t\t</div>';
 				if (index + 1 < array.length) {
