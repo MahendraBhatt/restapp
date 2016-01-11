@@ -34,7 +34,11 @@
     {{reference-input-templates}}
 
 	<script id="{{camelized-name}}Template" type="text/x-jQuery-tmpl">
-		<div class="row header">{{if _id == ''}}Add{{else}}Edit{{/if}} {{camelized-name}}<div class="close">X</div></div>
+		<div class="row header">
+            <div class="col-12">
+                {{if _id == ''}}Add{{else}}Edit{{/if}} {{camelized-name}}<div class="close">X</div>
+            </div>
+        </div>
 		{{form-input-controls}}
 		<div class="row">
 			<div class="col-1 right"></div>

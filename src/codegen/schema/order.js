@@ -1,7 +1,7 @@
 var schema = {
 	namespace: 'app',
 	name: 'Order',
-	openInputPanelInModalDialog: false,
+	openInputPanelInModalDialog: true,
 	columns: [
 		{ name: 'No', type: 'String', sortable: true, searchable: true, showInGrid: true, mandatory: true }, 
 		{ name: 'Date', type: 'Date', sortable: true, searchable: true, showInGrid: true, mandatory: true },

@@ -1,5 +1,5 @@
 app.order = {
-    openInputPanelInModalDialog: false,
+    openInputPanelInModalDialog: true,
 	count: function(){
 		var search = '?';
 		if ($("#search_No").val() !== '') {			search += 'No=' + $("#search_No").val();		}		if ($("#search_FromDate").val() !== '') {			search += '&FromDate=' + $("#search_FromDate").val();		}		if ($("#search_ToDate").val() !== '') {			search += '&ToDate=' + $("#search_ToDate").val();		}		if ($("#search_Region").val() !== '') {			search += '&Region=' + $("#search_Region").val();		}		

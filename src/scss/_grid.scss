@@ -27,10 +27,12 @@
 
 .row-separator{
    border-bottom: solid 1px #afafaf; 
+   font-weight: bold;
+   background-color: #d0d0d0;
 }
   
 .grid .row:nth-child(2n){
-  background-color: lightgrey;
+  background-color: #e2e2e2;
 }
 
 .header{
