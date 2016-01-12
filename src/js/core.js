@@ -108,7 +108,7 @@ var app = {
         }).off('focusout').on('focusout', function(e){
             var val = $(this).val().trim();
             if(val !== ''){
-                var dateRegEx = /^([0-1]?[0-9]{1})\/([0-3]?[0-9]{1})\/(\d{4})$/g;
+                var dateRegEx = new RegExp("^([0-1]?[0-9]{1})\/([0-3]?[0-9]{1})\/(\d{4})$","gi");
                 var match = dateRegEx.exec(val);
                 var invalid = false;
                 if(match === null){
@@ -127,8 +127,11 @@ var app = {
                     }
                 }
                 if(invalid === true){
-                    $(this).val('');
-                    $(this).focus();
+                    var that = $(this);
+                    setTimeout(function(){
+                        that.val('');
+                        that.focus();    
+                    }, 10);
                 }
             }
         });
