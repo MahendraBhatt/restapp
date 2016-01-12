@@ -108,7 +108,7 @@ var app = {
         }).off('focusout').on('focusout', function(e){
             var val = $(this).val().trim();
             if(val !== ''){
-                var dateRegEx = new RegExp("^([0-1]?[0-9]{1})\/([0-3]?[0-9]{1})\/(\d{4})$","gi");
+                var dateRegEx = /^([0-1]?[0-9]{1})\/([0-3]?[0-9]{1})\/(\d{4})$/g;
                 var match = dateRegEx.exec(val);
                 var invalid = false;
                 if(match === null){
@@ -118,6 +118,8 @@ var app = {
                     if(y > calendar.maxYear || y < calendar.minYear){
                         invalid = true;
                     } else if(m == 2 && ((y % 4 == 0 && d > 29) || (y % 4 != 0 && d > 28))){
+                        invalid = true;
+                    } else if (m > 12 || d > 31) {
                         invalid = true;
                     } else {
                         var dt = new Date(val);
