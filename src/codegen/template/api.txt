@@ -37,8 +37,8 @@ function getSortExpression(req){
 // Use .populate(foreigntablename) to fill foreign table values in query after find 
 {{camelized-name}}.{{camelized-name}}RESTModel.route('get', function (req, res, next) {
    {{camelized-name}}.{{camelized-name}}.find(getWhereCondition(req))
-    {{populate-foreign-references}}.skip(req.query.skip)
-                  .limit(req.query.limit)
+    {{populate-foreign-references}}.skip(parseInt(req.query.skip, 10))
+                  .limit(parseInt(req.query.limit, 10))
                   .sort(getSortExpression(req))
                   .exec(function (err, {{name}}) {
                       res.send({{name}});
