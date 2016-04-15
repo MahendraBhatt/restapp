@@ -369,7 +369,7 @@ button {
 .calendar-control .floater {
   float: left;
   transform: scale(1);
-  margin: 0px 10px 10px 8px;
+  margin: 0px 10px 8px 8px;
 }
 .calendar-control a {
   text-decoration: none;
@@ -378,7 +378,7 @@ button {
   cursor: default;
   width: 150px;
   display: inline-block;
-  line-height: 20px;
+  line-height: 18px;
 }
 .calendar-control a:hover {
   color: #008FFF;
@@ -411,6 +411,10 @@ button {
 }
 .calendar-control a.rightarrow-image:hover {
   background-image: url(/images/rightarrow_hover.png);
+}
+.calendar-control a.today {
+  display: block;
+  width: 180px;
 }
 .calendar-control ul {
   margin: 0px;
@@ -466,5 +470,5 @@ button {
 .calendar-control .separator {
   border-top: 1px solid #efefff;
   display: block;
-  margin-top: 5px;
+  margin-top: 4px;
 }

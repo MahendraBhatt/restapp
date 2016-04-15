@@ -239,6 +239,7 @@
             } 
             var today = document.createElement('a');
             today.innerHTML = 'Today';
+            today.className = 'today';
             today.onclick = function(){
                 calendar.input.val(calendar.today);
                 calendar.hide();
