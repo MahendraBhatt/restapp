@@ -37,8 +37,8 @@ Employee.EmployeeRESTModel.methods(['post', 'put', 'delete']);
 // Use .populate(foreigntablename) to fill foreign table values in query after find 
 Employee.EmployeeRESTModel.route('get', function (req, res, next) {
    Employee.Employee.find(getWhereCondition(req))
-    .populate('Region').skip(req.query.skip)
-                  .limit(req.query.limit)
+    .populate('Region').skip(parseInt(req.query.skip, 10))
+                  .limit(parseInt(req.query.limit, 10))
                   .sort(getSortExpression(req))
                   .exec(function (err, employee) {
                       res.send(employee);
